@@ -1,0 +1,30 @@
+:root {
+  /* using system fonts as suggested by https://css-tricks.com/snippets/css/system-font-stack/ */
+  --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+* {
+  margin: 0;
+  border: none;
+}
+
+/* Below for displaying checkbox square. Absent previously due to CSS reset */
+input[type="checkbox"] {
+  appearance: auto;
+}
+
+input,
+select {
+  border: 1px solid grey;
+}
+
+:root,
+body {
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: var(--system-ui);
+  height: 100vh;
+}
