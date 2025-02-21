@@ -8,9 +8,9 @@ export class ProjectsDisplay {
     }
   }
 
-  showSingleProject(name, allProjects) {
+  showSingleProject(projId, allProjects) {
     for (const obj of Object.entries(allProjects)) {
-      if (JSON.parse(obj[1]).title == name) {
+      if (JSON.parse(obj[1]).projId == projId) {
         // console.log(JSON.parse(obj[1]));
         return;
       }

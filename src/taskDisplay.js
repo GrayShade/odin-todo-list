@@ -1,7 +1,7 @@
 export class TasksDisplay {
   showAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
-      if (JSON.parse(obj[1]).id == projID) {
+      if (JSON.parse(obj[1]).projId == projID) {
         console.log(JSON.parse(obj[1]).tasks);
         return;
       }

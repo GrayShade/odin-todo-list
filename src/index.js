@@ -15,23 +15,24 @@ class Main {
   static #projDisplay = new ProjectsDisplay();
   static #taskDisplay = new TasksDisplay();
   start() {
-    Main.#proj.createDefaultProject('proj1');
+    Main.#proj.createDefaultProject('default');
     Main.#projDisplay.showAllProjects(Main.#proj.getAllProjects());
-    Main.#projDisplay.showSingleProject('proj1', Main.#proj.getAllProjects());
-    Main.#taskDisplay.showAllTasks('p1');
-    Main.#taskDisplay.showSingleTask(Main.#task.getTask('p1', 'p1t1'));
-    Main.#task.getTask('p1', 'p1t1');
-    Main.#task.createTask('p1');
-    Main.#task.deleteTask('p1', 'p1t3');
+    Main.#projDisplay.showSingleProject(0, Main.#proj.getAllProjects());
+    Main.#taskDisplay.showAllTasks(0);
+    Main.#taskDisplay.showSingleTask(Main.#task.getTask(0, 0));
+    Main.#task.createTask(0);
+    Main.#task.getTask(0, 0);
+    debugger;
+    Main.#task.deleteTask(0, 2);
     const updatedTask = {
-      id: 'p1t2',
-      projID: 'p1',
+      taskId: 1,
+      projId: 0,
       title: 'Updated Task',
       description: '',
       dueDate: '',
       priority: ''
     };
-    Main.#task.updateTask('p1', 'p1t2',updatedTask);
+    Main.#task.updateTask(0, 1,updatedTask);
   }
 }
 
