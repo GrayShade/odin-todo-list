@@ -5,7 +5,9 @@ export class Projects {
   createDefaultProject(projName) {
     const defProject = this.getProject(0);
     if (defProject === null) {
-      localStorage.setItem(0, JSON.stringify({ projId: 0, title: projName, tasks: {} }));
+      let newProj = {};
+      newProj['p0'] = {projId: 0, title: projName, tasks: {}};
+      localStorage.setItem(0, JSON.stringify(newProj));
     }
   }
 
@@ -21,7 +23,9 @@ export class Projects {
     let newID = 0;
     newID = Object.keys(this.getAllProjects()).length;
     newID = newID + 1;
-    localStorage.setItem(newID, JSON.stringify({ projId: newID, title: projName, tasks: {} }));
+    let newProj = {};
+    newProj[`p${newID}`] = {projId: newID, title: projName, tasks: {}};
+    localStorage.setItem(newID, JSON.stringify(newProj));
   }
 
   deleteProject(projName) {
@@ -29,13 +33,5 @@ export class Projects {
   }
 
   getAllProjects() { return { ...localStorage }; }
-
-
-
-
-
-
-
-
 
 }

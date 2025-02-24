@@ -12,18 +12,19 @@ class Main {
   static #proj = new Projects();
   static #task = new Tasks();
   static #ui = new UI();
-  static #projDisplay = new ProjectsDisplay();
-  static #taskDisplay = new TasksDisplay();
+  static #projUI = new ProjectsDisplay();
+  static #taskUI = new TasksDisplay();
   start() {
+
     Main.#proj.createDefaultProject('default');
-    Main.#projDisplay.showAllProjects(Main.#proj.getAllProjects());
-    Main.#projDisplay.showSingleProject(0, Main.#proj.getAllProjects());
-    Main.#taskDisplay.showAllTasks(0);
-    Main.#taskDisplay.showSingleTask(Main.#task.getTask(0, 0));
+    Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
+    Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
+    Main.#taskUI.showAllTasks(0);
+    Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
+    
     Main.#task.createTask(0);
     Main.#task.getTask(0, 0);
-    debugger;
-    Main.#task.deleteTask(0, 2);
+    Main.#task.deleteTask(0, 3);
     const updatedTask = {
       taskId: 1,
       projId: 0,
