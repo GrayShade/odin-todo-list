@@ -8,6 +8,6 @@ export class TasksDisplay {
     }
   }
   showSingleTask(task) {
-    console.log(task);
+    // console.log(task);
   }
 }

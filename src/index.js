@@ -17,23 +17,26 @@ class Main {
   start() {
 
     Main.#proj.createDefaultProject('default');
+    // Main.#proj.createProject('custom Project');
+    Main.#proj.updateProject(7, 'updated Project')
+    Main.#proj.deleteProject(3);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
     Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
     Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
     
-    Main.#task.createTask(0);
+    Main.#task.deleteTask(7, 1);
+    // Main.#task.createTask(7);
     Main.#task.getTask(0, 0);
-    Main.#task.deleteTask(0, 3);
     const updatedTask = {
-      taskId: 1,
-      projId: 0,
+      // taskId: 0,
+      // projId: 0,
       title: 'Updated Task',
       description: '',
       dueDate: '',
       priority: ''
     };
-    Main.#task.updateTask(0, 1,updatedTask);
+    Main.#task.updateTask(0, 0, updatedTask);
   }
 }
 
