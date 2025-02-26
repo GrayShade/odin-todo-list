@@ -90,9 +90,8 @@ export class Tasks {
         for (const tasksObj of Object.entries(JSON.parse(obj[1])[`p${reqProjId}`].tasks)) {
           // if its required task, update it:
           if (tasksObj[1].taskId == reqTaskId) {
-            newObj[`p${reqProjId}`].projId = reqProjId;
-            newObj[`p${reqProjId}`].projId = reqTaskId;
             newObj[`p${reqProjId}`].tasks[`t${tasksObj[1].taskId}`] = updatedTask;
+            break;
           }
         }
         localStorage.setItem(reqProjId, JSON.stringify(newObj));

@@ -25,12 +25,12 @@ class Main {
     Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
     
-    Main.#task.deleteTask(7, 1);
-    // Main.#task.createTask(7);
+    Main.#task.deleteTask(6, 0);
+    Main.#task.createTask(0);
     Main.#task.getTask(0, 0);
     const updatedTask = {
-      // taskId: 0,
-      // projId: 0,
+      taskId: 0,
+      projId: 0,
       title: 'Updated Task',
       description: '',
       dueDate: '',
