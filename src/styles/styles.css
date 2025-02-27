@@ -47,8 +47,13 @@ header {
   line-height: 1.5em;
 }
 
+#left-bar #proj-expand-left-p {
+  padding-left: 1em;
+}
+
 #left-bar .expand-left-p {
   font-weight: 600;
+  width: 90%;
 }
 
 #left-bar .expand:hover,
@@ -80,32 +85,46 @@ header {
   padding: 3px;
 }
 
-#left-bar .expand-left-p {
-  padding-left: 1em;
-  width: 90%;
+#left-bar .sub-expand {
+  padding-left: 2em;
+  /* width: 90%; */
 }
 
-#left-bar .expand-right-p {
+#left-bar .expand-right-p,
+.project .expand-right-p {
   padding-right: 1em;
   width: 10%;
 }
 
-#left-bar .expand .right-arrow {
+#left-bar .expand .right-arrow,
+.project .expand .right-arrow {
   transform: rotate(44deg);
   -webkit-transform: rotate(44deg);
 }
 
-#projects-container>* {
+#projects-container > p {
   padding-left: 2em;
   display: flex;
 }
 
-#projects-container p span {
+#projects-container p .left-bar-span {
   width: 1.7em;
 }
 
-.project-tasks {
-  padding-left: 1em;
+#projects-container p .left-bar-span-task {
+  width: 3.5em;
+}
+
+#projects-container .project {
+  flex-direction: column;
+}
+
+.project-tasks p {
+  display: flex;
+}
+
+.project-tasks p {
+  padding-left: 3em;
 }
 
 .project-tasks .at-arrow-right {
