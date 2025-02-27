@@ -25,18 +25,21 @@ class Main {
     Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
     
-    Main.#task.deleteTask(6, 0);
-    Main.#task.createTask(0);
-    Main.#task.getTask(0, 0);
+    Main.#task.deleteTask(0, 1);
+    // Main.#task.createTask(0);
+    
+    const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
+    
     const updatedTask = {
       taskId: 0,
       projId: 0,
-      title: 'Updated Task',
+      title: 'updated Task',
       description: '',
-      dueDate: '',
+      dueDate: date,
       priority: ''
     };
     Main.#task.updateTask(0, 0, updatedTask);
+    Main.#task.getTask(0, 0);
   }
 }
 
