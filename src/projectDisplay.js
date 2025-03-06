@@ -4,7 +4,7 @@ export class ProjectsDisplay {
   showAllProjects(allProjects) {
 
     for (const obj of Object.entries(allProjects)) {
-      console.log(obj[0]);
+      // console.log(obj[0]);
     }
   }
 
