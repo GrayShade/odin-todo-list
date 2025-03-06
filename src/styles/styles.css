@@ -47,16 +47,16 @@ header {
   line-height: 1.5em;
 }
 
-#left-bar #proj-expand-left-p {
+#left-bar #proj-showHide-left-p {
   padding-left: 1em;
 }
 
-#left-bar .expand-left-p {
+#left-bar .showHide-left-p {
   font-weight: 600;
   width: 90%;
 }
 
-#left-bar .expand:hover,
+#left-bar .showHide:hover,
 #left-bar p:hover 
 {
   cursor: pointer;
@@ -73,33 +73,50 @@ header {
   padding-right: 0.5em;
 }
 
-#left-bar .expand {
+#left-bar .showHide {
   display: flex;
   justify-content: space-between;
 }
 
-#left-bar .expand .arrow {
+#left-bar .showHide .arrow {
   border: solid #9E9E9E;
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
 }
 
-#left-bar .sub-expand {
+#left-bar .sub-showHide {
   padding-left: 2em;
-  /* width: 90%; */
 }
 
-#left-bar .expand-right-p,
-.project .expand-right-p {
+#left-bar .showHide-right-p,
+.project .showHide-right-p {
   padding-right: 1em;
   width: 10%;
 }
 
-#left-bar .expand .right-arrow,
-.project .expand .right-arrow {
+/* #left-bar .showHide .right-arrow,
+.project .showHide .right-arrow {
   transform: rotate(44deg);
   -webkit-transform: rotate(44deg);
+} */
+
+/* .expand {
+  display: block;
+} */
+
+.hidden {
+  display: none;
+}
+
+.arrow-expand {
+  transform: rotate(44deg);
+  -webkit-transform: rotate(44deg);
+}
+
+.arrow-collapse {
+  transform: rotate(310deg);
+  -webkit-transform: rotate(310deg);
 }
 
 #projects-container > p {
@@ -118,6 +135,10 @@ header {
 #projects-container .project {
   flex-direction: column;
 }
+
+/* .project-tasks {
+  display: none;
+} */
 
 .project-tasks p {
   display: flex;
