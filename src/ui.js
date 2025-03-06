@@ -61,12 +61,13 @@ export class UI {
     if (showHideParent.id == 'left-bar') {return};
     const showHideDivArr = document.querySelectorAll('.showHide');
     for (let showHideIdx = 0; showHideIdx <= showHideDivArr.length - 1; showHideIdx++) {
-      const ele = showHideDivArr[showHideIdx].parentElement
-      if (ele.id == 'left-bar' || ele.id == showHideParent.id) {
+      const eleParent = showHideDivArr[showHideIdx].parentElement
+      if (eleParent.id == 'left-bar' || eleParent.id == showHideParent.id) {
         continue;
       }
       else {
-        ele.lastElementChild.classList.add('hidden');
+        eleParent.lastElementChild.classList.add('hidden');
+        this.changeArrowDirection(eleParent, 'arrow-collapse', 'arrow-expand');
       }
     }
   }
