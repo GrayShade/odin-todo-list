@@ -19,7 +19,7 @@ class Main {
     this.setEventListeners();
 
     Main.#proj.createDefaultProject('default');
-    // Main.#proj.createProject('custom Project');
+    
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
@@ -45,13 +45,20 @@ class Main {
   }
 
   setEventListeners() {
+    // to expand or collapse divs:
     const showHideDivArr = document.querySelectorAll('.showHide');
     for (let showHideIdx = 0; showHideIdx <= showHideDivArr.length - 1; showHideIdx++) {
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
         Main.#ui.showHideDivs(e);
-        
       });
     }
+
+    // to create a new project:
+    document.getElementById('new-project').addEventListener('click', (e) => {
+      Main.#projUI.createProjectModel();
+      // Main.#proj.createProject('custom Project');
+      // alert('here');
+    });
 
   }
 

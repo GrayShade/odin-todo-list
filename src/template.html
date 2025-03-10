@@ -51,6 +51,37 @@
     </div>
     <!-- <div id="right-content"> -->
   </div>
+  <div id="right-content">
+    <!-- .....................modal related code:........................ -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <header class="modal-header"> 
+          <span onclick="document.getElementById('myModal').style.display='none'" 
+          class="w3-button w3-display-topright">&times;</span>
+          <h2>Modal Header</h2>
+        </header>
+        <div id="modal-content-form">
+          <form action="#" id="form" onsubmit="event.preventDefault();">
+            <div class="form-input-div">
+              <div class="label-and-tooltip-pair-div">
+                <label for="title" class="heading">Title: <span aria-label="required">*</span><span
+                    id="title-form-info-brackets" class="form-info-brackets">(Required)</span></label>
+                <span class="tooltip"
+                  data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+              </div>
+              <!-- below regex pattern taken & modified from https://stackoverflow.com/a/35702586. -->
+              <input type="text" class="required title-required form-inputs" id="title" name="title" minlength="1"
+                maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              <span class="required title-required message" id="title-message"></span>
+            </div>
+          </form>
+          <button id="form-button" form="form" type="submit">Add Book</button>
+        </div>
+        <span class="close">&times;</span>
+      </div>
+    </div>
+    <!-- .....................model related code......................... ending here... -->
+  </div>
 </body>
 
 </html>

@@ -154,7 +154,7 @@ header {
 
 #right-content {
   grid-area: 2 / 2 / 3 / 3;
-  background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
+  /* background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%); */
 }
 
 header h1 {
