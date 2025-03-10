@@ -4,6 +4,7 @@ import { reset } from "./styles/reset.css"
 import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
 
 export class UI {
+  // .................divs expand collapse related code starting here........................... 
   showHideDivs(e) {
     let showHideDiv;
     let showHideDivParent;
@@ -70,4 +71,5 @@ export class UI {
       }
     }
   }
+    // .................divs expand collapse related code ending here........................... 
 }

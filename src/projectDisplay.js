@@ -15,5 +15,27 @@ export class ProjectsDisplay {
       }
     }
   }
+
+  setModal() {
+    const modal = document.getElementById('myModal');
+    const btn = document.getElementById('new-project');
+    const span = document.getElementsByClassName("close")[0];
+    
+    btn.addEventListener('click', e => {
+      modal.style.display = 'block';
+    });
+
+    span.addEventListener('click', e => {
+      modal.style.display = 'none';
+    });
+
+    // for closing modal if clicked anywhere on screen while model is 
+    // opened:
+    window.addEventListener('click', e => {
+      if (e.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
   
 }

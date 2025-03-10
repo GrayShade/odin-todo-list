@@ -7,6 +7,7 @@ import { Tasks } from "./tasks";
 import { UI } from "./ui";
 import { ProjectsDisplay } from "./projectDisplay";
 import { TasksDisplay } from "./taskDisplay";
+import { Validation } from "./validation";
 
 class Main {
   static #proj = new Projects();
@@ -14,12 +15,14 @@ class Main {
   static #ui = new UI();
   static #projUI = new ProjectsDisplay();
   static #taskUI = new TasksDisplay();
+  static #validate = new Validation();
   start() {
 
     this.setEventListeners();
 
     Main.#proj.createDefaultProject('default');
-    
+
+    // Main.#proj.createProject('sss');
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
@@ -45,6 +48,21 @@ class Main {
   }
 
   setEventListeners() {
+
+    this.#expandCollapseDivs();
+    this.#setModal();
+
+    // to create a new project:
+    document.getElementById('new-project').addEventListener('click', (e) => {
+      // Main.#projUI.createProjectModel();
+      // Main.#proj.createProject('custom Project');
+      // alert('here');
+
+    });
+
+  }
+
+  #expandCollapseDivs() {
     // to expand or collapse divs:
     const showHideDivArr = document.querySelectorAll('.showHide');
     for (let showHideIdx = 0; showHideIdx <= showHideDivArr.length - 1; showHideIdx++) {
@@ -52,20 +70,48 @@ class Main {
         Main.#ui.showHideDivs(e);
       });
     }
-
-    // to create a new project:
-    document.getElementById('new-project').addEventListener('click', (e) => {
-      Main.#projUI.createProjectModel();
-      // Main.#proj.createProject('custom Project');
-      // alert('here');
-    });
-
   }
 
 
+  #setModal() {
+    Main.#projUI.setModal();
+    const form = document.getElementById('form');
+    // remember that 'submit' event works only for form, not for buttons:
 
+    const inputs = document.querySelectorAll('.form-inputs');
+    for (let input of inputs) {
+      input.addEventListener(('input'), e => {
+        const ele_name = e.target.name;
+        const ele_message = `${ele_name}-message`;
+        Main.#validate.validateBeforeSubmit(e, ele_name, ele_message);
+      });
+    }
+    form.addEventListener(('submit'), e => {
+      const req_inputs = document.querySelectorAll('input.required');
+      const req_msg_spans = document.querySelectorAll('span.required');
+      let req_fields_status = false;
+      let optional_fields_status = false;
+      const allProjects = Main.#proj.getAllProjects();
+      for (let i = 0; i < req_inputs.length; i++) {
+        req_fields_status = Main.#validate.validateRequiredAfterSubmit(req_inputs[i], req_msg_spans[i], allProjects);
+      }
+      // const optional_inputs = document.querySelectorAll('input.optional');
+      // const optional_spans = document.querySelectorAll('span.optional');
+      // for (let i = 0; i < optional_inputs.length; i++) {
+      //   optional_fields_status = this.validationObj.validateOptionalAfterSubmit(optional_inputs[i], optional_spans[i]);
+      //   if (optional_fields_status == false) {
+      //     break;
+      //   }
+      // }
 
-
+      // if (req_fields_status == true && optional_fields_status == true) {
+        // this.#processModal(e);
+      if (req_fields_status == true) {
+        
+        alert('success');
+      }
+    });
+  }
 
 
 }
