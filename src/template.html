@@ -57,7 +57,7 @@
   </div>
   <div id="right-content">
     <!-- .....................modal related code:...................starting here..... -->
-    <div id="myModal" class="modal">
+    <div id="new-proj-modal" class="modal">
       <div class="modal-content">
         <header class="modal-header">
           <h3>New Project</h3>
@@ -65,24 +65,28 @@
           class="w3-button w3-display-topright">&times;</span> -->
            <span class="close">&times;</span>
         </header>
-        <div id="modal-content-form">
-          <form action="#" id="form" onsubmit="event.preventDefault();">
+        <div class="modal-content-form">
+          <form action="#" id="new-proj-form" onsubmit="event.preventDefault();">
             <div class="form-input-div">
               <div class="label-and-tooltip-pair-div">
-                <label for="title" class="heading">Title: <span aria-label="required">*</span><span
-                    id="title-form-info-brackets" class="form-info-brackets">(Required)</span></label>
+                <label for="new-proj-title" class="heading">Title: <span aria-label="required">*</span><span
+                    id="new-proj-title-info-brackets" class="form-info-brackets">(Required)</span></label>
                 <span class="tooltip"
                   data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
               </div>
               <!-- below regex pattern taken & modified from https://stackoverflow.com/a/35702586. -->
-              <input type="text" class="required title-required form-inputs" id="title" name="title" minlength="1"
+              <input type="text" class="required form-inputs" id="new-proj-title" name="new-proj-title" minlength="1"
                 maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
-              <span class="required title-required message" id="title-message"></span>
+              <span class="required message" id="new-proj-title-message"></span>
             </div>
           </form>
-          <button id="form-button" form="form" type="submit">Add Project</button>
+          <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
+          <button class="form-button" id="reset-proj-btn" form="new-proj-form" type="submit">Reset Form</button>
         </div>
         <!-- <span class="close">&times;</span> -->
+        <div class="modal-footer">
+
+        </div>
       </div>
     </div>
     <!-- .....................model related code......................... ending here... -->

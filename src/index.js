@@ -50,10 +50,12 @@ class Main {
   setEventListeners() {
 
     this.#expandCollapseDivs();
-    this.#setModal();
+    // this.#setModal();
+    Main.#projUI.setNewProjModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
+      this.#setModal();
       // Main.#projUI.createProjectModel();
       // Main.#proj.createProject('custom Project');
       // alert('here');
@@ -72,10 +74,9 @@ class Main {
     }
   }
 
-
   #setModal() {
-    Main.#projUI.setModal();
-    const form = document.getElementById('form');
+    // Main.#projUI.setNewProjModalUI();
+    const form = document.getElementById('new-proj-form');
     // remember that 'submit' event works only for form, not for buttons:
 
     const inputs = document.querySelectorAll('.form-inputs');
@@ -87,6 +88,7 @@ class Main {
       });
     }
     form.addEventListener(('submit'), e => {
+      
       const req_inputs = document.querySelectorAll('input.required');
       const req_msg_spans = document.querySelectorAll('span.required');
       let req_fields_status = false;
@@ -105,14 +107,19 @@ class Main {
       // }
 
       // if (req_fields_status == true && optional_fields_status == true) {
-        // this.#processModal(e);
+      // this.#processModal(e);
       if (req_fields_status == true) {
-        
-        alert('success');
+        Main.#proj.createProject(req_inputs[0].value);
+        Main.#validate.removeToast();
+        Main.#validate.addToast('success-toast', 'Modal Added Successfully!');
+
+      }
+      else {
+        Main.#validate.removeToast();
+        Main.#validate.addToast('error-toast', 'Some Error Occurred!');
       }
     });
   }
-
 
 }
 

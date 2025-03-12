@@ -48,7 +48,6 @@ export class Validation {
       if ((!e.target.classList.contains('form-inputs')) || (e.target.classList.contains('read-checkbox'))) {
         return;
       }
-
       const inputEle = e.target;
       // no need to run this on button:
       if (inputEle.type === 'submit') {
@@ -63,19 +62,19 @@ export class Validation {
       }
 
       // For hiding optional brackets:
-      const form_info_brackets_span = document.getElementById(`${e.target.id}-form-info-brackets`);
+      const form_info_brackets_span = document.getElementById(`${e.target.id}-info-brackets`);
       form_info_brackets_span.style.visibility = 'hidden';
     });
 
     // if user moves to next element which has error but no tooltip because of
     // listener on focusout event, tooltip should be shown again:
     document.addEventListener('focusin', (e) => {
+      this.removeToast();
       // <<focusin is firing on every element of document, so returning if
       // focused in element is not input:
       if ((!e.target.classList.contains('form-inputs')) || (e.target.classList.contains('read-checkbox'))) {
         return;
       }
-
       const inputEle = e.target;
       // return if it was a button:
       if (inputEle.type === 'submit') {
@@ -91,7 +90,7 @@ export class Validation {
       }
 
       // For showing optional brackets:
-      const form_info_brackets_span = document.getElementById(`${e.target.id}-form-info-brackets`);
+      const form_info_brackets_span = document.getElementById(`${e.target.id}-info-brackets`);
       form_info_brackets_span.style.visibility = 'visible';
 
     });
@@ -99,7 +98,7 @@ export class Validation {
 
   validateRequiredAfterSubmit(ele, msg_span, allProjects) {
     // checking if a book with same title exists:
-    if (ele.id === 'title') {
+    if (ele.id === 'new-proj-title') {
       for (let obj of (Object.entries(allProjects))) {
         const project = JSON.parse(obj[1])[`p${obj[0]}`];
         if (project.title === ele.value) {
@@ -122,6 +121,33 @@ export class Validation {
       return false;
     }
 
+  }
+
+  addToast(toastType, toastText) {
+    const toastContainer = document.createElement('div');
+    toastContainer.classList.add('toast', toastType, 'show');
+
+    // const toastHeader = document.createElement('div');
+    // toastHeader.classList.add('toast-header');
+    // toastHeader.innerText = 'Toast Header';
+
+    const toastBody = document.createElement('div');
+    toastBody.classList.add('toast-body');
+    toastBody.innerText = toastText;
+
+    // toastContainer.appendChild(toastHeader);
+    toastContainer.appendChild(toastBody);
+
+    // document.body.appendChild(toastContainer);
+    const modalFooter = document.querySelector('#new-proj-modal .modal-footer');
+    modalFooter.appendChild(toastContainer);
+  }
+
+  removeToast() {
+    const modalFooter = document.querySelector('#new-proj-modal .modal-footer');
+    if (modalFooter.children.length == 0) { return; }
+    const toastContainer = document.querySelector('.toast');
+    modalFooter.removeChild(toastContainer);
   }
 
 }

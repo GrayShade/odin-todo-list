@@ -16,8 +16,8 @@ export class ProjectsDisplay {
     }
   }
 
-  setModal() {
-    const modal = document.getElementById('myModal');
+  setNewProjModalUI() {
+    const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById('new-project');
     const span = document.getElementsByClassName("close")[0];
     

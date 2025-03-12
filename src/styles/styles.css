@@ -167,23 +167,31 @@ body {
 
 /* modal related code starting here... */
 
-#form-button {
+.form-button {
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 20px;
-  background: #f08080;
+  /* background: #f08080; */
   color: #ffffff;
   font-weight: bold;
   margin-top: 10%;
 }
 
-#form-button:hover {
+#new-proj-modal .form-button:hover {
   background: #cd5c5c;
   color: whitesmoke;
 }
 
-#myModal #form input,
-#myModal #form select {
+#add-proj-btn {
+  background: #6495ed;
+}
+
+#reset-proj-btn {
+  background: #f08080;
+}
+
+#new-proj-modal #new-proj-form input,
+#new-proj-modal #new-proj-form select {
   padding: 5px;
   /* width: 220px; */
   width: 100%;
@@ -232,7 +240,7 @@ body {
   /* align-items: center; */
   background-color: #fefefe;
   margin: auto;
-  padding: 0px 0px 20px 0px;
+  /* padding: 0px 0px 20px 0px; */
   /* border: 1px solid #888; */
   border-radius: 10px;
   width: 21%;
@@ -257,11 +265,11 @@ body {
   align-self: flex-start;
 }
 
-#modal-content-form {
+.modal-content-form {
   padding: 20px 10px 0px;
 }
 
-#modal-content-form #form {
+.modal-content-form #new-proj-form {
   display: flex;
   flex-direction: column;
 }
@@ -298,6 +306,10 @@ input:invalid,
   /* border: 2px solid #ff4500; */
 }
 
+.modal-footer {
+  margin: 0.5em 0;
+}
+
 /* below snippets taken from https://www.instantshift.com/2018/05/11/create-tooltip-using-css/ .....................*/
 .tooltip {
   display: inline;
@@ -324,7 +336,7 @@ input:invalid,
   border-width: 10px 8px 08px;
   border-style: solid;
   /* border-color: rgba(0, 0, 0, 0.3) transparent transparent transparent; */
-  border-color: #d3d3d3 transparent transparent transparent;
+  border-color: #9370db transparent transparent transparent;
   top: -20px;
   margin-left: -8px;
 }
@@ -332,7 +344,7 @@ input:invalid,
 .tooltip::after {
   content: attr(data-tooltip);
   /* background: rgba(0, 0, 0, 0.3); */
-  background: #d3d3d3;
+  background: #9370db;
   top: -20px;
   transform: translateY(-100%);
   font-size: 14px;
@@ -388,3 +400,23 @@ input:invalid,
 }
 
 /* modal related code ending here... */
+
+/* toast related code starting here */
+.toast {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em 0;
+  margin: 0.5em 0;
+  color: white;
+  font-style: italic;
+}
+
+.success-toast {
+  background-color: #20b2aa;
+}
+
+.error-toast {
+  background-color: #cd5c5c;
+}
+
+/* toast related code ending here */
