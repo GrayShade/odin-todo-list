@@ -50,12 +50,13 @@ class Main {
   setEventListeners() {
 
     this.#expandCollapseDivs();
-    // this.#setModal();
     Main.#projUI.setNewProjModalUI();
+    // Main.#taskUI.setNewTaskModalUI();
+    // Main.#taskUI.editTaskModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
-      this.#setModal();
+      this.#handleNewProjModal();
       // Main.#projUI.createProjectModel();
       // Main.#proj.createProject('custom Project');
       // alert('here');
@@ -74,9 +75,9 @@ class Main {
     }
   }
 
-  #setModal() {
+  #handleNewProjModal() {
     // Main.#projUI.setNewProjModalUI();
-    const form = document.getElementById('new-proj-form');
+    const newProjForm = document.getElementById('new-proj-form');
     // remember that 'submit' event works only for form, not for buttons:
 
     const inputs = document.querySelectorAll('.form-inputs');
@@ -87,8 +88,8 @@ class Main {
         Main.#validate.validateBeforeSubmit(e, ele_name, ele_message);
       });
     }
-    form.addEventListener(('submit'), e => {
-      
+    newProjForm.addEventListener(('submit'), e => {
+
       const req_inputs = document.querySelectorAll('input.required');
       const req_msg_spans = document.querySelectorAll('span.required');
       let req_fields_status = false;
