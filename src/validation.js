@@ -69,7 +69,8 @@ export class Validation {
     // if user moves to next element which has error but no tooltip because of
     // listener on focusout event, tooltip should be shown again:
     document.addEventListener('focusin', (e) => {
-      this.removeToast();
+
+      // this.removeToast(`${e.target.id.split('title')[0]}footer`);
       // <<focusin is firing on every element of document, so returning if
       // focused in element is not input:
       if ((!e.target.classList.contains('form-inputs')) || (e.target.classList.contains('read-checkbox'))) {
@@ -96,7 +97,7 @@ export class Validation {
     });
   }
 
-  validateRequiredAfterSubmit(ele, msg_span, allProjects) {
+  validateReqAfterSubmit(ele, msg_span, allProjects, addBtnId) {
     // checking if a book with same title exists:
     if (ele.id === 'new-proj-title') {
       for (let obj of (Object.entries(allProjects))) {
@@ -108,6 +109,22 @@ export class Validation {
           return false;
         }
       }
+    } else if (ele.id == 'new-task-title') {
+      const projId = addBtnId.split('-')[0];
+      const allTasksObj = JSON.parse(allProjects[projId[1]])[projId].tasks;
+      // if there is at least 1 task present:
+      if (Object.keys(allTasksObj).length > 0) { 
+        for (const idx in Object.entries(allTasksObj)) {
+          debugger;
+          if (Object.entries(allTasksObj)[idx][1].title == ele.value) {
+            ele.style.borderColor = 'red';
+            msg_span.style.color = 'red';
+            msg_span.innerHTML = "*Title already exists!"
+            return false;
+          }
+        }
+       };
+
     }
 
     // checking html pattern validation:
@@ -123,7 +140,7 @@ export class Validation {
 
   }
 
-  addToast(toastType, toastText) {
+  addToast(modalFooterId, toastType, toastText) {
     const toastContainer = document.createElement('div');
     toastContainer.classList.add('toast', toastType, 'show');
 
@@ -139,15 +156,15 @@ export class Validation {
     toastContainer.appendChild(toastBody);
 
     // document.body.appendChild(toastContainer);
-    const modalFooter = document.querySelector('#new-proj-modal .modal-footer');
-    modalFooter.appendChild(toastContainer);
+    const modalFooterEle = document.getElementById(modalFooterId);
+    modalFooterEle.appendChild(toastContainer);
   }
 
-  removeToast() {
-    const modalFooter = document.querySelector('#new-proj-modal .modal-footer');
-    if (modalFooter.children.length == 0) { return; }
+  removeToast(modalFooterId) {
+    const modalFooterEle = document.getElementById(modalFooterId);
+    if (modalFooterEle.children.length == 0) { return; }
     const toastContainer = document.querySelector('.toast');
-    modalFooter.removeChild(toastContainer);
+    modalFooterEle.removeChild(toastContainer);
   }
 
 }

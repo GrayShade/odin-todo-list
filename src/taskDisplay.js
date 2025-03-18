@@ -10,4 +10,32 @@ export class TasksDisplay {
   showSingleTask(task) {
     console.log(task);
   }
+  setNewTaskModalUI() {
+    const modal = document.getElementById('new-task-modal');
+    const btn = document.getElementById('p0-new-task');
+    const span = document.getElementById('new-task-close');
+    
+    btn.addEventListener('click', e => {
+      modal.style.display = 'block';
+    });
+
+    span.addEventListener('click', e => {
+      modal.style.display = 'none';
+    });
+
+    // for closing modal if clicked anywhere on screen while model is 
+    // opened:
+    window.addEventListener('click', e => {
+      if (e.target == modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
+  resetNewTaskModalUI() {
+    const newProjTitle = document.getElementById('new-task-title');
+    newProjTitle.style.borderColor = '';
+    let message = document.getElementById('new-task-title-message');
+    message.style.color = '';
+    message.innerHTML = ''
+  }
 }

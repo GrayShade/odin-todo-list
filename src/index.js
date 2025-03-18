@@ -51,17 +51,46 @@ class Main {
 
     this.#expandCollapseDivs();
     Main.#projUI.setNewProjModalUI();
-    // Main.#taskUI.setNewTaskModalUI();
+    Main.#taskUI.setNewTaskModalUI();
     // Main.#taskUI.editTaskModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
-      this.#handleNewProjModal();
-      // Main.#projUI.createProjectModel();
-      // Main.#proj.createProject('custom Project');
-      // alert('here');
-
+      const newProjForm = document.getElementById('new-proj-form');
+      this.#handleModal(newProjForm, e.target.id);
     });
+
+    document.getElementById('new-proj-reset').addEventListener('click', (e) => {
+      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
+      Main.#validate.removeToast(modalFooterId);
+      Main.#projUI.resetNewProjModalUI();
+    });
+
+    const allTasksArr = document.querySelectorAll('.new-task');
+    for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
+      allTasksArr[taskIdx].addEventListener('click', (e) => {
+        // To add a new Task:
+        console.log('here');
+        const newTaskForm = document.getElementById('new-task-form');
+        this.#handleModal(newTaskForm, e.target.id);
+      });
+    }
+
+    document.getElementById('new-task-reset').addEventListener('click', (e) => {
+      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
+      Main.#validate.removeToast(modalFooterId);
+      Main.#taskUI.resetNewTaskModalUI();
+    });
+    
+    // document.getElementById('new-project').addEventListener('click', (e) => {
+    //   const newProjForm = document.getElementById('new-proj-form');
+    //   this.#handleModal(newProjForm);
+    // });
+
+    // document.getElementById('reset-proj-btn').addEventListener('click', (e) => {
+    //   debugger;
+    //   Main.#projUI.resetNewProjModalUI();
+    // });
 
   }
 
@@ -75,12 +104,13 @@ class Main {
     }
   }
 
-  #handleNewProjModal() {
+  #handleModal(newForm, addBtnId) {
     // Main.#projUI.setNewProjModalUI();
-    const newProjForm = document.getElementById('new-proj-form');
+    // const newProjForm = document.getElementById('new-proj-form');
     // remember that 'submit' event works only for form, not for buttons:
+    const formId = document.getElementById(newForm.id).id;
+    const inputs = document.querySelectorAll(`#${formId} .form-inputs`);
 
-    const inputs = document.querySelectorAll('.form-inputs');
     for (let input of inputs) {
       input.addEventListener(('input'), e => {
         const ele_name = e.target.name;
@@ -88,38 +118,60 @@ class Main {
         Main.#validate.validateBeforeSubmit(e, ele_name, ele_message);
       });
     }
-    newProjForm.addEventListener(('submit'), e => {
+    newForm.addEventListener(('submit'), e => {
+      // let req_fields_status = false;
+      // let optional_fields_status = false;
+      const req_inputs = document.querySelectorAll(`#${formId} input.required`);
+      const req_msg_spans = document.querySelectorAll(`#${formId} span.required`);
+      const optional_inputs = document.querySelectorAll(`#${formId} input.optional`);
+      const optional_spans = document.querySelectorAll(`#${formId} span.optional`);
 
-      const req_inputs = document.querySelectorAll('input.required');
-      const req_msg_spans = document.querySelectorAll('span.required');
-      let req_fields_status = false;
-      let optional_fields_status = false;
-      const allProjects = Main.#proj.getAllProjects();
-      for (let i = 0; i < req_inputs.length; i++) {
-        req_fields_status = Main.#validate.validateRequiredAfterSubmit(req_inputs[i], req_msg_spans[i], allProjects);
-      }
-      // const optional_inputs = document.querySelectorAll('input.optional');
-      // const optional_spans = document.querySelectorAll('span.optional');
-      // for (let i = 0; i < optional_inputs.length; i++) {
-      //   optional_fields_status = this.validationObj.validateOptionalAfterSubmit(optional_inputs[i], optional_spans[i]);
-      //   if (optional_fields_status == false) {
-      //     break;
-      //   }
-      // }
+      const req_fields_status = this.getRequiredFieldsStatus(req_inputs, req_msg_spans, addBtnId);
+      // const optional_fields_status = this.getOptionalFieldsStatus(optional_inputs, optional_spans);
 
       // if (req_fields_status == true && optional_fields_status == true) {
       // this.#processModal(e);
+      const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if (req_fields_status == true) {
-        Main.#proj.createProject(req_inputs[0].value);
-        Main.#validate.removeToast();
-        Main.#validate.addToast('success-toast', 'Modal Added Successfully!');
+        switch (e.target.id) {
+          case 'new-proj-form':
+            Main.#proj.createProject(req_inputs[0].value);
+            break;
+          case 'new-task-form':
+            const projId = addBtnId.split('-')[0][1];
+            Main.#task.createTask(req_inputs[0].value, projId);
+            break;
+        }
+        Main.#validate.removeToast(modalFooterId);
+        Main.#validate.addToast(modalFooterId, 'success-toast', 'Modal Added Successfully!');
 
       }
       else {
-        Main.#validate.removeToast();
-        Main.#validate.addToast('error-toast', 'Some Error Occurred!');
+        Main.#validate.removeToast(modalFooterId);
+        Main.#validate.addToast(modalFooterId, 'error-toast', 'Some Error Occurred!');
       }
     });
+  }
+
+  getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId) {
+    let reqFieldsStatus = false;
+    const allProj = Main.#proj.getAllProjects();
+    for (let i = 0; i < reqInputs.length; i++) {
+      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(reqInputs[i], reqMsgSpans[i], allProj, addBtnId);
+      if (reqFieldsStatus == false) { return false };
+    }
+    return reqFieldsStatus;
+  }
+
+  getOptionalFieldsStatus(optionalInputs, optionalSpans) {
+    let optFieldsStatus = false;
+    for (let i = 0; i < optionalInputs.length; i++) {
+      optFieldsStatus = this.validationObj.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i]);
+      if (optFieldsStatus == false) {
+        break;
+      }
+    }
+    return optFieldsStatus;
   }
 
 }

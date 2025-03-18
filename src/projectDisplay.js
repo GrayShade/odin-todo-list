@@ -19,7 +19,7 @@ export class ProjectsDisplay {
   setNewProjModalUI() {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById('new-project');
-    const span = document.getElementsByClassName("close")[0];
+    const span = document.getElementById('new-proj-close');
     
     btn.addEventListener('click', e => {
       modal.style.display = 'block';
@@ -36,6 +36,14 @@ export class ProjectsDisplay {
         modal.style.display = 'none';
       }
     });
+  }
+
+  resetNewProjModalUI() {
+    const newProjTitle = document.getElementById('new-proj-title');
+    newProjTitle.style.borderColor = '';
+    let message = document.getElementById('new-proj-title-message');
+    message.style.color = '';
+    message.innerHTML = ''
   }
   
 }

@@ -119,7 +119,7 @@ body {
 
 /* .............................................. */
 /* code related to expansion & collapsing of divs 
- starting here*/
+ ending here*/
 
 #projects-container>p {
   padding-left: 2em;
@@ -137,10 +137,6 @@ body {
 #projects-container .project {
   flex-direction: column;
 }
-
-/* .project-tasks {
-  display: none;
-} */
 
 .project-tasks p {
   display: flex;
@@ -165,7 +161,7 @@ body {
 }
 
 
-/* modal related code starting here... */
+/* modal related code starting here........................................................ */
 
 .form-button {
   cursor: pointer;
@@ -177,21 +173,21 @@ body {
   margin-top: 10%;
 }
 
-#new-proj-modal .form-button:hover {
+.modal .form-button:hover {
   background: #cd5c5c;
   color: whitesmoke;
 }
 
-#add-proj-btn {
+.form-button[type='submit'] {
   background: #6495ed;
 }
 
-#reset-proj-btn {
+.form-button[type='reset'] {
   background: #f08080;
 }
 
-#new-proj-modal #new-proj-form input,
-#new-proj-modal #new-proj-form select {
+.modal-content-form input,
+.modal-content-form select {
   padding: 5px;
   /* width: 220px; */
   width: 100%;
@@ -203,9 +199,6 @@ body {
   font-size: 12px;
   letter-spacing: 0.1em;
 }
-
-
-
 
 .modal {
   /* font-family: 'OpenSans'; */
@@ -269,7 +262,7 @@ body {
   padding: 20px 10px 0px;
 }
 
-.modal-content-form #new-proj-form {
+.modal-content-form form {
   display: flex;
   flex-direction: column;
 }

@@ -32,8 +32,8 @@
           <p class="showHide-right-p"><span id="arrow-p0" class="arrow arrow-collapse"></p>
         </div>
         <div class="project-tasks hidden">
-          <p><span class="left-bar-span at-document"></span>Add Task</p>
-          <p><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
+          <p id="p0-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
+          <p id="p0-tasks-smry"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
           <p><span id="p0-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
           <p><span id="p0-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
           <p><span id="p0-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
@@ -45,8 +45,8 @@
           <p class="showHide-right-p"><span id="arrow-p1" class="arrow arrow-collapse"></p>
         </div>
         <div class="project-tasks hidden">
-          <p><span class="left-bar-span at-document"></span>Add Task</p>
-          <p><span class="left-bar-span at-list"></span>Tasks Summary</p>
+          <p id="p1-new-task" class="new-task"><span  class="left-bar-span at-document"></span>Add Task</p>
+          <p id="p1-tasks-summary"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
           <p><span id="p1-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
           <p><span id="p1-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
           <p><span id="p1-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
@@ -56,14 +56,14 @@
     <!-- <div id="right-content"> -->
   </div>
   <div id="right-content">
-    <!-- .....................modal related code:...................starting here..... -->
+    <!-- .....................project modal related code:...................starting here..... -->
     <div id="new-proj-modal" class="modal">
       <div class="modal-content">
         <header class="modal-header">
           <h3>New Project</h3>
           <!-- <span onclick="document.getElementById('myModal').style.display='none'" 
           class="w3-button w3-display-topright">&times;</span> -->
-           <span class="close">&times;</span>
+          <span id="new-proj-close" class="close">&times;</span>
         </header>
         <div class="modal-content-form">
           <form action="#" id="new-proj-form" onsubmit="event.preventDefault();">
@@ -81,15 +81,45 @@
             </div>
           </form>
           <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
-          <button class="form-button" id="reset-proj-btn" form="new-proj-form" type="submit">Reset Form</button>
+          <button class="form-button" id="new-proj-reset" form="new-proj-form" type="reset">Reset Form</button>
         </div>
         <!-- <span class="close">&times;</span> -->
-        <div class="modal-footer">
-
+        <div id="new-proj-footer" class="modal-footer">
         </div>
       </div>
     </div>
-    <!-- .....................model related code......................... ending here... -->
+    <!-- .....................project model related code......................... ending here... -->
+
+    <!-- .....................task modal related code:...................starting here..... -->
+    <div id="new-task-modal" class="modal">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h3>New Task</h3>
+          <span id="new-task-close" class="close">&times;</span>
+        </header>
+        <div class="modal-content-form">
+          <form action="#" id="new-task-form" onsubmit="event.preventDefault();">
+            <div class="form-input-div">
+              <div class="label-and-tooltip-pair-div">
+                <label for="new-task-title" class="heading">Title: <span aria-label="required">*</span><span
+                    id="new-task-title-info-brackets" class="form-info-brackets">(Required)</span></label>
+                <span class="tooltip"
+                  data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+              </div>
+
+              <input type="text" class="required form-inputs" id="new-task-title" name="new-task-title" minlength="1"
+                maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              <span class="required message" id="new-task-title-message"></span>
+            </div>
+          </form>
+          <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Add Task</button>
+          <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
+        </div>
+        <div id="new-task-footer" class="modal-footer">
+        </div>
+      </div>
+    </div>
+    <!-- .....................task model related code......................... ending here... -->
   </div>
 </body>
 
