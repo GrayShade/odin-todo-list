@@ -115,7 +115,6 @@ export class Validation {
       // if there is at least 1 task present:
       if (Object.keys(allTasksObj).length > 0) { 
         for (const idx in Object.entries(allTasksObj)) {
-          debugger;
           if (Object.entries(allTasksObj)[idx][1].title == ele.value) {
             ele.style.borderColor = 'red';
             msg_span.style.color = 'red';

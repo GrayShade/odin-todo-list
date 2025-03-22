@@ -43,7 +43,7 @@ export class ProjectsDisplay {
     newProjTitle.style.borderColor = '';
     let message = document.getElementById('new-proj-title-message');
     message.style.color = '';
-    message.innerHTML = ''
+    message.innerHTML = '';
   }
   
 }
