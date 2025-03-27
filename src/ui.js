@@ -73,30 +73,22 @@ export class UI {
   }
     // .................divs expand collapse related code ending here........................... 
 
-    addToast(modalFooterId, toastType, toastText) {
+    addToast(modalFooterId, toastType, toastText, targetType) {
       const toastContainer = document.createElement('div');
+      toastContainer.setAttribute('id', `${targetType}-toast-div`);
       toastContainer.classList.add('toast', toastType, 'show');
-  
-      // const toastHeader = document.createElement('div');
-      // toastHeader.classList.add('toast-header');
-      // toastHeader.innerText = 'Toast Header';
-  
       const toastBody = document.createElement('div');
       toastBody.classList.add('toast-body');
       toastBody.innerText = toastText;
-  
-      // toastContainer.appendChild(toastHeader);
       toastContainer.appendChild(toastBody);
-  
-      // document.body.appendChild(toastContainer);
       const modalFooterEle = document.getElementById(modalFooterId);
       modalFooterEle.appendChild(toastContainer);
     }
-  
-    removeToast(modalFooterId) {
+
+    removeToast(modalFooterId, targetType) {
       const modalFooterEle = document.getElementById(modalFooterId);
       if (modalFooterEle.children.length == 0) { return; }
-      const toastContainer = document.querySelector('.toast');
+      const toastContainer = document.getElementById(`${targetType}-toast-div`);
       modalFooterEle.removeChild(toastContainer);
     }
   

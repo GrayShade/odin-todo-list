@@ -10,16 +10,14 @@ import { TasksDisplay } from "./taskDisplay";
 import { Validation } from "./validation";
 
 class Main {
-  static #listenerExists = false;
+  static #listenerExists = { 'new-proj-form': false, 'new-task-form': false };
   static #proj = new Projects();
   static #task = new Tasks();
   static #ui = new UI();
   static #projUI = new ProjectsDisplay();
   static #taskUI = new TasksDisplay();
   static #validate = new Validation();
-  // constructor() {
-  //   this.listenerExists = false;
-  // }
+
   start() {
     this.setEventListeners();
     Main.#proj.createDefaultProject('default');
@@ -47,7 +45,6 @@ class Main {
   }
 
   setEventListeners() {
-
     this.#expandCollapseDivs();
     Main.#projUI.setNewProjModalUI();
     Main.#taskUI.setNewTaskModalUI();
@@ -55,28 +52,28 @@ class Main {
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
       const newProjForm = document.getElementById('new-proj-form');
-      this.#handleModal(newProjForm, e.target.id);
+      this.#handleModal(newProjForm, e.target.id, 'project');
     });
-    // to reset project
+    // to reset project modal:
     document.getElementById('new-proj-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
-      Main.#ui.removeToast(modalFooterId);
+      Main.#ui.removeToast(modalFooterId, 'project');
       Main.#projUI.resetNewProjModalUI();
     });
 
+    // To add a new Task:
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
-        // To add a new Task:
-        console.log('here');
         const newTaskForm = document.getElementById('new-task-form');
-        this.#handleModal(newTaskForm, e.target.id);
+        this.#handleModal(newTaskForm, e.target.id, 'task');
       });
     }
 
+    // to reset task modal:
     document.getElementById('new-task-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
-      Main.#ui.removeToast(modalFooterId);
+      Main.#ui.removeToast(modalFooterId, 'task');
       Main.#taskUI.resetNewTaskModalUI();
     });
 
@@ -92,13 +89,10 @@ class Main {
     }
   }
 
-  #handleModal(newForm, addBtnId) {
-    // Main.#projUI.setNewProjModalUI();
-    // const newProjForm = document.getElementById('new-proj-form');
+  #handleModal(newForm, addBtnId, targetType) {
     // remember that 'submit' event works only for form, not for buttons:
     const formId = document.getElementById(newForm.id).id;
     const inputs = document.querySelectorAll(`#${formId} .form-inputs`);
-
     for (let input of inputs) {
       input.addEventListener(('input'), e => {
         const ele_name = e.target.name;
@@ -107,47 +101,39 @@ class Main {
       });
     }
 
-    // << new AbortController() >> is a controller object that allows you to abort one or more DOM
-    //  requests as and when desired:
-    let controller = new AbortController();
-    let signal = controller.signal;
+    // No need to create a new listener if a one already exists:
+    if (Main.#listenerExists[newForm.id] === true) { return; }
 
     newForm.addEventListener(('submit'), (e) => {
       // Abort all future listeners defined on << newForm >> afterwards so they don't get duplicated:
-      if (Main.#listenerExists === false) { Main.#listenerExists = true };
-      const req_inputs = document.querySelectorAll(`#${formId} input.required`);
-      const req_msg_spans = document.querySelectorAll(`#${formId} span.required`);
-      const optional_inputs = document.querySelectorAll(`#${formId} input.optional`);
-      const optional_spans = document.querySelectorAll(`#${formId} span.optional`);
+      if (Main.#listenerExists[e.target.id] === false) { Main.#listenerExists[e.target.id] = true };
+      const reqInputs = document.querySelectorAll(`#${formId} input.required`);
+      const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
+      const optInputs = document.querySelectorAll(`#${formId} input.optional`);
+      const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
 
-      const req_fields_status = this.getRequiredFieldsStatus(req_inputs, req_msg_spans, addBtnId);
-      // const optional_fields_status = this.getOptionalFieldsStatus(optional_inputs, optional_spans);
-
-      // if (req_fields_status == true && optional_fields_status == true) {
-      // this.#processModal(e);
+      const reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
-      if (req_fields_status == true) {
+      if (reqFieldsStatus == true) {
         switch (e.target.id) {
           case 'new-proj-form':
-            Main.#proj.createProject(req_inputs[0].value);
+            Main.#proj.createProject(reqInputs[0].value);
             break;
           case 'new-task-form':
             const projId = addBtnId.split('-')[0][1];
-            Main.#task.createTask(req_inputs[0].value, projId);
+            Main.#task.createTask(reqInputs[0].value, projId);
             break;
         }
-        Main.#ui.removeToast(modalFooterId);
-        Main.#ui.addToast(modalFooterId, 'success-toast', 'Modal Added Successfully!');
+        Main.#ui.removeToast(modalFooterId, targetType);
+        const toastMessage = 'Modal Added Successfully!';
+        Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
       }
       else {
-        Main.#ui.removeToast(modalFooterId);
-        Main.#ui.addToast(modalFooterId, 'error-toast', 'Some Error Occurred!');
+        Main.#ui.removeToast(modalFooterId, targetType);
+        const toastMessage = 'Some Error Occurred!';
+        Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
       }
-      // << signal >> returns AbortSignal object associated with << new AbortController() >>:
-    }, { signal });
-    
-    // Multiple event listeners can be aborted with which << { signal } >> is attached:
-    if (Main.#listenerExists) { controller.abort(); }
+    });
   }
 
   getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId) {
@@ -163,7 +149,7 @@ class Main {
   getOptionalFieldsStatus(optionalInputs, optionalSpans) {
     let optFieldsStatus = false;
     for (let i = 0; i < optionalInputs.length; i++) {
-      optFieldsStatus = this.validationObj.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i]);
+      optFieldsStatus = Main.#validate.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i]);
       if (optFieldsStatus == false) {
         break;
       }

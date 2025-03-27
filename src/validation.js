@@ -109,11 +109,11 @@ export class Validation {
           return false;
         }
       }
-    } else if (ele.id == 'new-task-title') {
+    } else if (ele.id == 'task-title') {
       const projId = addBtnId.split('-')[0];
       const allTasksObj = JSON.parse(allProjects[projId[1]])[projId].tasks;
       // if there is at least 1 task present:
-      if (Object.keys(allTasksObj).length > 0) { 
+      if (Object.keys(allTasksObj).length > 0) {
         for (const idx in Object.entries(allTasksObj)) {
           if (Object.entries(allTasksObj)[idx][1].title == ele.value) {
             ele.style.borderColor = 'red';
@@ -122,8 +122,7 @@ export class Validation {
             return false;
           }
         }
-       };
-
+      };
     }
 
     // checking html pattern validation:
@@ -139,27 +138,41 @@ export class Validation {
 
   }
 
+  validateOptAfterSubmit(ele, msg_span) {
+
+    // if (ele.id == 'task-desc') {
+
+    //   ele.style.borderColor = 'red';
+    //   msg_span.style.color = 'red';
+    //   msg_span.innerHTML = "Total must be more or equal to read";
+    //   return false;
+    // }
+
+    // checking html pattern validation:
+    if (ele.value != '' && ele.checkValidity() === true) {
+      msg_span.innerHTML = '';
+      return true;
+    } else {
+      ele.style.borderColor = 'red';
+      msg_span.style.color = 'red';
+      msg_span.innerHTML = "*Field Required!"
+      return false;
+    }
+  }
+
   addToast(modalFooterId, toastType, toastText) {
     const toastContainer = document.createElement('div');
+    con
     toastContainer.classList.add('toast', toastType, 'show');
-
-    // const toastHeader = document.createElement('div');
-    // toastHeader.classList.add('toast-header');
-    // toastHeader.innerText = 'Toast Header';
-
     const toastBody = document.createElement('div');
     toastBody.classList.add('toast-body');
     toastBody.innerText = toastText;
-
-    // toastContainer.appendChild(toastHeader);
     toastContainer.appendChild(toastBody);
-
-    // document.body.appendChild(toastContainer);
     const modalFooterEle = document.getElementById(modalFooterId);
     modalFooterEle.appendChild(toastContainer);
   }
 
-  removeToast(modalFooterId) {
+  removeToast(modalFooterId, targetType) {
     const modalFooterEle = document.getElementById(modalFooterId);
     if (modalFooterEle.children.length == 0) { return; }
     const toastContainer = document.querySelector('.toast');

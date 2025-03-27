@@ -32,9 +32,9 @@ export class TasksDisplay {
     });
   }
   resetNewTaskModalUI() {
-    const newProjTitle = document.getElementById('new-task-title');
+    const newProjTitle = document.getElementById('task-title');
     newProjTitle.style.borderColor = '';
-    let message = document.getElementById('new-task-title-message');
+    let message = document.getElementById('task-title-message');
     message.style.color = '';
     message.innerHTML = ''
   }
