@@ -97,9 +97,9 @@ class Main {
     const inputs = document.querySelectorAll(`#${formId} .form-inputs`);
     for (let input of inputs) {
       input.addEventListener(('input'), e => {
-        const ele_name = e.target.name;
-        const ele_message = `${ele_name}-message`;
-        Main.#validate.validateBeforeSubmit(e, ele_name, ele_message);
+        const eleName = e.target.name;
+        const eleMessage = `${eleName}-message`;
+        Main.#validate.validateBeforeSubmit(e, eleName, eleMessage);
       });
     }
 
@@ -115,13 +115,11 @@ class Main {
     let signal = Main.#controller.signal;
 
     newForm.addEventListener(('submit'), (e) => {
-      // Abort all future listeners defined on << newForm >> afterwards so they don't get duplicated:
-      // if (Main.#listenerExists[e.target.id] === false) { Main.#listenerExists[e.target.id] = true };
       const reqInputs = document.querySelectorAll(`#${formId} input.required`);
       const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
       const optInputs = document.querySelectorAll(`#${formId} input.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
-      const allInputs = document.querySelectorAll(`#${formId} input`);
+      const allInputs = document.querySelectorAll(`#${formId} input,select`);
 
       const reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
@@ -145,9 +143,6 @@ class Main {
         Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
       }
     }, { signal });
-    // Main.#listenerExists[newForm.id] = true;
-    // controller.abort();
-    // return; 
   }
 
   getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId) {

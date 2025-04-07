@@ -45,7 +45,7 @@
           <p class="showHide-right-p"><span id="arrow-p1" class="arrow arrow-collapse"></p>
         </div>
         <div class="project-tasks hidden">
-          <p id="p1-new-task" class="new-task"><span  class="left-bar-span at-document"></span>Add Task</p>
+          <p id="p1-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
           <p id="p1-tasks-summary"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
           <p><span id="p1-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
           <p><span id="p1-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
@@ -112,41 +112,46 @@
               <span class="required message" id="task-title-message"></span>
             </div>
 
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-desc" class="heading">Description: <span id="task-desc-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1" maxlength="79"
-                  pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="optional message" id="task-desc-message"></span>
+            <div class="form-input-div">
+              <div class="label-and-tooltip-pair-div">
+                <label for="task-desc" class="heading">Description: <span id="task-desc-info-brackets"
+                    class="form-info-brackets">(Optional)</span></label>
+                <span class="tooltip"
+                  data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
               </div>
+              <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
+                maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              <span class="optional message" id="task-desc-message"></span>
+            </div>
 
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-dueDate" class="heading">Due Date: <span id="task-dueDate-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="date" class="optional form-inputs" id="task-dueDate" name="task-dueDate" minlength="1" maxlength="79"
-                  pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="optional message" id="task-dueDate-message"></span>
+            <div class="form-input-div">
+              <div class="label-and-tooltip-pair-div">
+                <label for="task-dueDate" class="heading">Due Date: <span id="task-dueDate-info-brackets"
+                    class="form-info-brackets">(Optional)</span></label>
+                <span class="tooltip"
+                  data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
               </div>
+              <input type="date" class="optional form-inputs" id="task-dueDate" name="task-dueDate" minlength="1"
+                maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              <span class="optional message" id="task-dueDate-message"></span>
+            </div>
 
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-priority" class="heading">Priority: <span id="task-priority-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="text" class="optional form-inputs" id="task-priority" name="task-priority" minlength="1" maxlength="79"
-                  pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="optional message" id="task-priority-message"></span>
+            <div class="form-input-div">
+              <div class="label-and-tooltip-pair-div">
+                <label for="task-priority" class="heading">Priority: <span id="task-priority-info-brackets"
+                    class="form-info-brackets">(Optional)</span></label>
+                <span class="tooltip"
+                  data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
               </div>
+              <!-- <input type="text" class="optional form-inputs" id="task-priority" name="task-priority" minlength="1" maxlength="79"
+                  pattern="^[\w\S]+( [\w\S]+)*$"> -->
+              <select name="task-priority" class="optional-form-inputs" id="task-priority">
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+              <span class="optional message" id="task-priority-message"></span>
+            </div>
           </form>
           <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Add Task</button>
           <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
