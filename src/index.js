@@ -10,7 +10,9 @@ import { TasksDisplay } from "./taskDisplay";
 import { Validation } from "./validation";
 
 class Main {
-  static #listenerExists = { 'new-proj-form': false, 'new-task-form': false };
+  static #controller = new AbortController();
+  // static signal = Main.controller.signal;
+  // static #listenerExists = { 'new-proj-form': false, 'new-task-form': false };
   static #proj = new Projects();
   static #task = new Tasks();
   static #ui = new UI();
@@ -101,16 +103,25 @@ class Main {
       });
     }
 
-    // No need to create a new listener if a one already exists:
-    if (Main.#listenerExists[newForm.id] === true) { return; }
+    // Abort previous listener before creating a new one:
+      Main.#controller.abort();
+    // We have declared << controller >> above as static variables too. Using static variables lets us
+    //  keep record as function data would have lost otherwise & first time created listener could not be aborted
+    //  as non static variables in function won't remember the previous listener as they are created just now. 
+    //  After aborting previous one using << Main.controller.abort() >>, or for a first time listener,
+    //  now again attach << signal >> to abort it when this function body gets executed next time.
+    Main.#controller = new AbortController();
+    // As signal to be attached to a listener << { signal } >> can't be static variable, Storing it as a normal variable:
+    let signal = Main.#controller.signal;
 
     newForm.addEventListener(('submit'), (e) => {
       // Abort all future listeners defined on << newForm >> afterwards so they don't get duplicated:
-      if (Main.#listenerExists[e.target.id] === false) { Main.#listenerExists[e.target.id] = true };
+      // if (Main.#listenerExists[e.target.id] === false) { Main.#listenerExists[e.target.id] = true };
       const reqInputs = document.querySelectorAll(`#${formId} input.required`);
       const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
       const optInputs = document.querySelectorAll(`#${formId} input.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
+      const allInputs = document.querySelectorAll(`#${formId} input`);
 
       const reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
@@ -121,7 +132,7 @@ class Main {
             break;
           case 'new-task-form':
             const projId = addBtnId.split('-')[0][1];
-            Main.#task.createTask(reqInputs[0].value, projId);
+            Main.#task.createTask(allInputs, projId);
             break;
         }
         Main.#ui.removeToast(modalFooterId, targetType);
@@ -133,7 +144,10 @@ class Main {
         const toastMessage = 'Some Error Occurred!';
         Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
       }
-    });
+    }, { signal });
+    // Main.#listenerExists[newForm.id] = true;
+    // controller.abort();
+    // return; 
   }
 
   getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId) {

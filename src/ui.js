@@ -73,6 +73,8 @@ export class UI {
   }
     // .................divs expand collapse related code ending here........................... 
 
+    // for adding & removing toasts appearing beneath modals....................................
+
     addToast(modalFooterId, toastType, toastText, targetType) {
       const toastContainer = document.createElement('div');
       toastContainer.setAttribute('id', `${targetType}-toast-div`);
@@ -91,5 +93,32 @@ export class UI {
       const toastContainer = document.getElementById(`${targetType}-toast-div`);
       modalFooterEle.removeChild(toastContainer);
     }
+
+    // ........................................................................................
+    setNewModalUI() {
+      btn.addEventListener('click', e => {
+        modal.style.display = 'block';
+      });
   
+      span.addEventListener('click', e => {
+        modal.style.display = 'none';
+      });
+  
+      // for closing modal if clicked anywhere on screen while model is 
+      // opened:
+      window.addEventListener('click', e => {
+        if (e.target == modal) {
+          this.resetNewModalUI();
+          modal.style.display = 'none';
+        }
+      });
+    }
+    resetNewModalUI(newTitle, message) {
+      // const newProjTitle = document.getElementById('new-proj-title');
+      newTitle.style.borderColor = '';
+      // let message = document.getElementById('new-proj-title-message');
+      message.style.color = '';
+      message.innerHTML = '';
+      this.removeToast(modalFooterId, targetType)
+    }
 }

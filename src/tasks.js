@@ -18,7 +18,7 @@ export class Tasks {
     
   }
 
-  createTask(inputValue, reqProjId) {
+  createTask(allInputs, reqProjId) {
     for (let obj of Object.entries({ ...localStorage })) {
       const currProjectId = JSON.parse(obj[1])[`p${reqProjId}`]
       // Checking for undefined projects first as projects may not exist yet:
@@ -31,10 +31,10 @@ export class Tasks {
         {
           taskId: newId,
           projId: reqProjId,
-          title: inputValue,
-          description: '',
-          dueDate: '',
-          priority: ''
+          title: allInputs[0].value,
+          description: allInputs[1].value,
+          dueDate: allInputs[2].value,
+          priority: allInputs[3].value
         };
 
         localStorage.setItem(reqProjId, JSON.stringify(newObj));
