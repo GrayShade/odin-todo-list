@@ -21,8 +21,11 @@ class Main {
   static #validate = new Validation();
 
   start() {
-    this.setEventListeners();
     Main.#proj.createDefaultProject('default');
+    Main.#projUI.showLBarProjects(Main.#proj.getAllProjects());
+    Main.#taskUI.showLBarTasks(Main.#proj.getAllProjects());
+    this.setEventListeners();
+    
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
@@ -30,7 +33,7 @@ class Main {
     Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
 
-    Main.#task.deleteTask(0, 1);
+    // Main.#task.deleteTask(0, 1);
 
     const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
 
@@ -129,7 +132,7 @@ class Main {
             Main.#proj.createProject(reqInputs[0].value);
             break;
           case 'new-task-form':
-            const projId = addBtnId.split('-')[0][1];
+            const projId = addBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, projId);
             break;
         }

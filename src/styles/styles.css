@@ -47,6 +47,7 @@ body {
   padding: 0.7em 0;
   line-height: 1.5em;
   color: #2f4f4f;
+  overflow-y: auto;
 }
 
 
@@ -56,6 +57,11 @@ body {
 
 .left-bar-span {
   padding-right: 0.5em;
+  font-size: 0.85em;
+}
+
+.project-icon {
+  font-size: 0.8em;
 }
 
 /* .............................................. */
@@ -73,7 +79,7 @@ body {
 
 #left-bar .showHide-left-p {
   padding-bottom: 0.1em;
-  font-weight: 600;
+  /* font-weight: 600; */
   width: 90%;
 }
 

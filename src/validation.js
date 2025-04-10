@@ -111,7 +111,7 @@ export class Validation {
       }
     } else if (ele.id == 'task-title') {
       const projId = addBtnId.split('-')[0];
-      const allTasksObj = JSON.parse(allProjects[projId[1]])[projId].tasks;
+      const allTasksObj = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
       // if there is at least 1 task present:
       if (Object.keys(allTasksObj).length > 0) {
         for (const idx in Object.entries(allTasksObj)) {
