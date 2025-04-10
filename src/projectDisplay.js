@@ -17,11 +17,33 @@ export class ProjectsDisplay {
   }
 
   showLBarProjects(allProjects) {
+    this.removeAllLeftBarProjects();
+    
+    const prjContainer = document.getElementById('projects-container');
+
+    // for <p id="new-project"><span class="left-bar-span at-folder-plus"></span>New Project</p>
+    const newProjP = document.createElement('p');
+    newProjP.setAttribute('id', 'new-project');
+    newProjP.textContent = 'New Project';
+    prjContainer.appendChild(newProjP);
+
+    const newProjPSpan = document.createElement('span');
+    newProjPSpan.setAttribute('class', 'left-bar-span at-folder-plus');
+    newProjP.prepend(newProjPSpan);
+
+    // <p id="projects-sumry"><span class="left-bar-span at-dots-clipboard"></span>Projects Summary</p>
+    const projSummaryP = document.createElement('p');
+    projSummaryP.setAttribute('id', 'projects-sumry');
+    projSummaryP.textContent = 'Projects Summary';
+    prjContainer.appendChild(projSummaryP);
+
+    const projSummaryPSpan = document.createElement('p');
+    projSummaryPSpan.setAttribute('class', 'left-bar-span at-dots-clipboard');
+    projSummaryP.prepend(projSummaryPSpan);
+
     for (const obj of Object.entries(allProjects)) {
       const prjObKey = `p${obj[0]}`;
       const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
-
-      const prjContainer = document.getElementById('projects-container');
 
       // for <div id="p0" class="project"></div>
       const prjMainD = document.createElement('div');
@@ -55,6 +77,13 @@ export class ProjectsDisplay {
       prjShowHideSubDP2Span.setAttribute('class', 'arrow arrow-collapse');
       prjShowHideSubDP2.appendChild(prjShowHideSubDP2Span);
     }
+  }
+
+  removeAllLeftBarProjects() {
+    const prjContainer = document.getElementById('projects-container');
+    prjContainer.textContent = '';
+    console.log('here');
+    
   }
 
   setNewProjModalUI(controller) {

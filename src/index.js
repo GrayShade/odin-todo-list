@@ -22,9 +22,8 @@ class Main {
 
   start() {
     Main.#proj.createDefaultProject('default');
-    Main.#projUI.showLBarProjects(Main.#proj.getAllProjects());
-    Main.#taskUI.showLBarTasks(Main.#proj.getAllProjects());
-    this.setEventListeners();
+    this.#updateLBarProjectsAndTasks();
+    this.#setEventListeners();
     
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
@@ -49,7 +48,13 @@ class Main {
     Main.#task.getTask(0, 0);
   }
 
-  setEventListeners() {
+  #updateLBarProjectsAndTasks() {
+    Main.#projUI.showLBarProjects(Main.#proj.getAllProjects());
+    Main.#taskUI.showLBarTasks(Main.#proj.getAllProjects());
+    this.#setEventListeners();
+  }
+
+  #setEventListeners() {
     this.#expandCollapseDivs();
     Main.#projUI.setNewProjModalUI();
     Main.#taskUI.setNewTaskModalUI();
@@ -130,10 +135,12 @@ class Main {
         switch (e.target.id) {
           case 'new-proj-form':
             Main.#proj.createProject(reqInputs[0].value);
+            this.#updateLBarProjectsAndTasks();
             break;
           case 'new-task-form':
             const projId = addBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, projId);
+            this.#updateLBarProjectsAndTasks();
             break;
         }
         Main.#ui.removeToast(modalFooterId, targetType);
