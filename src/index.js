@@ -23,7 +23,6 @@ class Main {
   start() {
     Main.#proj.createDefaultProject('default');
     this.#updateLBarProjectsAndTasks();
-    this.#setEventListeners();
     
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
@@ -31,8 +30,6 @@ class Main {
     Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
     Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
-
-    // Main.#task.deleteTask(0, 1);
 
     const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
 
@@ -51,6 +48,7 @@ class Main {
   #updateLBarProjectsAndTasks() {
     Main.#projUI.showLBarProjects(Main.#proj.getAllProjects());
     Main.#taskUI.showLBarTasks(Main.#proj.getAllProjects());
+    // As all event listeners will be deleted upon updating nodes:
     this.#setEventListeners();
   }
 
@@ -61,6 +59,8 @@ class Main {
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
+      // const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
+      Main.#ui.removeToast('new-proj-footer', 'project');
       const newProjForm = document.getElementById('new-proj-form');
       this.#handleModal(newProjForm, e.target.id, 'project');
     });
@@ -75,6 +75,7 @@ class Main {
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
+        Main.#ui.removeToast('new-task-footer', 'task');
         const newTaskForm = document.getElementById('new-task-form');
         this.#handleModal(newTaskForm, e.target.id, 'task');
       });

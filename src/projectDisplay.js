@@ -18,9 +18,22 @@ export class ProjectsDisplay {
 
   showLBarProjects(allProjects) {
     this.removeAllLeftBarProjects();
-    
+
     const prjContainer = document.getElementById('projects-container');
 
+    this.#createNewProjAndSumNodes(prjContainer);
+    this.#createIndividualProjectNodes(prjContainer, allProjects);
+
+  }
+
+  removeAllLeftBarProjects() {
+    const prjContainer = document.getElementById('projects-container');
+    prjContainer.textContent = '';
+    console.log('here');
+
+  }
+
+  #createNewProjAndSumNodes(prjContainer) {
     // for <p id="new-project"><span class="left-bar-span at-folder-plus"></span>New Project</p>
     const newProjP = document.createElement('p');
     newProjP.setAttribute('id', 'new-project');
@@ -40,7 +53,9 @@ export class ProjectsDisplay {
     const projSummaryPSpan = document.createElement('p');
     projSummaryPSpan.setAttribute('class', 'left-bar-span at-dots-clipboard');
     projSummaryP.prepend(projSummaryPSpan);
+  }
 
+  #createIndividualProjectNodes(prjContainer, allProjects) {
     for (const obj of Object.entries(allProjects)) {
       const prjObKey = `p${obj[0]}`;
       const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
@@ -79,23 +94,16 @@ export class ProjectsDisplay {
     }
   }
 
-  removeAllLeftBarProjects() {
-    const prjContainer = document.getElementById('projects-container');
-    prjContainer.textContent = '';
-    console.log('here');
-    
-  }
-
   setNewProjModalUI(controller) {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById('new-project');
     const span = document.getElementById('new-proj-close');
 
     // const newProjForm = document.getElementById('new-proj-form');
-    
+
     btn.addEventListener('click', e => {
       modal.style.display = 'block';
-      
+
     });
 
     span.addEventListener('click', e => {
@@ -121,5 +129,5 @@ export class ProjectsDisplay {
     message.style.color = '';
     message.innerHTML = '';
   }
-  
+
 }

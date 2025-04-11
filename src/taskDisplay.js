@@ -79,8 +79,6 @@ export class TasksDisplay {
     }
     const span = document.getElementById('new-task-close');
 
-
-
     span.addEventListener('click', e => {
       modal.style.display = 'none';
       // controller.abort();

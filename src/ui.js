@@ -28,10 +28,10 @@ export class UI {
         continue;
       } else {
         if (ele.classList.contains('hidden')) {
-          ele.classList.toggle('hidden');
+          ele.classList.remove('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
         } else {
-          ele.classList.toggle('hidden');
+          ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
         }
       }
