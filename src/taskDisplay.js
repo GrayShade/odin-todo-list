@@ -58,7 +58,7 @@ export class TasksDisplay {
         const taskMDTaskPSpan = document.createElement('span');
         // const taskId = projTasks[key]['taskId'];
         taskMDTaskPSpan.setAttribute('id', `${projId}-${key}`);
-        taskMDTaskPSpan.setAttribute('class', 'left-bar-span-task at-arrow-right');
+        taskMDTaskPSpan.setAttribute('class', 'left-bar-span-task at-pin');
         taskMDTaskP.prepend(taskMDTaskPSpan);
       }
     }

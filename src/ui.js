@@ -30,9 +30,14 @@ export class UI {
         if (ele.classList.contains('hidden')) {
           ele.classList.remove('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
+          const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
+
+          leftP.style.color = '#f08080';
         } else {
           ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
+          const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
+          leftP.style.color = '';
         }
       }
     }
@@ -69,8 +74,10 @@ export class UI {
         continue;
       }
       else {
-        currentEle.lastElementChild.classList.add('hidden');
-        this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
+        // Uncomment below 2 lines if other expanded project siblings need to
+        //  remain expanded on expanding current project.
+        // currentEle.lastElementChild.classList.add('hidden');
+        // this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
       }
     }
   }

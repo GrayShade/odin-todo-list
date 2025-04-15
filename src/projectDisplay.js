@@ -79,7 +79,7 @@ export class ProjectsDisplay {
       prjShowHideSubDP1.innerText = prjTitle;
 
       const prjShowHideSubDP1Span = document.createElement('span');
-      prjShowHideSubDP1Span.setAttribute('class', 'left-bar-span project-icon at-pin')
+      prjShowHideSubDP1Span.setAttribute('class', 'left-bar-span project-icon at-arrow-right')
       prjShowHideSubDP1.prepend(prjShowHideSubDP1Span);
 
       // for <p class="showHide-right-p"><span id="arrow-p0" class="arrow arrow-collapse"></p>
