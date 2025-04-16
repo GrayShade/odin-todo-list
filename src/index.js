@@ -88,6 +88,11 @@ class Main {
       Main.#taskUI.resetNewTaskModalUI();
     });
 
+    // to show all projects summary:
+    document.getElementById('projects-sumry').addEventListener('click', (e) => {
+      Main.#projUI.showAllProjSummary(Main.#proj.getAllProjects());
+    })
+
   }
 
   #expandCollapseDivs() {

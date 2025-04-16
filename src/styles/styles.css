@@ -39,7 +39,7 @@ body {
 #main-header {
   grid-area: 1 / 1 / 2 / 3;
   /* background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%); */
-  background: #2f4f4f;
+  background: #2d3430;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +92,7 @@ body {
 #left-bar p:hover {
   cursor: pointer;
   color: #f08080;
-  background: #ffffff;
+  background: #dcdcdc;
   font-weight: 600;
 }
 
@@ -162,13 +162,50 @@ body {
   font-size: 0.5rem;
 }
 
-#right-content {
+#right-div {
   grid-area: 2 / 2 / 3 / 3;
   background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
+  padding: 0.5em 1em;
+  height: 100%;
+}
+
+#right-div h2 {
+  color: orange;
+  margin-bottom: 1em;
+}
+
+#right-div table {
+  color: #dcdcdc;
+  /* border: 1px solid grey; */
+  width: 100%;
+}
+
+#right-div th {
+  /* text-align: start; */
+  background: #f4a460;
+  color: #2f4f4f;
+}
+
+#right-div tr:nth-of-type(even) {
+  background: #2d3430;
+}
+
+#right-div tr:nth-of-type(odd) {
+  /* background: darksalmon; */
+}
+
+#right-div th, td {
+  padding: 0.5em;
+  text-align: start;
+}
+
+#right-div #proj-sum-div {
+  height: 90%;
+  background-color: pink;
 }
 
 #main-header h1 {
-  color: #ffffff;
+  color: #f0f8ff;
   /* font-style: italic; */
 }
 
@@ -328,6 +365,7 @@ input:invalid,
 .modal-footer {
   margin: 0.5em 0;
 }
+
 
 /* below snippets taken from https://www.instantshift.com/2018/05/11/create-tooltip-using-css/ .....................*/
 .tooltip {
