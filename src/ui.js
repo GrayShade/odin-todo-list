@@ -19,7 +19,7 @@ export class UI {
       showHideDivParent = showHideDiv.parentElement;
     }
     this.showHideClicked(showHideDivParent);
-    this.hideSiblings(showHideDivParent);
+    // this.hideSiblings(showHideDivParent);
   }
 
   showHideClicked(showHideDivParent) {
@@ -75,7 +75,7 @@ export class UI {
       }
       else {
         // Uncomment below 2 lines if other expanded project siblings need to
-        //  remain expanded on expanding current project.
+        //  be collapsed on expanding current project.
         // currentEle.lastElementChild.classList.add('hidden');
         // this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
       }
@@ -124,9 +124,7 @@ export class UI {
     });
   }
   resetNewModalUI(newTitle, message) {
-    // const newProjTitle = document.getElementById('new-proj-title');
     newTitle.style.borderColor = '';
-    // let message = document.getElementById('new-proj-title-message');
     message.style.color = '';
     message.innerHTML = '';
     this.removeToast(modalFooterId, targetType)

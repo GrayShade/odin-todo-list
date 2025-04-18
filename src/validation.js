@@ -140,14 +140,6 @@ export class Validation {
 
   validateOptAfterSubmit(ele, msg_span) {
 
-    // if (ele.id == 'task-desc') {
-
-    //   ele.style.borderColor = 'red';
-    //   msg_span.style.color = 'red';
-    //   msg_span.innerHTML = "Total must be more or equal to read";
-    //   return false;
-    // }
-
     // checking html pattern validation:
     if (ele.value != '' && ele.checkValidity() === true) {
       msg_span.innerHTML = '';
@@ -170,13 +162,6 @@ export class Validation {
     toastContainer.appendChild(toastBody);
     const modalFooterEle = document.getElementById(modalFooterId);
     modalFooterEle.appendChild(toastContainer);
-  }
-
-  removeToast(modalFooterId, targetType) {
-    const modalFooterEle = document.getElementById(modalFooterId);
-    if (modalFooterEle.children.length == 0) { return; }
-    const toastContainer = document.querySelector('.toast');
-    modalFooterEle.removeChild(toastContainer);
   }
 
 }

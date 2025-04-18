@@ -3,10 +3,10 @@
   --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-/* @font-face {
-  font-family: 'MWeatherItalic';
-  src: url('./../fonts/Merriweather-Italic.ttf') format('truetype');
-} */
+@font-face {
+  font-family: 's-italic';
+  src: url('./../fonts/Spectral-Italic.ttf') format('truetype');
+}
 
 * {
   margin: 0;
@@ -55,6 +55,13 @@ body {
   overflow-y: auto;
 }
 
+#left-bar,
+#main-header h1,
+#right-div h2,
+th {
+  font-family: s-italic;
+}
+
 
 #projects-container .left-bar-span {
   padding-right: 2em;
@@ -92,7 +99,8 @@ body {
 #left-bar p:hover {
   cursor: pointer;
   color: #f08080;
-  background: #dcdcdc;
+  /* background: #dcdcdc; */
+  background: #f2f2f2;
   font-weight: 600;
 }
 
@@ -150,6 +158,10 @@ body {
   flex-direction: column;
 }
 
+.project-tasks {
+  background: #f0eeee;
+}
+
 .project-tasks p {
   display: flex;
 }
@@ -167,6 +179,7 @@ body {
   background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
   padding: 0.5em 1em;
   height: 100%;
+  /* font-family: 's-italic'; */
 }
 
 #right-div h2 {
@@ -178,6 +191,18 @@ body {
   color: #dcdcdc;
   /* border: 1px solid grey; */
   width: 100%;
+  table-layout: fixed;
+}
+
+#proj-sum-table td:nth-of-type(1),
+#proj-sum-table td:nth-of-type(3),
+#proj-sum-table td:nth-of-type(4) {
+  font-family: s-italic;
+}
+
+#task-sum-table td:nth-of-type(odd),
+#task-sum-table td:nth-of-type(6) {
+  font-family: s-italic;
 }
 
 #right-div th {
@@ -186,20 +211,29 @@ body {
   color: #2f4f4f;
 }
 
+/* #right-div table tr:hover {
+  color: black;
+  background: #cbcbcb;
+} */
+
 #right-div tr:nth-of-type(even) {
-  background: #2d3430;
+  background: #2e312f;
 }
 
 #right-div tr:nth-of-type(odd) {
   /* background: darksalmon; */
 }
 
-#right-div th, td {
+#right-div th,
+td {
   padding: 0.5em;
   text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-#right-div #proj-sum-div {
+#right-div td:nth #right-div #proj-sum-div {
   height: 90%;
   background-color: pink;
 }
@@ -237,8 +271,8 @@ body {
 
 .form-button[type='reset'] {
   background: #f9fafa;
-    border: 1px solid #d3d3d3;
-    color: #696969;
+  border: 1px solid #d3d3d3;
+  color: #696969;
 }
 
 .form-button[type='reset']:hover {

@@ -1,9 +1,9 @@
 export class TasksDisplay {
-  showAllTasks(projID) {
+  getAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
-      if (JSON.parse(obj[1]).projId == projID) {
-        console.log(JSON.parse(obj[1])[`p${projID}`].tasks);
-        return;
+      if (projID != obj[0]) { continue; }
+      if (JSON.parse(obj[1])[`p${projID}`].projId == projID) {
+        return JSON.parse(obj[1])[`p${projID}`].tasks;
       }
     }
   }
@@ -37,7 +37,8 @@ export class TasksDisplay {
 
       // for <p id="p0-tasks-smry"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
       const taskMDTaskSumP = document.createElement('p');
-      taskMDTaskSumP.setAttribute('id', 'p0-tasks-summary');
+      taskMDTaskSumP.setAttribute('id', `${projId}-tasks-summary`);
+      taskMDTaskSumP.setAttribute('class', `tasks-sumry`);
       // taskMDTaskSumyP.setAttribute('class', 'new-task');
       taskMD.appendChild(taskMDTaskSumP);
       taskMDTaskSumP.innerText = 'Tasks Summary'
@@ -64,7 +65,7 @@ export class TasksDisplay {
     }
   }
 
-  setNewTaskModalUI(controller) {
+  setNewTaskModalUI() {
     const modal = document.getElementById('new-task-modal');
     // const btn = document.getElementById('p0-new-task');
     const newTaskBtns = document.querySelectorAll('.new-task');
@@ -80,6 +81,7 @@ export class TasksDisplay {
     const span = document.getElementById('new-task-close');
 
     span.addEventListener('click', e => {
+      this.resetNewTaskModalUI();
       modal.style.display = 'none';
       // controller.abort();
     });
@@ -100,5 +102,105 @@ export class TasksDisplay {
     let message = document.getElementById('task-title-message');
     message.style.color = '';
     message.innerHTML = ''
+  }
+
+  showAllTasksSummary(projId) {
+    const rightDiv = document.getElementById('right-div');
+    rightDiv.innerHTML = '';
+    const heading = document.createElement('h2');
+    heading.textContent = 'Tasks Summary';
+    rightDiv.appendChild(heading);
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'task-sum-table');
+
+    this.createTableHeaders(table, rightDiv);
+    this.createTableRows(table, projId);
+
+  }
+  createTableHeaders(table, rightDiv) {
+    const headerTr = document.createElement('tr');
+    const headerTd1 = document.createElement('th');
+    const headerTd2 = document.createElement('th');
+    const headerTd3 = document.createElement('th');
+    const headerTd4 = document.createElement('th');
+    const headerTd5 = document.createElement('th');
+    const headerTd6 = document.createElement('th');
+    const headerTd7 = document.createElement('th');
+
+    const headerNumText = document.createTextNode('#');
+    const headerTitleText = document.createTextNode('title');
+    const headerIdText = document.createTextNode('taskId');
+    const headerDescText = document.createTextNode('Description');
+    const headerDueDateText = document.createTextNode('DueDate');
+    const headerPriorityText = document.createTextNode('Priority');
+    const headerControlsText = document.createTextNode('Controls');
+
+    headerTd1.appendChild(headerNumText);
+    headerTd2.appendChild(headerTitleText);
+    headerTd3.appendChild(headerIdText);
+    headerTd4.appendChild(headerDescText);
+    headerTd5.appendChild(headerDueDateText);
+    headerTd6.appendChild(headerPriorityText);
+    headerTd7.appendChild(headerControlsText);
+
+    headerTr.appendChild(headerTd1);
+    headerTr.appendChild(headerTd2);
+    headerTr.appendChild(headerTd3);
+    headerTr.appendChild(headerTd4);
+    headerTr.appendChild(headerTd5);
+    headerTr.appendChild(headerTd6);
+    headerTr.appendChild(headerTd7);
+
+    table.appendChild(headerTr);
+    rightDiv.appendChild(table);
+
+  }
+
+  createTableRows(table, projId) {
+    let num = 1;
+
+    const allTasks = this.getAllTasks(projId);
+
+    for (const obj of Object.entries(allTasks)) {
+
+      const taskTr = document.createElement('tr');
+      const taskTd1 = document.createElement('td');
+      const taskTd2 = document.createElement('td');
+      const taskTd3 = document.createElement('td');
+      const taskTd4 = document.createElement('td');
+      const taskTd5 = document.createElement('td');
+      const taskTd6 = document.createElement('td');
+      const taskTd7 = document.createElement('td');
+
+      const taskTd1Text = document.createTextNode(num);
+      const taskTd2Text = document.createTextNode(obj[1].title);
+      const taskTd3Text = document.createTextNode(obj[1].taskId);
+      // const taskIdText = document.createTextNode('projTitle');
+      const taskTd4Text = document.createTextNode(obj[1].description);
+      const taskTd5Text = document.createTextNode(obj[1].dueDate);
+      const taskTd6Text = document.createTextNode(obj[1].priority);
+      const taskTd7Text = document.createTextNode('Controls');
+
+      taskTd1.appendChild(taskTd1Text);
+      taskTd2.appendChild(taskTd2Text);
+      taskTd3.appendChild(taskTd3Text);
+      taskTd4.appendChild(taskTd4Text);
+      taskTd5.appendChild(taskTd5Text);
+      taskTd6.appendChild(taskTd6Text);
+      taskTd7.appendChild(taskTd7Text);
+
+      taskTr.appendChild(taskTd1);
+      taskTr.appendChild(taskTd2);
+      taskTr.appendChild(taskTd3);
+      taskTr.appendChild(taskTd4);
+      taskTr.appendChild(taskTd5);
+      taskTr.appendChild(taskTd6);
+      taskTr.appendChild(taskTd7);
+
+      table.appendChild(taskTr);
+
+      num++;
+    }
   }
 }

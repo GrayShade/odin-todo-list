@@ -23,12 +23,12 @@ class Main {
   start() {
     Main.#proj.createDefaultProject('default');
     this.#updateLBarProjectsAndTasks();
-    
+
     Main.#proj.updateProject(7, 'updated Project')
     Main.#proj.deleteProject(3);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
     Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
-    Main.#taskUI.showAllTasks(0);
+    // Main.#taskUI.showAllTasks(0);
     Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
 
     const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
@@ -54,7 +54,7 @@ class Main {
 
   #setEventListeners() {
     this.#expandCollapseDivs();
-    Main.#projUI.setNewProjModalUI();
+    Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects());
     Main.#taskUI.setNewTaskModalUI();
 
     // to create a new project:
@@ -90,8 +90,17 @@ class Main {
 
     // to show all projects summary:
     document.getElementById('projects-sumry').addEventListener('click', (e) => {
-      Main.#projUI.showAllProjSummary(Main.#proj.getAllProjects());
-    })
+      Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+    });
+
+    // to show all tasks summary:
+    const allShowTasksSumArr = document.querySelectorAll('.tasks-sumry');
+    for (let taskIdx = 0; taskIdx <= allShowTasksSumArr.length - 1; taskIdx++) {
+      allShowTasksSumArr[taskIdx].addEventListener('click', (e) => {
+        const projId = e.target.id.split('-')[0].split('p')[1];
+        Main.#taskUI.showAllTasksSummary(projId);
+      });
+    }
 
   }
 
@@ -118,7 +127,7 @@ class Main {
     }
 
     // Abort previous listener before creating a new one:
-      Main.#controller.abort();
+    Main.#controller.abort();
     // We have declared << controller >> above as static variables too. Using static variables lets us
     //  keep record as function data would have lost otherwise & first time created listener could not be aborted
     //  as non static variables in function won't remember the previous listener as they are created just now. 

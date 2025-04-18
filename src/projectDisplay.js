@@ -94,7 +94,7 @@ export class ProjectsDisplay {
     }
   }
 
-  setNewProjModalUI(controller) {
+  setNewProjModalUI(allProjects) {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById('new-project');
     const span = document.getElementById('new-proj-close');
@@ -107,7 +107,9 @@ export class ProjectsDisplay {
     });
 
     span.addEventListener('click', e => {
+      this.resetNewProjModalUI();
       modal.style.display = 'none';
+      this.showAllProjectsSummary(allProjects);
       // controller.abort();
     });
 
@@ -117,6 +119,7 @@ export class ProjectsDisplay {
       if (e.target == modal) {
         this.resetNewProjModalUI();
         modal.style.display = 'none';
+        this.showAllProjectsSummary(allProjects);
         // controller.abort();
       }
     });
@@ -130,26 +133,22 @@ export class ProjectsDisplay {
     message.innerHTML = '';
   }
 
-  showAllProjSummary(allProjects) {
+  showAllProjectsSummary(allProjects) {
     const rightDiv = document.getElementById('right-div');
     rightDiv.innerHTML = '';
     const heading = document.createElement('h2');
     heading.textContent = 'Projects Summary';
     rightDiv.appendChild(heading);
 
-    // const sumDiv = document.createElement('div');
-    // sumDiv.setAttribute('id', 'proj-sum-div');
-    // rightDiv.appendChild(sumDiv);
-
-    // const sumHeadRowDiv = document.createElement('div');
-    // sumHeadRowDiv.setAttribute('id', 'sum-head-row-div');
-    // sumHeadRowDiv.setAttribute('class', 'proj-heading-row-div');
-    // const sumNumberHeadP = document.createElement('p');
-    // sumNumberHeadP.textContent = '#';
-    // sumHeadRowDiv.appendChild(sumNumberHeadP);
-    // sumDiv.appendChild(sumHeadRowDiv);
     const table = document.createElement('table');
+    table.setAttribute('id', 'proj-sum-table');
 
+    this.createTableHeaders(table, rightDiv);
+    this.createTableRows(table, allProjects);
+
+  }
+
+  createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
     const headerTd2 = document.createElement('th');
@@ -158,19 +157,19 @@ export class ProjectsDisplay {
     const headerTd5 = document.createElement('th');
 
 
-    const headerNumText = document.createTextNode('#'); 
+    const headerNumText = document.createTextNode('#');
     const headerTitleText = document.createTextNode('Title');
     const headerIdText = document.createTextNode('ID');
-    const headerTotalTasksText =document.createTextNode('Total Tasks');
+    const headerTotalTasksText = document.createTextNode('Total Tasks');
     const headerControlsText = document.createTextNode('Controls');
 
     headerTd1.appendChild(headerNumText);
     headerTd2.appendChild(headerTitleText);
     headerTd3.appendChild(headerIdText);
-    
+
     headerTd4.appendChild(headerTotalTasksText);
     headerTd5.appendChild(headerControlsText);
-    
+
     headerTr.appendChild(headerTd1);
     headerTr.appendChild(headerTd2);
     headerTr.appendChild(headerTd3);
@@ -179,21 +178,15 @@ export class ProjectsDisplay {
 
     table.appendChild(headerTr);
     rightDiv.appendChild(table);
+  }
 
+  createTableRows(table, allProjects) {
     let num = 1;
 
     for (const obj of Object.entries(allProjects)) {
 
       const projObKey = `p${obj[0]}`;
       const projObVal = JSON.parse(obj[1])[`p${obj[0]}`];
-      debugger;
-
-      // const sumRowDiv = document.createElement('div');
-      // sumRowDiv.setAttribute('id', `${projObKey}-sum-row-div`);
-      // sumRowDiv.setAttribute('class', 'proj-row-div');
-      // const sumProjKeyP = document.createElement('p');
-      // sumProjKeyP.textContent = Number(projObKey.split('p')[1]);
-      // sumRowDiv.appendChild(sumProjKeyP);
 
       const projTr = document.createElement('tr');
 
@@ -225,7 +218,6 @@ export class ProjectsDisplay {
 
       // sumDiv.appendChild(sumRowDiv); 
       num++;
-
     }
   }
 
