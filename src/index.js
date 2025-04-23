@@ -18,21 +18,23 @@ class Main {
     // We need to call << handleModal() >> from << projDisplay.js >>, but want to at least maintain loose
     //  coupling, we use EventBus. EventBus uses pub/sub pattern. Also, we are setting up eventBus listeners
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
-    //  << eventBus.emit >> can be used repeatedly without needing destruction.
-    // when eventBus of << projDisplay.js >> emits << 'handleModal' >>, then:
-    Main.eventBus.on('handleModal', () => this.#handleModal(newProjForm, 'add-proj-btn', 'project'));
+    //  << eventBus.emit >> can be used repeatedly without needing destroying.
+    // When eventBus of << projDisplay.js >> emits << 'handleModal' >>, then:
+    Main.eventBus.on('handleModal', (projId) => this.#handleModal(newProjForm, 'add-proj-btn', 'update-project', projId));
   }
   // Initialize the event bus
   static eventBus = new EventBus();
+  // passing event bus object to #proj object
+  static #proj = new Projects(this.eventBus);
   // passing event bus object to #ui object
   static #ui = new UI(this.eventBus);
-  // passing event bus object to #ui object
+  // passing event bus object to #projUI object
   static #projUI = new ProjectsDisplay(this.eventBus);
   // .............................................................................................
 
   static #controller = new AbortController();
 
-  static #proj = new Projects();
+  // static #proj = new Projects();
   static #task = new Tasks();
   static #taskUI = new TasksDisplay();
   static #validate = new Validation();
@@ -85,7 +87,7 @@ class Main {
 
       Main.#ui.removeToast('new-proj-footer', 'project');
       const newProjForm = document.getElementById('new-proj-form');
-      this.#handleModal(newProjForm, e.target.id, 'project');
+      this.#handleModal(newProjForm, e.target.id, 'new-project');
     });
 
     // to reset project modal:
@@ -100,7 +102,7 @@ class Main {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
         Main.#ui.removeToast('new-task-footer', 'task');
         const newTaskForm = document.getElementById('new-task-form');
-        this.#handleModal(newTaskForm, e.target.id, 'task');
+        this.#handleModal(newTaskForm, e.target.id, 'new-task');
       });
     }
     // to reset task modal:
@@ -135,8 +137,8 @@ class Main {
     }
   }
 
-  #handleModal(newForm, addBtnId, targetType) {
-    debugger;
+  #handleModal(newForm, addBtnId, actionType, projId = '') {
+    const targetType = actionType.split('-')[1];
     // remember that 'submit' event works only for form, not for buttons:
     const formId = document.getElementById(newForm.id).id;
     const inputs = document.querySelectorAll(`#${formId} .form-inputs`);
@@ -171,18 +173,27 @@ class Main {
       const reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if (reqFieldsStatus == true) {
-        switch (e.target.id) {
-          case 'new-proj-form':
+        switch (actionType) {
+          case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Added Successfully';
             break;
-          case 'new-task-form':
-            const projId = addBtnId.split('-')[0].split('p')[1];
-            Main.#task.createTask(allInputs, projId);
+          case 'new-task':
+            const taskProjId = addBtnId.split('-')[0].split('p')[1];
+            Main.#task.createTask(allInputs, taskProjId);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Task Added Successfully';
             break;
+          case 'update-project':
+            const newTitle = document.getElementById('new-proj-title').value;
+            Main.#proj.updateProject(projId, newTitle);
+            this.#updateLBarProjectsAndTasks();
+            toastMessage = 'Project Updated Successfully';
+            break;
+          case 'delete-project':
+
+          break;
         }
         Main.#ui.removeToast(modalFooterId, targetType);
         Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
@@ -192,6 +203,7 @@ class Main {
         toastMessage = 'Some Error Occurred!';
         Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
       }
+      Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     }, { signal });
   }
 

@@ -2,6 +2,26 @@ import { compareAsc, format } from "date-fns";
 
 export class Projects {
 
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+    this.setupEventBusListener();
+  }
+
+  setupEventBusListener() {
+    // We need to call << getProject() >> from << projDisplay.js >>, but want to at least maintain loose
+    // coupling, we use EventBus. EventBus uses pub/sub pattern. Also, we are setting up eventBus listeners
+    //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
+    //  << eventBus.emit >> can be used repeatedly without needing destroying.
+    // When eventBus of << projDisplay.js >> emits << 'getProject' >>, then:
+    this.eventBus.on('getProject', (projId) => {
+      const proj = this.getProject(projId);
+      // As << proj >> can't be returned from here back to emit as far as I know, so updating input value here
+      // instead of from where << eventBus.emit >> was called:
+      document.getElementById('new-proj-title').value = proj[`p${projId}`].title;
+    });
+  }
+
+
   createDefaultProject(projName) {
     const defProject = this.getProject(0);
     if (defProject === null) {

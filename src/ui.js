@@ -14,8 +14,8 @@ export class UI {
     // We need to call << removeToast() >> from << projDisplay.js >>, but want to at least maintain loose
     // coupling, we use EventBus. EventBus uses pub/sub pattern. Also, we are setting up eventBus listeners
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
-    //  << eventBus.emit >> can be used repeatedly without needing destruction.
-    // when eventBus of << projDisplay.js >> emits << 'removeToast' >>, then:
+    //  << eventBus.emit >> can be used repeatedly without needing destroying.
+    // When eventBus of << projDisplay.js >> emits << 'removeToast' >>, then:
     this.eventBus.on('removeToast', () => this.removeToast('new-proj-footer', 'project'));
   }
 
@@ -113,6 +113,7 @@ export class UI {
   }
 
   removeToast(modalFooterId, targetType) {
+    // targetType = targetType.split('-')[0];
     const modalFooterEle = document.getElementById(modalFooterId);
     if (modalFooterEle.children.length == 0) { return; }
     const toastContainer = document.getElementById(`${targetType}-toast-div`);

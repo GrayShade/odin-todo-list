@@ -169,10 +169,16 @@ export class ProjectsDisplay {
         addProjModalBtn.textContent = 'Update Title';
         document.getElementById('new-proj-modal').style.display = 'block';
 
+        const projId = e.target.id.split('-')[0].split('p')[1];
+
+        this.eventBus.emit('getProject', projId); // notify projects.js to get project
         this.eventBus.emit('removeToast'); // Notify UI to remove toast
-        this.eventBus.emit('handleModal'); // Notify index.js to handle Modal
+        this.eventBus.emit('handleModal', projId); // Notify index.js to handle Modal
       });
     }
+
+    // to delete project:
+
     
 
   }
