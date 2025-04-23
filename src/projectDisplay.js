@@ -1,5 +1,8 @@
 export class ProjectsDisplay {
 
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+  }
 
   showAllProjects(allProjects) {
 
@@ -94,9 +97,9 @@ export class ProjectsDisplay {
     }
   }
 
-  setNewProjModalUI(allProjects) {
+  setNewProjModalUI(allProjects, buttonId) {
     const modal = document.getElementById('new-proj-modal');
-    const btn = document.getElementById('new-project');
+    const btn = document.getElementById(buttonId);
     const span = document.getElementById('new-proj-close');
 
     // const newProjForm = document.getElementById('new-proj-form');
@@ -116,6 +119,8 @@ export class ProjectsDisplay {
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
     window.addEventListener('click', e => {
+      // Is curr-proj-edit clicked in projects summary? :
+      // const currProjEditClicked = e.target.classList.contains('curr-proj-edit');
       if (e.target == modal) {
         this.resetNewProjModalUI();
         modal.style.display = 'none';
@@ -124,6 +129,13 @@ export class ProjectsDisplay {
       }
     });
   }
+
+  // updateProjModalUI(buttonId) {
+  //   buttonId.addEventListener('click', e => {
+  //     document.getElementById('new-proj-modal').style.display = 'block';
+  //   });
+  // }
+
 
   resetNewProjModalUI() {
     const newProjTitle = document.getElementById('new-proj-title');
@@ -145,6 +157,23 @@ export class ProjectsDisplay {
 
     this.createTableHeaders(table, rightDiv);
     this.createTableRows(table, allProjects);
+
+    // to update project:
+    const allEditProjEls = document.querySelectorAll('.curr-proj-edit');
+    for (const idx in allEditProjEls) {
+      if (idx === 'entries') { break; };
+      allEditProjEls[idx].addEventListener('click', (e) => {
+        let modalHeader = document.querySelector('.modal-header h3');
+        modalHeader.textContent = 'Update Project';
+        const addProjModalBtn = document.getElementById('add-proj-btn');
+        addProjModalBtn.textContent = 'Update Title';
+        document.getElementById('new-proj-modal').style.display = 'block';
+
+        this.eventBus.emit('removeToast'); // Notify UI to remove toast
+        this.eventBus.emit('handleModal'); // Notify index.js to handle Modal
+      });
+    }
+    
 
   }
 
@@ -200,13 +229,22 @@ export class ProjectsDisplay {
       const projTd2Text = document.createTextNode(projObVal.title);
       const projTd3Text = document.createTextNode(projObVal.projId);
       const projTd4Text = document.createTextNode(Object.keys(projObVal.tasks).length);
-      const projTd5Text = document.createTextNode('controls');
+
+      // const projTd5Text = document.createTextNode('controls');
+      const projTd5EditSpan = document.createElement('span');
+      const projTd5RemoveSpan = document.createElement('span');
+      projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`)
+      projTd5EditSpan.setAttribute('class', 'curr-proj-edit at-pencil-edit');
+      projTd5RemoveSpan.setAttribute('class', 'at-xmark-folder');
+
 
       projTd1.appendChild(projTd1Text);
       projTd2.appendChild(projTd2Text);
       projTd3.appendChild(projTd3Text);
       projTd4.appendChild(projTd4Text);
-      projTd5.appendChild(projTd5Text);
+      projTd5.appendChild(projTd5EditSpan);
+      projTd5.appendChild(projTd5RemoveSpan);
+
 
       projTr.appendChild(projTd1);
       projTr.appendChild(projTd2);
@@ -219,6 +257,10 @@ export class ProjectsDisplay {
       // sumDiv.appendChild(sumRowDiv); 
       num++;
     }
+  }
+
+  updateProjectInSummary() {
+
   }
 
 }

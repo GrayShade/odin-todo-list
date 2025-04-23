@@ -4,6 +4,21 @@ import { reset } from "./styles/reset.css"
 import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
 
 export class UI {
+
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+    this.setupEventBusListener();
+  }
+
+  setupEventBusListener() {
+    // We need to call << removeToast() >> from << projDisplay.js >>, but want to at least maintain loose
+    // coupling, we use EventBus. EventBus uses pub/sub pattern. Also, we are setting up eventBus listeners
+    //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
+    //  << eventBus.emit >> can be used repeatedly without needing destruction.
+    // when eventBus of << projDisplay.js >> emits << 'removeToast' >>, then:
+    this.eventBus.on('removeToast', () => this.removeToast('new-proj-footer', 'project'));
+  }
+
   // .................divs expand collapse related code starting here........................... 
 
   

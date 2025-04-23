@@ -33,7 +33,7 @@ body {
   font-family: var(--system-ui);
   height: 100vh;
   display: grid;
-  grid-template: 1fr 9fr / 1fr 3fr;
+  grid-template: 1fr 15fr / 1fr 3fr;
 }
 
 #main-header {
@@ -176,22 +176,35 @@ th {
 
 #right-div {
   grid-area: 2 / 2 / 3 / 3;
-  background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
+  /* background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%); */
   padding: 0.5em 1em;
   height: 100%;
   /* font-family: 's-italic'; */
 }
 
 #right-div h2 {
-  color: orange;
+  color: #b8860b;
   margin-bottom: 1em;
 }
 
 #right-div table {
-  color: #dcdcdc;
+  color: #696969;
   /* border: 1px solid grey; */
   width: 100%;
   table-layout: fixed;
+}
+
+#right-div table span {
+  padding: 0em 1em 0em 0em;
+  cursor: pointer;
+}
+
+.at-pencil-edit:hover {
+  color: #5f9ea0;
+}
+
+.at-xmark-folder:hover {
+  color: #ff4500;
 }
 
 #proj-sum-table td:nth-of-type(1),
@@ -200,15 +213,21 @@ th {
   font-family: s-italic;
 }
 
+#task-sum-table th:nth-of-type(odd),
 #task-sum-table td:nth-of-type(odd),
 #task-sum-table td:nth-of-type(6) {
   font-family: s-italic;
 }
 
+/* #task-sum-table td:nth-of-type(2),
+#task-sum-table th:nth-of-type(2) {
+  color: #008080;
+} */
+
 #right-div th {
   /* text-align: start; */
-  background: #f4a460;
-  color: #2f4f4f;
+  background: #f4a662;
+  color: #ffebcd;
 }
 
 /* #right-div table tr:hover {
@@ -217,7 +236,7 @@ th {
 } */
 
 #right-div tr:nth-of-type(even) {
-  background: #2e312f;
+  background: #e8e8e8;
 }
 
 #right-div tr:nth-of-type(odd) {
