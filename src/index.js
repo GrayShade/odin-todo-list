@@ -42,7 +42,7 @@ class Main {
   start() {
     Main.#proj.createDefaultProject('default');
     this.#updateLBarProjectsAndTasks();
-
+    
     this.setupEventBusListeners();
 
     Main.#proj.updateProject(7, 'updated Project')

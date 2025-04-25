@@ -59,7 +59,7 @@ body {
 #main-header h1,
 #right-div h2,
 th {
-  font-family: s-italic;
+  /* font-family: s-italic; */
 }
 
 
@@ -226,8 +226,8 @@ th {
 
 #right-div th {
   /* text-align: start; */
-  background: #f4a662;
-  color: #ffebcd;
+  background: #8fbc8f;
+  color: #f0f8ff;
 }
 
 /* #right-div table tr:hover {
@@ -267,6 +267,7 @@ td {
 
 .modal-content-form input,
 .modal-content-form select {
+  font-size: 1em;
   padding: 5px;
   /* width: 220px; */
   width: 100%;
@@ -333,8 +334,10 @@ td {
   color: dimgray;
 }
 
-.modal-header h3, #del-confirm-p {
+.modal-header h3,
+#del-confirm-p {
   font-family: s-italic;
+  font-size: 1.2em;
 }
 
 .modal-header span {
@@ -382,6 +385,11 @@ input:invalid,
 .error:invalid {
   border-color: red;
   /* border: 2px solid #ff4500; */
+}
+
+select {
+  color: #696969;
+  font-family: 's-italic';
 }
 
 .modal-footer {
@@ -480,13 +488,13 @@ input:invalid,
 }
 
 #del-confirm-p {
+  color: #696969;
   display: none;
   text-align: center;
 }
 
 #proj-btn-div {
   display: flex;
-  justify-content: center;
 }
 
 .form-button {
