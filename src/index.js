@@ -40,9 +40,10 @@ class Main {
   static #validate = new Validation();
 
   start() {
-    Main.#proj.createDefaultProject('default');
+    Main.#proj.createDefaultProject('Default');
     this.#updateLBarProjectsAndTasks();
-    
+    Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+
     this.setupEventBusListeners();
 
     Main.#proj.updateProject(7, 'updated Project')
@@ -185,32 +186,43 @@ class Main {
             Main.#proj.createProject(reqInputs[0].value);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Added Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'new-task':
             const taskProjId = addBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, taskProjId);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Task Added Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'update-project':
+            if(projId == 0) {
+              toastMessage = 'Cannot Update Default Project'
+              this.handleErrorToast(modalFooterId, targetType, toastMessage);
+              break;
+            }
             const newTitle = document.getElementById('new-proj-title').value;
             Main.#proj.updateProject(projId, newTitle);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Updated Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'delete-project':
+            if(projId == 0) {
+              toastMessage = 'Cannot Delete Default Project'
+              this.handleErrorToast(modalFooterId, targetType, toastMessage);
+              break;
+            }
             Main.#proj.deleteProject(projId);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Deleted Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
         }
-        Main.#ui.removeToast(modalFooterId, targetType);
-        Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
+        // this.handleSuccessToast(modalFooterId, toastMessage, targetType);
       }
       else {
-        Main.#ui.removeToast(modalFooterId, targetType);
-        toastMessage = 'Some Error Occurred!';
-        Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
+        this.handleErrorToast(modalFooterId, targetType, toastMessage);
       }
       Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     }, { signal });
@@ -235,6 +247,16 @@ class Main {
       }
     }
     return optFieldsStatus;
+  }
+
+  handleSuccessToast(modalFooterId, targetType, toastMessage) {
+    Main.#ui.removeToast(modalFooterId, targetType);
+    Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
+  }
+
+  handleErrorToast(modalFooterId, targetType, toastMessage = 'Some Error Occurred!') {
+    Main.#ui.removeToast(modalFooterId, targetType);
+    Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
   }
 }
 
