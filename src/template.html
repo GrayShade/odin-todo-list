@@ -30,15 +30,15 @@
           <p class="sub-showHide showHide-left-p"><span class="left-bar-span at-folder-text"></span>Default</p>
           <p class="showHide-right-p"><span id="arrow-p0" class="arrow arrow-collapse"></span></p>
         </div> -->
-        <!-- <div class="project-tasks hidden">
+      <!-- <div class="project-tasks hidden">
           <p id="p0-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
           <p id="p0-tasks-smry"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
           <p><span id="p0-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
           <p><span id="p0-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
           <p><span id="p0-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
         </div> -->
-      </div>
-      <!-- <div id="p1" class="project">
+    </div>
+    <!-- <div id="p1" class="project">
         <div class="showHide">
           <p class="sub-showHide showHide-left-p"><span class="left-bar-span at-folder-text"></span>Project 1</p>
           <p class="showHide-right-p"><span id="arrow-p1" class="arrow arrow-collapse"></p>
@@ -51,10 +51,10 @@
           <p><span id="p1-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
         </div>
       </div> -->
-    </div>
+  </div>
   </div>
   <div id="right-div">
-    
+
   </div>
   <!-- .....................project modal related code:...................starting here..... -->
   <div id="new-proj-modal" class="modal">
@@ -79,9 +79,14 @@
               maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
             <span class="required message" id="new-proj-title-message"></span>
           </div>
+
         </form>
-        <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
-        <button class="form-button" id="new-proj-reset" form="new-proj-form" type="reset">Reset Form</button>
+        <!-- Show for delete confirmation: -->
+        <p id="del-confirm-p">Are You Sure To Remove Project ?</p>
+        <div id="proj-btn-div">
+          <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
+          <button class="form-button" id="new-proj-reset" form="new-proj-form" type="reset">Reset Form</button>
+        </div>
       </div>
       <!-- <span class="close">&times;</span> -->
       <div id="new-proj-footer" class="modal-footer">
@@ -90,75 +95,75 @@
   </div>
   <!-- .....................project model related code......................... ending here... -->
 
-      <!-- .....................task modal related code:...................starting here..... -->
-      <div id="new-task-modal" class="modal">
-        <div class="modal-content">
-          <header class="modal-header">
-            <h3>New Task</h3>
-            <span id="new-task-close" class="close">&times;</span>
-          </header>
-          <div class="modal-content-form">
-            <form action="#" id="new-task-form" onsubmit="event.preventDefault();">
-  
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-title" class="heading">Title: <span aria-label="required">*</span><span
-                      id="task-title-info-brackets" class="form-info-brackets">(Required)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="text" class="required form-inputs" id="task-title" name="task-title" minlength="1"
-                  maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="required message" id="task-title-message"></span>
-              </div>
-  
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-desc" class="heading">Description: <span id="task-desc-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
-                  maxlength="790" pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="optional message" id="task-desc-message"></span>
-              </div>
-  
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-dueDate" class="heading">Due Date: <span id="task-dueDate-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <input type="date" class="optional form-inputs" id="task-dueDate" name="task-dueDate" minlength="1"
-                  maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
-                <span class="optional message" id="task-dueDate-message"></span>
-              </div>
-  
-              <div class="form-input-div">
-                <div class="label-and-tooltip-pair-div">
-                  <label for="task-priority" class="heading">Priority: <span id="task-priority-info-brackets"
-                      class="form-info-brackets">(Optional)</span></label>
-                  <span class="tooltip"
-                    data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-                </div>
-                <select name="task-priority" class="optional-form-inputs" id="task-priority">
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-                <span class="optional message" id="task-priority-message"></span>
-              </div>
-            </form>
-            <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Create Task</button>
-            <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
+  <!-- .....................task modal related code:...................starting here..... -->
+  <div id="new-task-modal" class="modal">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3>New Task</h3>
+        <span id="new-task-close" class="close">&times;</span>
+      </header>
+      <div class="modal-content-form">
+        <form action="#" id="new-task-form" onsubmit="event.preventDefault();">
+
+          <div class="form-input-div">
+            <div class="label-and-tooltip-pair-div">
+              <label for="task-title" class="heading">Title: <span aria-label="required">*</span><span
+                  id="task-title-info-brackets" class="form-info-brackets">(Required)</span></label>
+              <span class="tooltip"
+                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+            </div>
+            <input type="text" class="required form-inputs" id="task-title" name="task-title" minlength="1"
+              maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+            <span class="required message" id="task-title-message"></span>
           </div>
-          <div id="new-task-footer" class="modal-footer">
+
+          <div class="form-input-div">
+            <div class="label-and-tooltip-pair-div">
+              <label for="task-desc" class="heading">Description: <span id="task-desc-info-brackets"
+                  class="form-info-brackets">(Optional)</span></label>
+              <span class="tooltip"
+                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+            </div>
+            <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
+              maxlength="790" pattern="^[\w\S]+( [\w\S]+)*$">
+            <span class="optional message" id="task-desc-message"></span>
           </div>
-        </div>
+
+          <div class="form-input-div">
+            <div class="label-and-tooltip-pair-div">
+              <label for="task-dueDate" class="heading">Due Date: <span id="task-dueDate-info-brackets"
+                  class="form-info-brackets">(Optional)</span></label>
+              <span class="tooltip"
+                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+            </div>
+            <input type="date" class="optional form-inputs" id="task-dueDate" name="task-dueDate" minlength="1"
+              maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+            <span class="optional message" id="task-dueDate-message"></span>
+          </div>
+
+          <div class="form-input-div">
+            <div class="label-and-tooltip-pair-div">
+              <label for="task-priority" class="heading">Priority: <span id="task-priority-info-brackets"
+                  class="form-info-brackets">(Optional)</span></label>
+              <span class="tooltip"
+                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+            </div>
+            <select name="task-priority" class="optional-form-inputs" id="task-priority">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+            <span class="optional message" id="task-priority-message"></span>
+          </div>
+        </form>
+        <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Create Task</button>
+        <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
       </div>
-      <!-- .....................task model related code......................... ending here... -->
+      <div id="new-task-footer" class="modal-footer">
+      </div>
+    </div>
+  </div>
+  <!-- .....................task model related code......................... ending here... -->
 
 
 </body>

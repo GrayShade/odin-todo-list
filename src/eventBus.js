@@ -13,9 +13,10 @@ export class EventBus {
   }
 
   // Emit an event (notify all listeners)
-  emit(event, data = null) {
+  // Also, Using spread operator to able to emit multiple arguments
+  emit(event, ...args) { 
     if (this.listeners[event]) {
-      this.listeners[event].forEach(callback => callback(data));
+      this.listeners[event].forEach(callback => callback(...args));
     }
   }
 

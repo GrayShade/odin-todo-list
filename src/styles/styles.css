@@ -265,39 +265,6 @@ td {
 
 /* modal related code starting here........................................................ */
 
-.form-button {
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 5px;
-  color: #ffffff;
-  font-weight: bold;
-  margin-top: 10%;
-}
-
-/* .modal .form-button:hover {
-  background: #cd5c5c;
-  color: whitesmoke;
-} */
-
-.form-button[type='submit'] {
-  background: #1abc9c;
-  /* padding: 10px 15px; */
-}
-
-.form-button[type='submit']:hover {
-  background: #008080;
-}
-
-.form-button[type='reset'] {
-  background: #f9fafa;
-  border: 1px solid #d3d3d3;
-  color: #696969;
-}
-
-.form-button[type='reset']:hover {
-  background: #d3d3d3;
-}
-
 .modal-content-form input,
 .modal-content-form select {
   padding: 5px;
@@ -366,8 +333,8 @@ td {
   color: dimgray;
 }
 
-.modal-header h3 {
-  font-style: italic;
+.modal-header h3, #del-confirm-p {
+  font-family: s-italic;
 }
 
 .modal-header span {
@@ -383,7 +350,6 @@ td {
   flex-direction: column;
 }
 
-
 .label-and-tooltip-pair-div {
   display: flex;
   justify-content: space-between;
@@ -396,10 +362,13 @@ td {
 .heading {
   font-size: 0.98em;
   letter-spacing: 0.03em;
+  color: #2f4f4f;
 }
 
 input {
   border-color: #E5E7EB;
+  color: dimgray;
+  font-family: s-italic;
 }
 
 input:focus {
@@ -508,6 +477,49 @@ input:invalid,
   font-style: italic;
   font-size: 0.8em;
   visibility: hidden;
+}
+
+#del-confirm-p {
+  display: none;
+  text-align: center;
+}
+
+#proj-btn-div {
+  display: flex;
+  justify-content: center;
+}
+
+.form-button {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+  margin: 20px 3px 0px;
+}
+
+/* .modal .form-button:hover {
+  background: #cd5c5c;
+  color: whitesmoke;
+} */
+
+.form-button[type='submit'] {
+  background: #1abc9c;
+  /* padding: 10px 15px; */
+}
+
+.form-button[type='submit']:hover {
+  background: #008080;
+}
+
+.form-button[type='reset'] {
+  background: #f9fafa;
+  border: 1px solid #d3d3d3;
+  color: #696969;
+}
+
+.form-button[type='reset']:hover {
+  background: #d3d3d3;
 }
 
 /* modal related code ending here... */

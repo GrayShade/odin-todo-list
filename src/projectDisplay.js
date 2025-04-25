@@ -119,8 +119,8 @@ export class ProjectsDisplay {
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
     window.addEventListener('click', e => {
-      // Is curr-proj-edit clicked in projects summary? :
-      // const currProjEditClicked = e.target.classList.contains('curr-proj-edit');
+      // Is proj-edit-icon clicked in projects summary? :
+      // const currProjEditClicked = e.target.classList.contains('proj-edit-icon');
       if (e.target == modal) {
         this.resetNewProjModalUI();
         modal.style.display = 'none';
@@ -159,28 +159,44 @@ export class ProjectsDisplay {
     this.createTableRows(table, allProjects);
 
     // to update project:
-    const allEditProjEls = document.querySelectorAll('.curr-proj-edit');
-    for (const idx in allEditProjEls) {
+    this.modifyProjectModal('Update Project', 'Update Title', '.proj-edit-icon', 'update-project');
+    // to delete project:
+    this.modifyProjectModal('Delete Project', 'Remove It', '.proj-remove-icon', 'delete-project');
+
+  }
+
+  modifyProjectModal(h3Title, btnTitle, allProjControlElsClass, actionType) {
+    const allProjControlEls = document.querySelectorAll(allProjControlElsClass);
+    for (const idx in allProjControlEls) {
       if (idx === 'entries') { break; };
-      allEditProjEls[idx].addEventListener('click', (e) => {
+      allProjControlEls[idx].addEventListener('click', (e) => {
         let modalHeader = document.querySelector('.modal-header h3');
-        modalHeader.textContent = 'Update Project';
+        modalHeader.textContent = h3Title;
         const addProjModalBtn = document.getElementById('add-proj-btn');
-        addProjModalBtn.textContent = 'Update Title';
+        const formInputDiv = document.querySelector('.form-input-div');
+        const projId = e.target.id.split('-')[0].split('p')[1];
+
+        if (actionType == 'delete-project') {
+          formInputDiv.style.display = 'none';
+          document.getElementById('del-confirm-p').style.display = 'block';
+          // const delConfirmP = document.createElement('p');
+          // delConfirmP.setAttribute('id', 'del-confirm-p');
+          // delConfirmP.textContent = 'Are You Sure?';
+          // document.getElementById('new-proj-form').appendChild(delConfirmP);
+        }else {
+          formInputDiv.style.display = 'flex';
+          document.getElementById('del-confirm-p').style.display = 'none';
+        }
+        addProjModalBtn.textContent = btnTitle;
         document.getElementById('new-proj-modal').style.display = 'block';
 
-        const projId = e.target.id.split('-')[0].split('p')[1];
+        
 
         this.eventBus.emit('getProject', projId); // notify projects.js to get project
         this.eventBus.emit('removeToast'); // Notify UI to remove toast
-        this.eventBus.emit('handleModal', projId); // Notify index.js to handle Modal
+        this.eventBus.emit('handleModal', actionType, projId); // Notify index.js to handle Modal
       });
     }
-
-    // to delete project:
-
-    
-
   }
 
   createTableHeaders(table, rightDiv) {
@@ -239,9 +255,10 @@ export class ProjectsDisplay {
       // const projTd5Text = document.createTextNode('controls');
       const projTd5EditSpan = document.createElement('span');
       const projTd5RemoveSpan = document.createElement('span');
-      projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`)
-      projTd5EditSpan.setAttribute('class', 'curr-proj-edit at-pencil-edit');
-      projTd5RemoveSpan.setAttribute('class', 'at-xmark-folder');
+      projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`);
+      projTd5EditSpan.setAttribute('class', 'proj-edit-icon at-pencil-edit');
+      projTd5RemoveSpan.setAttribute('id', `${projObKey}-proj-remove`)
+      projTd5RemoveSpan.setAttribute('class', 'proj-remove-icon at-xmark-folder');
 
 
       projTd1.appendChild(projTd1Text);

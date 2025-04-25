@@ -20,7 +20,7 @@ class Main {
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
     //  << eventBus.emit >> can be used repeatedly without needing destroying.
     // When eventBus of << projDisplay.js >> emits << 'handleModal' >>, then:
-    Main.eventBus.on('handleModal', (projId) => this.#handleModal(newProjForm, 'add-proj-btn', 'update-project', projId));
+    Main.eventBus.on('handleModal', (actionType, projId) => this.#handleModal(newProjForm, 'add-proj-btn', actionType, projId));
   }
   // Initialize the event bus
   static eventBus = new EventBus();
@@ -82,6 +82,9 @@ class Main {
     document.getElementById('new-project').addEventListener('click', (e) => {
       const modalHeader = document.querySelector('.modal-header h3');
       modalHeader.textContent = 'New Project';
+      // to show input div again if it was removed when showing delete project modal: 
+      document.querySelector('.form-input-div').style.display = 'flex';
+      document.getElementById('del-confirm-p').style.display = 'none';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
 
@@ -168,11 +171,15 @@ class Main {
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
       const allInputs = document.querySelectorAll(`#${formId} input,select`);
 
+      let reqFieldsStatus;
       let toastMessage = '';
-
-      const reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
+      if (actionType == 'delete-project') {
+        reqFieldsStatus = true;
+      } else {
+        reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
+      }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
-      if (reqFieldsStatus == true) {
+      if (reqFieldsStatus == true || actionType == 'delete-project') {
         switch (actionType) {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
@@ -192,8 +199,10 @@ class Main {
             toastMessage = 'Project Updated Successfully';
             break;
           case 'delete-project':
-
-          break;
+            Main.#proj.deleteProject(projId);
+            this.#updateLBarProjectsAndTasks();
+            toastMessage = 'Project Deleted Successfully';
+            break;
         }
         Main.#ui.removeToast(modalFooterId, targetType);
         Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
