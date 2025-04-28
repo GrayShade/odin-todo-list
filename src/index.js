@@ -173,7 +173,7 @@ class Main {
       const allInputs = document.querySelectorAll(`#${formId} input,select`);
 
       let reqFieldsStatus;
-      let toastMessage = '';
+      let toastMessage;
       if (actionType == 'delete-project') {
         reqFieldsStatus = true;
       } else {

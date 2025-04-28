@@ -213,10 +213,40 @@ th {
   font-family: s-italic;
 }
 
-#task-sum-table th:nth-of-type(odd),
+/* #task-sum-table th:nth-of-type(odd), */
 #task-sum-table td:nth-of-type(odd),
 #task-sum-table td:nth-of-type(6) {
   font-family: s-italic;
+}
+
+
+#task-sum-table th:nth-of-type(7),
+#task-sum-table th:nth-of-type(8),
+#task-sum-table td:nth-of-type(7),
+#task-sum-table th:nth-of-type(8) {
+  width: 20%;
+}
+
+#task-sum-table th:nth-of-type(1),
+#task-sum-table th:nth-of-type(3),
+#task-sum-table th:nth-of-type(1),
+#task-sum-table th:nth-of-type(3) {
+  width: 10%;
+}
+
+#task-sum-table th:nth-of-type(4),
+#task-sum-table td:nth-of-type(4) {
+  width: 40%;
+}
+
+#task-sum-table th:nth-of-type(2),
+#task-sum-table td:nth-of-type(2) {
+  width: 60%;
+}
+
+#task-sum-table th:nth-of-type(5),
+#task-sum-table td:nth-of-type(5) {
+  width: 70%;
 }
 
 /* #task-sum-table td:nth-of-type(2),
