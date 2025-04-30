@@ -110,7 +110,7 @@ class Main {
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
-        // Hide task project option if 
+        // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
         const newTaskForm = document.getElementById('new-task-form');

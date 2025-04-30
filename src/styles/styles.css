@@ -38,8 +38,8 @@ body {
 
 #main-header {
   grid-area: 1 / 1 / 2 / 3;
-  /* background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%); */
-  background: #2d3430;
+  /* background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(16 83 113) 99.4%); */
+  background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(16 83 113) 99.4%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,6 +85,10 @@ th {
   justify-content: space-between;
 }
 
+#left-bar .showHide:hover {
+  /* background: linear-gradient(45deg, #009688, transparent); */
+}
+
 #left-bar #proj-showHide-left-p {
   padding-left: 1em;
 }
@@ -96,7 +100,8 @@ th {
 }
 
 #left-bar .showHide:hover,
-#left-bar p:hover {
+#projects-container > p:hover,
+#left-bar .project-tasks > p:hover {
   cursor: pointer;
   color: ghostwhite;
   background: linear-gradient(45deg, #009688, transparent);
