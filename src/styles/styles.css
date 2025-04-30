@@ -100,8 +100,8 @@ th {
 }
 
 #left-bar .showHide:hover,
-#projects-container > p:hover,
-#left-bar .project-tasks > p:hover {
+#projects-container>p:hover,
+#left-bar .project-tasks>p:hover {
   cursor: pointer;
   color: ghostwhite;
   background: linear-gradient(45deg, #009688, transparent);
@@ -264,8 +264,9 @@ th {
 
 #right-div th {
   /* text-align: start; */
-  background: #295454;
-  color: #c9c9c9;
+  background: #135a69;
+  /* color: #ffa500; */
+  color: #ffe4c4;
 }
 
 /* #right-div table tr:hover {
@@ -279,6 +280,11 @@ th {
 
 #right-div tr:nth-of-type(odd) {
   /* background: darksalmon; */
+}
+
+#right-div tr:hover {
+  background: linear-gradient(45deg, #607D8B, transparent);
+  color: black;
 }
 
 #right-div th,

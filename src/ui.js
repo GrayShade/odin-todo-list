@@ -48,7 +48,7 @@ export class UI {
           this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
           const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
 
-          leftP.style.color = '#ff8c00';
+          leftP.style.color = '#ffd700';
         } else {
           ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
