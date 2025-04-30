@@ -20,23 +20,29 @@ class Main {
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
     //  << eventBus.emit >> can be used repeatedly without needing destroying.
     // When eventBus of << projDisplay.js >> emits << 'handleModal' >>, then:
-    Main.eventBus.on('handleModal', (actionType, projId) => this.#handleModal(newProjForm, 'add-proj-btn', actionType, projId));
+    Main.eventBus.on('handleModalProj', (actionType, projId) => this.#handleModal(newProjForm, 'new-project', actionType, projId));
+    const newTaskForm = document.getElementById('new-task-form');
+    Main.eventBus.on('handleModalTask', (actionType, projId, taskId) => this.#handleModal(newTaskForm, `p${projId}-new-task`, actionType, taskId));
   }
   // Initialize the event bus
   static eventBus = new EventBus();
   // passing event bus object to #proj object
   static #proj = new Projects(this.eventBus);
+  // passing event bus object to #task object
+  static #task = new Tasks(this.eventBus);
   // passing event bus object to #ui object
   static #ui = new UI(this.eventBus);
   // passing event bus object to #projUI object
   static #projUI = new ProjectsDisplay(this.eventBus);
+  // passing event bus object to #taskUI object
+  static #taskUI = new TasksDisplay(this.eventBus);
   // .............................................................................................
 
   static #controller = new AbortController();
 
   // static #proj = new Projects();
-  static #task = new Tasks();
-  static #taskUI = new TasksDisplay();
+  // static #task = new Tasks();
+  // static #taskUI = new TasksDisplay();
   static #validate = new Validation();
 
   start() {
@@ -85,7 +91,7 @@ class Main {
       modalHeader.textContent = 'New Project';
       // to show input div again if it was removed when showing delete project modal: 
       document.querySelector('.form-input-div').style.display = 'flex';
-      document.getElementById('del-confirm-p').style.display = 'none';
+      document.getElementById('del-confirm-proj').style.display = 'none';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
 
@@ -104,6 +110,8 @@ class Main {
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
+        // Hide task project option if 
+        document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
         const newTaskForm = document.getElementById('new-task-form');
         this.#handleModal(newTaskForm, e.target.id, 'new-task');
@@ -141,7 +149,8 @@ class Main {
     }
   }
 
-  #handleModal(newForm, addBtnId, actionType, projId = '') {
+  // Below default parameter << taskOrProjId >> is for updating tasks or projects: 
+  #handleModal(newForm, LBarBtnId, actionType, taskOrProjId = '') {
     const targetType = actionType.split('-')[1];
     // remember that 'submit' event works only for form, not for buttons:
     const formId = document.getElementById(newForm.id).id;
@@ -172,12 +181,14 @@ class Main {
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
       const allInputs = document.querySelectorAll(`#${formId} input,select`);
 
+      let projIdOfTask;
+      // if (actionType == 'task') {projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];};
       let reqFieldsStatus;
       let toastMessage;
       if (actionType == 'delete-project') {
         reqFieldsStatus = true;
       } else {
-        reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId);
+        reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, LBarBtnId);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if (reqFieldsStatus == true || actionType == 'delete-project') {
@@ -189,33 +200,48 @@ class Main {
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'new-task':
-            const taskProjId = addBtnId.split('-')[0].split('p')[1];
-            Main.#task.createTask(allInputs, taskProjId);
+            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Task Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'update-project':
-            if(projId == 0) {
+            if (taskOrProjId == 0) {
               toastMessage = 'Cannot Update Default Project'
               this.handleErrorToast(modalFooterId, targetType, toastMessage);
               break;
             }
             const newTitle = document.getElementById('new-proj-title').value;
-            Main.#proj.updateProject(projId, newTitle);
+            Main.#proj.updateProject(taskOrProjId, newTitle);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'delete-project':
-            if(projId == 0) {
+            if (taskOrProjId == 0) {
               toastMessage = 'Cannot Delete Default Project'
               this.handleErrorToast(modalFooterId, targetType, toastMessage);
               break;
             }
-            Main.#proj.deleteProject(projId);
+            Main.#proj.deleteProject(taskOrProjId);
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Project Deleted Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            break;
+          case 'update-task':
+            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            const updatedTask = {
+              taskId: taskOrProjId,
+              projId: projIdOfTask,
+              title: document.getElementById('task-title').value,
+              description: document.getElementById('task-desc').value,
+              dueDate: document.getElementById('task-dueDate').value,
+              priority: document.getElementById('task-priority').value
+            };
+            Main.#task.updateTask(projIdOfTask, taskOrProjId, updatedTask)
+            this.#updateLBarProjectsAndTasks();
+            toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
         }

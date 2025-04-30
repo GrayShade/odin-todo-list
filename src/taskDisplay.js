@@ -1,4 +1,9 @@
 export class TasksDisplay {
+
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+  }
+
   getAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
       if (projID != obj[0]) { continue; }
@@ -117,7 +122,51 @@ export class TasksDisplay {
     this.createTableHeaders(table, rightDiv);
     this.createTableRows(table, projId);
 
+    // to update task:
+    this.modifyTaskModal(projId, 'Update Task', 'Update Title', '.task-edit-icon', 'update-task');
+    // to delete task:
+    this.modifyTaskModal('Delete Task', 'Remove It', '.task-remove-icon', 'delete-task');
+
   }
+
+  modifyTaskModal(projId, h3Title, btnTitle, allTaskControlElsClass, actionType) {
+    const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
+    for (const idx in allTaskControlEls) {
+      if (idx === 'entries') { break; };
+      allTaskControlEls[idx].addEventListener('click', (e) => {
+        let modalHeader = document.querySelector('#task-modal-header h3');
+        modalHeader.textContent = h3Title;
+        const addTaskModalBtn = document.getElementById('add-task-btn');
+        const formInputDiv = document.querySelector('.form-input-div');
+        const taskId = e.target.id.split('-')[0];
+
+        if (actionType == 'update-task') {
+          document.getElementById('task-proj-input-div').style.display = 'block';
+
+        } else
+          if (actionType == 'delete-task') {
+            formInputDiv.style.display = 'none';
+            document.getElementById('del-confirm-task').style.display = 'block';
+            document.getElementById('task-proj-input-div').style.display = 'none';
+            // const delConfirmP = document.createElement('p');
+            // delConfirmP.setAttribute('id', 'del-confirm-task');
+            // delConfirmP.textContent = 'Are You Sure?';
+            // document.getElementById('new-proj-form').appendChild(delConfirmP);
+          } else {
+            formInputDiv.style.display = 'flex';
+            document.getElementById('del-confirm-task').style.display = 'none';
+            document.getElementById('task-proj-input-div').style.display = 'none';
+          }
+        addTaskModalBtn.textContent = btnTitle;
+        document.getElementById('new-task-modal').style.display = 'block';
+
+        this.eventBus.emit('populateTaskValues', projId, taskId); // notify projects.js to get project
+        this.eventBus.emit('removeTaskToast'); // Notify UI to remove toast
+        this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
+      });
+    }
+  }
+
   createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
@@ -168,6 +217,8 @@ export class TasksDisplay {
 
     for (const obj of Object.entries(allTasks)) {
 
+      const taskId = obj[1].taskId;
+
       const taskTr = document.createElement('tr');
       const taskTd1 = document.createElement('td');
       const taskTd2 = document.createElement('td');
@@ -178,6 +229,7 @@ export class TasksDisplay {
       const taskTd7 = document.createElement('td');
       const taskTd8 = document.createElement('td');
 
+
       const taskTd1Text = document.createTextNode(num);
       const taskTd2Text = document.createTextNode(obj[1].title);
       const taskTd3Text = document.createTextNode(obj[1].taskId);
@@ -186,7 +238,14 @@ export class TasksDisplay {
       const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
       const taskTd7Text = document.createTextNode(obj[1].priority);
-      const taskTd8Text = document.createTextNode('Controls');
+      // const taskTd8Text = document.createTextNode('Controls');
+
+      const taskTd8EditSpan = document.createElement('span');
+      const taskTd8RemoveSpan = document.createElement('span');
+      taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);
+      taskTd8EditSpan.setAttribute('class', 'task-edit-icon at-pencil-edit');
+      taskTd8RemoveSpan.setAttribute('id', `${taskId}-task-remove`)
+      taskTd8RemoveSpan.setAttribute('class', 'task-remove-icon at-xmark-folder');
 
       taskTd1.appendChild(taskTd1Text);
       taskTd2.appendChild(taskTd2Text);
@@ -195,7 +254,9 @@ export class TasksDisplay {
       taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Text);
-      taskTd8.appendChild(taskTd8Text);
+      // taskTd8.appendChild(taskTd8Text);
+      taskTd8.appendChild(taskTd8EditSpan);
+      taskTd8.appendChild(taskTd8RemoveSpan);
 
       taskTr.appendChild(taskTd1);
       taskTr.appendChild(taskTd2);
@@ -205,6 +266,7 @@ export class TasksDisplay {
       taskTr.appendChild(taskTd6);
       taskTr.appendChild(taskTd7);
       taskTr.appendChild(taskTd8);
+
 
       table.appendChild(taskTr);
 

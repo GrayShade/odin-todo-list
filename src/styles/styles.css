@@ -47,11 +47,11 @@ body {
 
 #left-bar {
   grid-area: 2 / 1 / 3 / 2;
-  /* background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
+  background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
   /* padding: 0.7em 1em 0.7em 0.7em; */
   padding: 0.7em 0;
   line-height: 2em;
-  color: #2f4f4f;
+  color: lightgray;
   overflow-y: auto;
 }
 
@@ -98,9 +98,9 @@ th {
 #left-bar .showHide:hover,
 #left-bar p:hover {
   cursor: pointer;
-  color: #f08080;
-  /* background: #dcdcdc; */
-  background: #f2f2f2;
+  color: ghostwhite;
+  background: linear-gradient(45deg, #009688, transparent);
+  /* background: #f2f2f2; */
   font-weight: 600;
 }
 
@@ -159,7 +159,8 @@ th {
 }
 
 .project-tasks {
-  background: #f0eeee;
+  /* background: #f0eeee; */
+  background: linear-gradient(45deg, #1a1a1a, transparent);
 }
 
 .project-tasks p {
@@ -192,6 +193,8 @@ th {
   /* border: 1px solid grey; */
   width: 100%;
   table-layout: fixed;
+  font-family: 's-italic';
+
 }
 
 #right-div table span {
@@ -256,8 +259,8 @@ th {
 
 #right-div th {
   /* text-align: start; */
-  background: #8fbc8f;
-  color: #f0f8ff;
+  background: #295454;
+  color: #c9c9c9;
 }
 
 /* #right-div table tr:hover {
@@ -320,7 +323,7 @@ td {
   z-index: 1;
   /* Location of the box */
   /* padding-top: 60px; */
-  padding-top: 7em;
+  padding-top: 3em;
 
   left: 0;
   top: 0;
@@ -365,7 +368,8 @@ td {
 }
 
 .modal-header h3,
-#del-confirm-p {
+#del-confirm-proj,
+#del-confirm-task {
   font-family: s-italic;
   font-size: 1.2em;
 }
@@ -517,7 +521,8 @@ select {
   visibility: hidden;
 }
 
-#del-confirm-p {
+#del-confirm-proj,
+#del-confirm-task {
   color: #696969;
   display: none;
   text-align: center;

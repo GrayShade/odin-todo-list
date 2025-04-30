@@ -2,6 +2,23 @@ import { compareAsc, format } from "date-fns";
 
 export class Tasks {
 
+  constructor(eventBus) {
+    this.eventBus = eventBus;
+    this.setupEventBusListener();
+  }
+
+  setupEventBusListener() {
+    
+    this.eventBus.on('populateTaskValues', (projId, taskId) => {
+      const task = this.getTask(projId, taskId);
+      document.getElementById('task-title').value = task.title;
+      document.getElementById('task-desc').value = task.description;
+      document.getElementById('task-dueDate').value = task.dueDate;
+      document.getElementById('task-priority').value = task.priority;
+
+    });
+  }
+
   getTask(reqProjId, reqTaskID) {
     for (const obj of Object.entries({ ...localStorage })) {
       if (obj[0] != reqProjId) { continue; };
@@ -15,7 +32,7 @@ export class Tasks {
         return null;
       }
     }
-    
+
   }
 
   createTask(allInputs, reqProjId) {

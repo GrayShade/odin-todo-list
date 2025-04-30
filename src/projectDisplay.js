@@ -170,7 +170,7 @@ export class ProjectsDisplay {
     for (const idx in allProjControlEls) {
       if (idx === 'entries') { break; };
       allProjControlEls[idx].addEventListener('click', (e) => {
-        let modalHeader = document.querySelector('.modal-header h3');
+        let modalHeader = document.querySelector('#proj-modal-header h3');
         modalHeader.textContent = h3Title;
         const addProjModalBtn = document.getElementById('add-proj-btn');
         const formInputDiv = document.querySelector('.form-input-div');
@@ -178,23 +178,23 @@ export class ProjectsDisplay {
 
         if (actionType == 'delete-project') {
           formInputDiv.style.display = 'none';
-          document.getElementById('del-confirm-p').style.display = 'block';
+          document.getElementById('del-confirm-proj').style.display = 'block';
           // const delConfirmP = document.createElement('p');
-          // delConfirmP.setAttribute('id', 'del-confirm-p');
+          // delConfirmP.setAttribute('id', 'del-confirm-proj');
           // delConfirmP.textContent = 'Are You Sure?';
           // document.getElementById('new-proj-form').appendChild(delConfirmP);
         }else {
           formInputDiv.style.display = 'flex';
-          document.getElementById('del-confirm-p').style.display = 'none';
+          document.getElementById('del-confirm-proj').style.display = 'none';
         }
         addProjModalBtn.textContent = btnTitle;
         document.getElementById('new-proj-modal').style.display = 'block';
 
         
 
-        this.eventBus.emit('getProject', projId); // notify projects.js to get project
-        this.eventBus.emit('removeToast'); // Notify UI to remove toast
-        this.eventBus.emit('handleModal', actionType, projId); // Notify index.js to handle Modal
+        this.eventBus.emit('populateProjTitle', projId); // notify projects.js to get project
+        this.eventBus.emit('removeProjToast'); // Notify UI to remove toast
+        this.eventBus.emit('handleModalProj', actionType, projId); // Notify index.js to handle Modal
       });
     }
   }

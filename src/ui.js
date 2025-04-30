@@ -16,7 +16,8 @@ export class UI {
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
     //  << eventBus.emit >> can be used repeatedly without needing destroying.
     // When eventBus of << projDisplay.js >> emits << 'removeToast' >>, then:
-    this.eventBus.on('removeToast', () => this.removeToast('new-proj-footer', 'project'));
+    this.eventBus.on('removeProjToast', () => this.removeToast('new-proj-footer', 'project'));
+    this.eventBus.on('removeTaskToast', () => this.removeToast('new-task-footer', 'task'));
   }
 
   // .................divs expand collapse related code starting here........................... 
@@ -47,7 +48,7 @@ export class UI {
           this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
           const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
 
-          leftP.style.color = '#f08080';
+          leftP.style.color = '#ff8c00';
         } else {
           ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');

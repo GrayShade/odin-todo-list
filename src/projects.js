@@ -13,7 +13,7 @@ export class Projects {
     //  only once using << eventBus.on() >> below. So, no need to destroy them afterwards to avoid duplication.
     //  << eventBus.emit >> can be used repeatedly without needing destroying.
     // When eventBus of << projDisplay.js >> emits << 'getProject' >>, then:
-    this.eventBus.on('getProject', (projId) => {
+    this.eventBus.on('populateProjTitle', (projId) => {
       const proj = this.getProject(projId);
       // As << proj >> can't be returned from here back to emit as far as I know, so updating input value here
       // instead of from where << eventBus.emit >> was called:

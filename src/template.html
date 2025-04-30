@@ -59,7 +59,7 @@
   <!-- .....................project modal related code:...................starting here..... -->
   <div id="new-proj-modal" class="modal">
     <div class="modal-content">
-      <header class="modal-header">
+      <header id="proj-modal-header" class="modal-header">
         <h3>New Project</h3>
         <!-- <span onclick="document.getElementById('myModal').style.display='none'" 
         class="w3-button w3-display-topright">&times;</span> -->
@@ -82,7 +82,7 @@
 
         </form>
         <!-- Show for delete confirmation: -->
-        <p id="del-confirm-p">Are You Sure To Remove Project ?</p>
+        <p id="del-confirm-proj">Are You Sure To Remove Project ?</p>
         <div id="proj-btn-div">
           <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
           <button class="form-button" id="new-proj-reset" form="new-proj-form" type="reset">Reset Form</button>
@@ -98,13 +98,24 @@
   <!-- .....................task modal related code:...................starting here..... -->
   <div id="new-task-modal" class="modal">
     <div class="modal-content">
-      <header class="modal-header">
+      <header id="task-modal-header" class="modal-header">
         <h3>New Task</h3>
         <span id="new-task-close" class="close">&times;</span>
       </header>
       <div class="modal-content-form">
         <form action="#" id="new-task-form" onsubmit="event.preventDefault();">
 
+          <div id="task-proj-input-div" class="form-input-div">
+            <div class="label-and-tooltip-pair-div">
+              <label for="task-project" class="heading">Project: <span id="task-project-info-brackets"
+                  class="form-info-brackets">(Optional)</span></label>
+              <span class="tooltip"
+                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+            </div>
+            <input type="text" class="optional form-inputs" id="task-project" name="task-project" minlength="1"
+              maxlength="790" pattern="^[\w\S]+( [\w\S]+)*$">
+            <span class="optional message" id="task-project-message"></span>
+          </div>
 
           <div class="form-input-div">
             <div class="label-and-tooltip-pair-div">
@@ -157,6 +168,8 @@
             <span class="optional message" id="task-priority-message"></span>
           </div>
         </form>
+        <!-- Show for delete confirmation: -->
+        <p id="del-confirm-task">Are You Sure To Remove Task ?</p>
         <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Create Task</button>
         <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
       </div>
