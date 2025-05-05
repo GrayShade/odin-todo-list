@@ -48,10 +48,10 @@ export class Tasks {
         {
           taskId: newId,
           projId: reqProjId,
-          title: allInputs[0].value,
-          description: allInputs[1].value,
-          dueDate: allInputs[2].value,
-          priority: allInputs[3].value
+          title: allInputs[1].value,
+          description: allInputs[2].value,
+          dueDate: allInputs[3].value,
+          priority: allInputs[4].value
         };
 
         localStorage.setItem(reqProjId, JSON.stringify(newObj));
@@ -98,20 +98,20 @@ export class Tasks {
     return null;
   }
 
-  updateTask(reqProjId, reqTaskId, updatedTask) {
+  updateTask(currProjId, currTaskId, updatedTask) {
     for (const obj of Object.entries({ ...localStorage })) {
-      if (obj[0] != reqProjId) { continue; };
-      if (JSON.parse(obj[1])[`p${reqProjId}`].projId == reqProjId) {
-        if (this.checkEmptyTasks(obj, reqProjId) == null) { return };
+      if (obj[0] != currProjId) { continue; };
+      if (JSON.parse(obj[1])[`p${currProjId}`].projId == currProjId) {
+        if (this.checkEmptyTasks(obj, currProjId) == null) { return };
         const newObj = JSON.parse(obj[1]);
-        for (const tasksObj of Object.entries(JSON.parse(obj[1])[`p${reqProjId}`].tasks)) {
+        for (const tasksObj of Object.entries(JSON.parse(obj[1])[`p${currProjId}`].tasks)) {
           // if its required task, update it:
-          if (tasksObj[1].taskId == reqTaskId) {
-            newObj[`p${reqProjId}`].tasks[`t${tasksObj[1].taskId}`] = updatedTask;
+          if (tasksObj[1].taskId == currTaskId) {
+            newObj[`p${currProjId}`].tasks[`t${tasksObj[1].taskId}`] = updatedTask;
             break;
           }
         }
-        localStorage.setItem(reqProjId, JSON.stringify(newObj));
+        localStorage.setItem(currProjId, JSON.stringify(newObj));
         return;
       }
     }

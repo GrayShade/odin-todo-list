@@ -109,7 +109,7 @@ export class TasksDisplay {
     message.innerHTML = ''
   }
 
-  showAllTasksSummary(projId) {
+  showAllTasksSummary(allProjects, projId) {
     const rightDiv = document.getElementById('right-div');
     rightDiv.innerHTML = '';
     const heading = document.createElement('h2');
@@ -123,29 +123,46 @@ export class TasksDisplay {
     this.createTableRows(table, projId);
 
     // to update task:
-    this.modifyTaskModal(projId, 'Update Task', 'Update Title', '.task-edit-icon', 'update-task');
+    this.modifyTaskModal(allProjects, projId, '.task-edit-icon', 'update-task');
     // to delete task:
-    this.modifyTaskModal('Delete Task', 'Remove It', '.task-remove-icon', 'delete-task');
+    this.modifyTaskModal('.task-remove-icon', 'delete-task');
 
   }
 
-  modifyTaskModal(projId, h3Title, btnTitle, allTaskControlElsClass, actionType) {
+  modifyTaskModal(allProjects = undefined, projId, allTaskControlElsClass, actionType) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
       allTaskControlEls[idx].addEventListener('click', (e) => {
         let modalHeader = document.querySelector('#task-modal-header h3');
-        modalHeader.textContent = h3Title;
+        // if (actionType == 'update-task') {
+
+        // }
+        // modalHeader.textContent = h3Title;
         const addTaskModalBtn = document.getElementById('add-task-btn');
         const formInputDiv = document.querySelector('.form-input-div');
         const taskId = e.target.id.split('-')[0];
 
         if (actionType == 'update-task') {
+          modalHeader.textContent = 'Update Task';
+          addTaskModalBtn.textContent = 'Update Task';
           document.getElementById('task-proj-input-div').style.display = 'block';
+
+          const dataListEle = document.getElementById('task-list-projects');
+          // to prevent duplication of datalist options in form:
+          dataListEle.textContent = '';
+          for (const key in allProjects) {
+            const projTitle = JSON.parse(allProjects[key])[`p${key}`].title;
+            const optionEle = document.createElement('option');
+            optionEle.setAttribute('value', projTitle);
+            dataListEle.appendChild(optionEle);
+          }
 
         } else
           if (actionType == 'delete-task') {
             formInputDiv.style.display = 'none';
+            modalHeader.textContent = 'Delete Task';
+            addTaskModalBtn.textContent = 'Remove It';
             document.getElementById('del-confirm-task').style.display = 'block';
             document.getElementById('task-proj-input-div').style.display = 'none';
             // const delConfirmP = document.createElement('p');
@@ -157,7 +174,7 @@ export class TasksDisplay {
             document.getElementById('del-confirm-task').style.display = 'none';
             document.getElementById('task-proj-input-div').style.display = 'none';
           }
-        addTaskModalBtn.textContent = btnTitle;
+
         document.getElementById('new-task-modal').style.display = 'block';
 
         this.eventBus.emit('populateTaskValues', projId, taskId); // notify projects.js to get project

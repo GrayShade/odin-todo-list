@@ -112,8 +112,15 @@
               <span class="tooltip"
                 data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
             </div>
-            <input type="text" class="optional form-inputs" id="task-project" name="task-project" minlength="1"
-              maxlength="790" pattern="^[\w\S]+( [\w\S]+)*$">
+            <input list="task-list-projects" type="text" class="optional form-inputs" id="task-project" name="task-project" minlength="1"
+              maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              <datalist id="task-list-projects">
+                <!-- <option value="Internet Explorer">
+                  <option value="Firefox">
+                  <option value="Chrome">
+                  <option value="Opera">
+                  <option value="Safari"> -->
+              </datalist>
             <span class="optional message" id="task-project-message"></span>
           </div>
 

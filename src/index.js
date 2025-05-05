@@ -52,8 +52,11 @@ class Main {
 
     this.setupEventBusListeners();
 
-    Main.#proj.updateProject(7, 'updated Project')
+    Main.#proj.updateProject(7, 'updated Project');
+    // console.log(Main.#proj.getProjectIdByTitle('Default'));
+
     Main.#proj.deleteProject(3);
+    // Main.#task.deleteTask(1, 1);
     Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
     Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
     // Main.#taskUI.showAllTasks(0);
@@ -69,7 +72,7 @@ class Main {
       dueDate: date,
       priority: ''
     };
-    Main.#task.updateTask(0, 0, updatedTask);
+    // Main.#task.updateTask(0, 0, updatedTask);
     Main.#task.getTask(0, 0);
   }
 
@@ -134,7 +137,7 @@ class Main {
     for (let taskIdx = 0; taskIdx <= allShowTasksSumArr.length - 1; taskIdx++) {
       allShowTasksSumArr[taskIdx].addEventListener('click', (e) => {
         const projId = e.target.id.split('-')[0].split('p')[1];
-        Main.#taskUI.showAllTasksSummary(projId);
+        Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
       });
     }
   }
@@ -188,7 +191,7 @@ class Main {
       if (actionType == 'delete-project') {
         reqFieldsStatus = true;
       } else {
-        reqFieldsStatus = this.getRequiredFieldsStatus(reqInputs, reqMsgSpans, LBarBtnId);
+        reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if (reqFieldsStatus == true || actionType == 'delete-project') {
@@ -231,15 +234,32 @@ class Main {
             break;
           case 'update-task':
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            let updatedProjId = document.getElementById('task-project').value;
+            // if project is not chosen to be updated, assign task same project:
+            if (updatedProjId == '') {
+              updatedProjId = projIdOfTask;
+            } else {
+              updatedProjId = Main.#proj.getProjectIdByTitle(updatedProjId);
+            }
             const updatedTask = {
               taskId: taskOrProjId,
-              projId: projIdOfTask,
+              projId: updatedProjId,
               title: document.getElementById('task-title').value,
               description: document.getElementById('task-desc').value,
               dueDate: document.getElementById('task-dueDate').value,
               priority: document.getElementById('task-priority').value
             };
-            Main.#task.updateTask(projIdOfTask, taskOrProjId, updatedTask)
+            // if task is chosen to be modified for same project:
+            if (projIdOfTask == updatedTask.projId) {
+              Main.#task.updateTask(projIdOfTask, taskOrProjId, updatedTask);
+            }
+            else {
+              // if task is chosen to be moved to a different project:
+              Main.#task.createTask(allInputs, updatedTask.projId);
+              // delete task from previous project:
+              Main.#task.deleteTask(projIdOfTask, taskOrProjId);
+            }
+
             this.#updateLBarProjectsAndTasks();
             toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
@@ -254,11 +274,11 @@ class Main {
     }, { signal });
   }
 
-  getRequiredFieldsStatus(reqInputs, reqMsgSpans, addBtnId) {
+  getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, addBtnId) {
     let reqFieldsStatus = false;
     const allProj = Main.#proj.getAllProjects();
     for (let i = 0; i < reqInputs.length; i++) {
-      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(reqInputs[i], reqMsgSpans[i], allProj, addBtnId);
+      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(allProj, allInputs, reqInputs[i], reqMsgSpans[i], addBtnId);
       if (reqFieldsStatus == false) { return false };
     }
     return reqFieldsStatus;

@@ -97,8 +97,8 @@ export class Validation {
     });
   }
 
-  validateReqAfterSubmit(ele, msg_span, allProjects, addBtnId) {
-    // checking if a book with same title exists:
+  validateReqAfterSubmit(allProjects, allInputs, ele, msg_span, addBtnId) {
+    // checking if same title exists for project:
     if (ele.id === 'new-proj-title') {
       for (let obj of (Object.entries(allProjects))) {
         const project = JSON.parse(obj[1])[`p${obj[0]}`];
@@ -111,32 +111,49 @@ export class Validation {
       }
     } else if (ele.id == 'task-title') {
       const projId = addBtnId.split('-')[0];
+      const taskProjTitle = JSON.parse(allProjects[projId.split('p')[1]])[projId].title;
       const allTasksObj = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
       // if there is at least 1 task present:
-      if (Object.keys(allTasksObj).length > 0) {
+
+      if (document.getElementById('task-proj-input-div').style.display == 'block') {
+        const updatedProjTitle = allInputs[0].value;
+        const issueFound = false;
+        const projectExists = this.projectExists(allProjects, updatedProjTitle);
+        if (projectExists == false && updatedProjTitle != '') {
+          allInputs[0].style.borderColor = 'red';
+          const projMsgSpan = document.getElementById('task-project-message');
+          projMsgSpan.style.color = 'red';
+          projMsgSpan.innerHTML = "Project does not exists!";
+          return false;
+        }
+        // const taskExistsInOtherProj = this.taskExistsInOtherProj();
+      } else if (Object.keys(allTasksObj).length > 0) {
         for (const idx in Object.entries(allTasksObj)) {
-          if (Object.entries(allTasksObj)[idx][1].title == ele.value) {
+          const taskTitle = Object.entries(allTasksObj)[idx][1].title;
+          // for task update modal:
+
+          if (taskTitle == ele.value) {
             ele.style.borderColor = 'red';
             msg_span.style.color = 'red';
             msg_span.innerHTML = "*Title already exists!"
             return false;
           }
         }
-      };
+      }
+      // checking html pattern validation:
+      if (ele.value != '' && ele.checkValidity() === true) {
+        msg_span.innerHTML = '';
+        return true;
+      } else {
+        ele.style.borderColor = 'red';
+        msg_span.style.color = 'red';
+        msg_span.innerHTML = "*Field Required!"
+        return false;
+      }
     }
-
-    // checking html pattern validation:
-    if (ele.value != '' && ele.checkValidity() === true) {
-      msg_span.innerHTML = '';
-      return true;
-    } else {
-      ele.style.borderColor = 'red';
-      msg_span.style.color = 'red';
-      msg_span.innerHTML = "*Field Required!"
-      return false;
-    }
-
+    return true;
   }
+
 
   validateOptAfterSubmit(ele, msg_span) {
 
@@ -150,6 +167,16 @@ export class Validation {
       msg_span.innerHTML = "*Field Required!"
       return false;
     }
+  }
+
+  projectExists(allProjects, updatedProjTitle) {
+    for (const idx in Object.entries((allProjects))) {
+      const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
+      if (loopProj.title == updatedProjTitle) {
+        return true;
+      }
+    }
+    return false;
   }
 
   addToast(modalFooterId, toastType, toastText) {

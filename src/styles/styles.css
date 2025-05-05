@@ -103,8 +103,8 @@ th {
 #projects-container>p:hover,
 #left-bar .project-tasks>p:hover {
   cursor: pointer;
-  color: ghostwhite;
-  background: linear-gradient(45deg, #009688, transparent);
+  color: mintcream;
+  background: linear-gradient(45deg, #303435, transparent);
   /* background: #f2f2f2; */
   font-weight: 600;
 }
@@ -165,7 +165,7 @@ th {
 
 .project-tasks {
   /* background: #f0eeee; */
-  background: linear-gradient(45deg, #1a1a1a, transparent);
+  background: linear-gradient(45deg, #607D8B, transparent);
 }
 
 .project-tasks p {
@@ -222,23 +222,23 @@ th {
 }
 
 /* #task-sum-table th:nth-of-type(odd), */
-#task-sum-table td:nth-of-type(odd),
-#task-sum-table td:nth-of-type(6) {
+#task-sum-table td:nth-of-type(odd) {
   font-family: s-italic;
 }
 
-
+#task-sum-table th:nth-of-type(6),
+#task-sum-table td:nth-of-type(6),
 #task-sum-table th:nth-of-type(7),
-#task-sum-table th:nth-of-type(8),
 #task-sum-table td:nth-of-type(7),
-#task-sum-table th:nth-of-type(8) {
+#task-sum-table th:nth-of-type(8),
+#task-sum-table td:nth-of-type(8) {
   width: 20%;
 }
 
 #task-sum-table th:nth-of-type(1),
+#task-sum-table td:nth-of-type(1),
 #task-sum-table th:nth-of-type(3),
-#task-sum-table th:nth-of-type(1),
-#task-sum-table th:nth-of-type(3) {
+#task-sum-table td:nth-of-type(3) {
   width: 10%;
 }
 
@@ -263,10 +263,9 @@ th {
 } */
 
 #right-div th {
-  /* text-align: start; */
-  background: #135a69;
-  /* color: #ffa500; */
-  color: #ffe4c4;
+  text-align: start;
+  background: #4a4a4a;
+  color: whitesmoke;
 }
 
 /* #right-div table tr:hover {
@@ -597,3 +596,25 @@ select {
 }
 
 /* toast related code ending here */
+
+/* <datalist> and <option> styling */
+datalist {
+  position: absolute;
+  max-height: 20em;
+  border: 0 none;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+datalist option {
+  font-size: 0.8em;
+  padding: 0.3em 1em;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+datalist option:hover, datalist option:focus {
+  color: #fff;
+  background-color: #036;
+  outline: 0 none;
+}

@@ -39,6 +39,20 @@ export class Projects {
     return null;
   }
 
+  getProjectIdByTitle(title) {
+    const allProjects = this.getAllProjects();
+    for (const idx in Object.entries((allProjects))) {
+
+      const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
+      // if selected project exists in projects & is different from current proj Title:
+      // if (loopProj.title == updatedProjTitle && updatedProjTitle != taskProjTitle) {
+        if (loopProj.title == title) {
+        return loopProj.projId;
+      }
+    }
+    return null;
+  }
+
   createProject(projName) {
     let newID = 0;
     let newProj = {};
