@@ -202,6 +202,13 @@ th {
 
 }
 
+/* Below property is used to be able to change border color etc.
+https://stackoverflow.com/a/18679047 */
+table {
+  border-collapse: collapse;
+}
+
+
 #right-div table span {
   padding: 0em 1em 0em 0em;
   cursor: pointer;
@@ -613,7 +620,8 @@ datalist option {
   cursor: pointer;
 }
 
-datalist option:hover, datalist option:focus {
+datalist option:hover,
+datalist option:focus {
   color: #fff;
   background-color: #036;
   outline: 0 none;

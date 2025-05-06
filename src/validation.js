@@ -4,42 +4,7 @@ export class Validation {
   constructor() {
     this.#setEventListeners();
   }
-  validateBeforeSubmit(e, ele_name, ele_message) {
-    const ele_val = document.getElementById(ele_name).value;
-    const message = document.getElementById(ele_message);
-    const ele = e.target;
-    if (e.key === 'Tab') {
-      return;
-    }
 
-    const toolTipSpan = ele.previousElementSibling.lastElementChild;
-    if (ele.checkValidity() === false) {
-      toolTipSpan.style.display = 'block';
-    }
-    else {
-      toolTipSpan.style.display = 'none';
-    }
-
-    if (!ele.classList.contains('required') && ele_val == '') {
-      ele.style.borderColor = 'blue';
-      message.innerHTML = '';
-    } else
-      if (ele_val != '' && ele.checkValidity() === true) {
-        ele.style.borderColor = 'blue';
-        message.innerHTML = ''
-      } else
-        if (ele_val != '' && ele.checkValidity() === false) {
-          ele.style.borderColor = 'red';
-          message.innerHTML = ''
-        }
-        else {
-
-          ele.style.borderColor = 'red';
-          message.style.color = 'red';
-          message.innerHTML = "*Field Required!"
-        }
-
-  }
   #setEventListeners() {
     // if tooltip is shown & user moves to next element, tooltip should hide:
     document.addEventListener('focusout', (e) => {
@@ -97,7 +62,49 @@ export class Validation {
     });
   }
 
-  validateReqAfterSubmit(allProjects, allInputs, ele, msg_span, addBtnId) {
+
+  validateBeforeSubmit(e, ele_name, ele_message) {
+    const ele_val = document.getElementById(ele_name).value;
+    const message = document.getElementById(ele_message);
+    const ele = e.target;
+    if (e.key === 'Tab') {
+      return;
+    }
+
+    const toolTipSpan = ele.previousElementSibling.lastElementChild;
+    if (ele.checkValidity() === false) {
+      toolTipSpan.style.display = 'block';
+    }
+    else {
+      toolTipSpan.style.display = 'none';
+    }
+
+    if (!ele.classList.contains('required') && ele_val == '') {
+      ele.style.borderColor = 'blue';
+      message.innerHTML = '';
+    } else
+      if (ele_val != '' && ele.checkValidity() === true) {
+        ele.style.borderColor = 'blue';
+        message.innerHTML = ''
+      } else
+        if (ele_val != '' && ele.checkValidity() === false) {
+          ele.style.borderColor = 'red';
+          message.innerHTML = ''
+        }
+        else {
+
+          ele.style.borderColor = 'red';
+          message.style.color = 'red';
+          message.innerHTML = "*Field Required!"
+        }
+
+  }
+
+
+  validateReqAfterSubmit(parameterObject, updatedProjId = '') {
+    // destructuring object below. Note that the variable names should be
+    // same as arguments passed:
+    const { allProjects, allInputs, ele, msg_span, addBtnId } = parameterObject;
     // checking if same title exists for project:
     if (ele.id === 'new-proj-title') {
       for (let obj of (Object.entries(allProjects))) {
@@ -113,29 +120,46 @@ export class Validation {
       const projId = addBtnId.split('-')[0];
       const taskProjTitle = JSON.parse(allProjects[projId.split('p')[1]])[projId].title;
       const allTasksObj = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
-      // if there is at least 1 task present:
 
+      // for task update modal:
       if (document.getElementById('task-proj-input-div').style.display == 'block') {
         const updatedProjTitle = allInputs[0].value;
-        const issueFound = false;
-        const projectExists = this.projectExists(allProjects, updatedProjTitle);
-        if (projectExists == false && updatedProjTitle != '') {
+        // .....................Snippet Start................................
+        // to check if specified project exists already or not:
+        const projectAlreadyExists = this.CheckProjectExistence(allProjects, updatedProjTitle);
+        // Specified project must either exist or field should be left blank: 
+        if (projectAlreadyExists == false && updatedProjTitle != '') {
           allInputs[0].style.borderColor = 'red';
           const projMsgSpan = document.getElementById('task-project-message');
           projMsgSpan.style.color = 'red';
-          projMsgSpan.innerHTML = "Project does not exists!";
+          projMsgSpan.innerHTML = "Project Does Not Exist!";
           return false;
         }
-        // const taskExistsInOtherProj = this.taskExistsInOtherProj();
+        // ......................Snippet End...............................
+
+        // ......................Snippet Start................................
+        // to check if task is duplicated for project we want to move it to:
+        const checkTaskDupArgs = { projectAlreadyExists, allProjects, updatedProjTitle, updatedProjId }
+        // check if same task exists in other project:
+        const isTaskDuplicated = this.checkTaskDuplication(checkTaskDupArgs);
+        if (isTaskDuplicated == false) {
+          allInputs[1].style.borderColor = 'red';
+          const msg_span = document.getElementById('task-title-message');
+          msg_span.style.color = 'red';
+          msg_span.innerHTML = "Task Is Duplicated For Above Project!";
+          return false;
+        }
+        // .......................Snippet End................................
+
+        // if there is at least 1 task present:
       } else if (Object.keys(allTasksObj).length > 0) {
         for (const idx in Object.entries(allTasksObj)) {
           const taskTitle = Object.entries(allTasksObj)[idx][1].title;
-          // for task update modal:
 
           if (taskTitle == ele.value) {
             ele.style.borderColor = 'red';
             msg_span.style.color = 'red';
-            msg_span.innerHTML = "*Title already exists!"
+            msg_span.innerHTML = "*Title Already Exists!"
             return false;
           }
         }
@@ -169,7 +193,7 @@ export class Validation {
     }
   }
 
-  projectExists(allProjects, updatedProjTitle) {
+  CheckProjectExistence(allProjects, updatedProjTitle) {
     for (const idx in Object.entries((allProjects))) {
       const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
       if (loopProj.title == updatedProjTitle) {
@@ -177,6 +201,23 @@ export class Validation {
       }
     }
     return false;
+  }
+
+  checkTaskDuplication(parameterObject) {
+    const { projectAlreadyExists, allProjects, updatedProjTitle, updatedProjId } = parameterObject;
+    if (updatedProjTitle == '') { return true; }
+    // const currentProjId = addBtnId.split('-')[0].split('p')[1];
+    if (projectAlreadyExists != false && updatedProjTitle != '') {
+      const updatedProjTasks = JSON.parse(allProjects[updatedProjId])[`p${updatedProjId}`].tasks;
+      const taskTitleEle = document.getElementById('task-title');
+      for (const idx in Object.entries(updatedProjTasks)) {
+        const currLoopTask = updatedProjTasks[`t${idx}`];
+        if (currLoopTask.title == taskTitleEle.value) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   addToast(modalFooterId, toastType, toastText) {

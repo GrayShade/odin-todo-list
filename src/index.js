@@ -199,6 +199,7 @@ class Main {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
             this.#updateLBarProjectsAndTasks();
+            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             toastMessage = 'Project Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -206,6 +207,7 @@ class Main {
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();
+            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             toastMessage = 'Task Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -218,6 +220,7 @@ class Main {
             const newTitle = document.getElementById('new-proj-title').value;
             Main.#proj.updateProject(taskOrProjId, newTitle);
             this.#updateLBarProjectsAndTasks();
+            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             toastMessage = 'Project Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -229,6 +232,7 @@ class Main {
             }
             Main.#proj.deleteProject(taskOrProjId);
             this.#updateLBarProjectsAndTasks();
+            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             toastMessage = 'Project Deleted Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -261,6 +265,7 @@ class Main {
             }
 
             this.#updateLBarProjectsAndTasks();
+            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -270,15 +275,21 @@ class Main {
       else {
         this.handleErrorToast(modalFooterId, targetType, toastMessage);
       }
-      Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     }, { signal });
   }
 
   getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, addBtnId) {
     let reqFieldsStatus = false;
-    const allProj = Main.#proj.getAllProjects();
+    const allProjects = Main.#proj.getAllProjects();
+    let updatedProjId = '';
+    if (allInputs[0].id == 'task-project') {
+      updatedProjId = Main.#proj.getProjectIdByTitle(allInputs[0].value);
+    }
     for (let i = 0; i < reqInputs.length; i++) {
-      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(allProj, allInputs, reqInputs[i], reqMsgSpans[i], addBtnId);
+      const ele = reqInputs[i];
+      const msg_span = reqMsgSpans[i];
+      const parameters = {allProjects, allInputs, ele, msg_span, addBtnId };
+      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(parameters, updatedProjId);
       if (reqFieldsStatus == false) { return false };
     }
     return reqFieldsStatus;
