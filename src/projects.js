@@ -44,8 +44,6 @@ export class Projects {
     for (const idx in Object.entries((allProjects))) {
 
       const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
-      // if selected project exists in projects & is different from current proj Title:
-      // if (loopProj.title == updatedProjTitle && updatedProjTitle != taskProjTitle) {
         if (loopProj.title == title) {
         return loopProj.projId;
       }

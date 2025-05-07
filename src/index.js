@@ -113,6 +113,10 @@ class Main {
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
+        document.getElementById('new-task-form').style.display = 'flex';
+        document.getElementById('del-confirm-task').style.display = 'none';
+        const addProjModalBtn = document.getElementById('add-task-btn');
+        addProjModalBtn.textContent = 'Create Task';
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
@@ -185,16 +189,17 @@ class Main {
       const allInputs = document.querySelectorAll(`#${formId} input,select`);
 
       let projIdOfTask;
-      // if (actionType == 'task') {projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];};
       let reqFieldsStatus;
       let toastMessage;
-      if (actionType == 'delete-project') {
+      // for deletion, we don't need validation:
+      const statusCheckSkipped = ['delete-project', 'delete-task'];
+      if (statusCheckSkipped.includes(actionType)) {
         reqFieldsStatus = true;
       } else {
         reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
-      if (reqFieldsStatus == true || actionType == 'delete-project') {
+      if (reqFieldsStatus == true || statusCheckSkipped.includes(actionType)) {
         switch (actionType) {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
@@ -269,6 +274,15 @@ class Main {
             toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
+
+          case 'delete-task':
+            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            Main.#task.deleteTask(projIdOfTask, taskOrProjId);
+            this.#updateLBarProjectsAndTasks();
+            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            toastMessage = 'Task Deleted Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            break;
         }
         // this.handleSuccessToast(modalFooterId, toastMessage, targetType);
       }
@@ -288,7 +302,7 @@ class Main {
     for (let i = 0; i < reqInputs.length; i++) {
       const ele = reqInputs[i];
       const msg_span = reqMsgSpans[i];
-      const parameters = {allProjects, allInputs, ele, msg_span, addBtnId };
+      const parameters = { allProjects, allInputs, ele, msg_span, addBtnId };
       reqFieldsStatus = Main.#validate.validateReqAfterSubmit(parameters, updatedProjId);
       if (reqFieldsStatus == false) { return false };
     }

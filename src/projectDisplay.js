@@ -119,22 +119,13 @@ export class ProjectsDisplay {
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
     window.addEventListener('click', e => {
-      // Is proj-edit-icon clicked in projects summary? :
-      // const currProjEditClicked = e.target.classList.contains('proj-edit-icon');
       if (e.target == modal) {
         this.resetNewProjModalUI();
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
-        // controller.abort();
       }
     });
   }
-
-  // updateProjModalUI(buttonId) {
-  //   buttonId.addEventListener('click', e => {
-  //     document.getElementById('new-proj-modal').style.display = 'block';
-  //   });
-  // }
 
 
   resetNewProjModalUI() {
@@ -179,18 +170,14 @@ export class ProjectsDisplay {
         if (actionType == 'delete-project') {
           formInputDiv.style.display = 'none';
           document.getElementById('del-confirm-proj').style.display = 'block';
-          // const delConfirmP = document.createElement('p');
-          // delConfirmP.setAttribute('id', 'del-confirm-proj');
-          // delConfirmP.textContent = 'Are You Sure?';
-          // document.getElementById('new-proj-form').appendChild(delConfirmP);
-        }else {
+        } else {
           formInputDiv.style.display = 'flex';
           document.getElementById('del-confirm-proj').style.display = 'none';
         }
         addProjModalBtn.textContent = btnTitle;
         document.getElementById('new-proj-modal').style.display = 'block';
 
-        
+
 
         this.eventBus.emit('populateProjTitle', projId); // notify projects.js to get project
         this.eventBus.emit('removeProjToast'); // Notify UI to remove toast
@@ -252,7 +239,6 @@ export class ProjectsDisplay {
       const projTd3Text = document.createTextNode(projObVal.projId);
       const projTd4Text = document.createTextNode(Object.keys(projObVal.tasks).length);
 
-      // const projTd5Text = document.createTextNode('controls');
       const projTd5EditSpan = document.createElement('span');
       const projTd5RemoveSpan = document.createElement('span');
       projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`);
@@ -277,7 +263,6 @@ export class ProjectsDisplay {
 
       table.appendChild(projTr);
 
-      // sumDiv.appendChild(sumRowDiv); 
       num++;
     }
   }

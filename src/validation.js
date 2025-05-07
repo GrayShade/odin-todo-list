@@ -206,7 +206,6 @@ export class Validation {
   checkTaskDuplication(parameterObject) {
     const { projectAlreadyExists, allProjects, updatedProjTitle, updatedProjId } = parameterObject;
     if (updatedProjTitle == '') { return true; }
-    // const currentProjId = addBtnId.split('-')[0].split('p')[1];
     if (projectAlreadyExists != false && updatedProjTitle != '') {
       const updatedProjTasks = JSON.parse(allProjects[updatedProjId])[`p${updatedProjId}`].tasks;
       const taskTitleEle = document.getElementById('task-title');

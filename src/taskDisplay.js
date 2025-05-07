@@ -123,13 +123,13 @@ export class TasksDisplay {
     this.createTableRows(table, projId);
 
     // to update task:
-    this.modifyTaskModal(allProjects, projId, '.task-edit-icon', 'update-task');
+    this.modifyTaskModal(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
-    this.modifyTaskModal('.task-remove-icon', 'delete-task');
+    this.modifyTaskModal(projId, '.task-remove-icon', 'delete-task');
 
   }
 
-  modifyTaskModal(allProjects = undefined, projId, allTaskControlElsClass, actionType) {
+  modifyTaskModal(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
@@ -140,7 +140,8 @@ export class TasksDisplay {
         // }
         // modalHeader.textContent = h3Title;
         const addTaskModalBtn = document.getElementById('add-task-btn');
-        const formInputDiv = document.querySelector('.form-input-div');
+        // const formInputDiv = document.querySelector('.form-input-div');
+        const taskForm = document.getElementById('new-task-form');
         const taskId = e.target.id.split('-')[0];
 
         if (actionType == 'update-task') {
@@ -160,7 +161,7 @@ export class TasksDisplay {
 
         } else
           if (actionType == 'delete-task') {
-            formInputDiv.style.display = 'none';
+            taskForm.style.display = 'none';
             modalHeader.textContent = 'Delete Task';
             addTaskModalBtn.textContent = 'Remove It';
             document.getElementById('del-confirm-task').style.display = 'block';
@@ -170,7 +171,7 @@ export class TasksDisplay {
             // delConfirmP.textContent = 'Are You Sure?';
             // document.getElementById('new-proj-form').appendChild(delConfirmP);
           } else {
-            formInputDiv.style.display = 'flex';
+            taskForm.style.display = 'flex';
             document.getElementById('del-confirm-task').style.display = 'none';
             document.getElementById('task-proj-input-div').style.display = 'none';
           }
