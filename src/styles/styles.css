@@ -155,8 +155,18 @@ th {
 }
 
 #projects-container p .left-bar-span-task {
-  width: 3.5em;
-  font-size: 0.5em;
+  /* font-size: 0.5em; */
+  padding-right: 2em;
+}
+
+#projects-container p .at-pin {
+  font-size: 0.6em;
+}
+
+#projects-container p .task-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 #projects-container .project {
@@ -545,8 +555,9 @@ select {
   text-align: center;
 }
 
-#proj-btn-div {
+.modal-content .center-buttons {
   display: flex;
+  justify-content: center;
 }
 
 .form-button {

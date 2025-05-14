@@ -209,8 +209,8 @@ export class Validation {
     if (projectAlreadyExists != false && updatedProjTitle != '') {
       const updatedProjTasks = JSON.parse(allProjects[updatedProjId])[`p${updatedProjId}`].tasks;
       const taskTitleEle = document.getElementById('task-title');
-      for (const idx in Object.entries(updatedProjTasks)) {
-        const currLoopTask = updatedProjTasks[`t${idx}`];
+      for (const key in updatedProjTasks) {
+        const currLoopTask = updatedProjTasks[key];
         if (currLoopTask.title == taskTitleEle.value) {
           return false;
         }

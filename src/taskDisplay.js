@@ -59,13 +59,17 @@ export class TasksDisplay {
         // const proj
         const taskMDTaskP = document.createElement('p');
         taskMD.appendChild(taskMDTaskP);
-        taskMDTaskP.innerText = projTasks[key].title;
 
-        const taskMDTaskPSpan = document.createElement('span');
-        // const taskId = projTasks[key]['taskId'];
-        taskMDTaskPSpan.setAttribute('id', `${projId}-${key}`);
-        taskMDTaskPSpan.setAttribute('class', 'left-bar-span-task at-pin');
-        taskMDTaskP.prepend(taskMDTaskPSpan);
+        const taskMDTaskPSpan1 = document.createElement('span');
+        taskMDTaskPSpan1.setAttribute('id', `${projId}-${key}`);
+        taskMDTaskPSpan1.setAttribute('class', 'left-bar-span-task at-pin');
+
+        const taskMDTaskPSpan2 = document.createElement('span');
+        taskMDTaskPSpan2.setAttribute('class', 'left-bar-span-task task-title');
+        taskMDTaskPSpan2.innerText = projTasks[key].title;
+        taskMDTaskP.prepend(taskMDTaskPSpan2);
+        taskMDTaskP.prepend(taskMDTaskPSpan1);
+
       }
     }
   }
@@ -145,8 +149,13 @@ export class TasksDisplay {
         const taskId = e.target.id.split('-')[0];
 
         if (actionType == 'update-task') {
+
           modalHeader.textContent = 'Update Task';
           addTaskModalBtn.textContent = 'Update Task';
+
+          document.getElementById('new-task-form').style.display = 'flex';
+          document.getElementById('del-confirm-task').style.display = 'none';
+
           document.getElementById('task-proj-input-div').style.display = 'block';
 
           const dataListEle = document.getElementById('task-list-projects');
@@ -163,9 +172,12 @@ export class TasksDisplay {
           if (actionType == 'delete-task') {
             taskForm.style.display = 'none';
             modalHeader.textContent = 'Delete Task';
-            addTaskModalBtn.textContent = 'Remove It';
+            addTaskModalBtn.textContent = 'Remove';
+            document.getElementById('new-task-reset').textContent = 'Cancel'
             document.getElementById('del-confirm-task').style.display = 'block';
             document.getElementById('task-proj-input-div').style.display = 'none';
+            const btnDiv = document.querySelectorAll('.btn-div');
+            btnDiv[1].classList.add(".center-buttons");
             // const delConfirmP = document.createElement('p');
             // delConfirmP.setAttribute('id', 'del-confirm-task');
             // delConfirmP.textContent = 'Are You Sure?';

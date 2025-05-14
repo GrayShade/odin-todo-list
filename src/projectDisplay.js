@@ -175,6 +175,8 @@ export class ProjectsDisplay {
           document.getElementById('del-confirm-proj').style.display = 'none';
         }
         addProjModalBtn.textContent = btnTitle;
+        const btnDiv = document.querySelectorAll('.btn-div');
+        btnDiv[0].classList.add(".center-buttons");
         document.getElementById('new-proj-modal').style.display = 'block';
 
 

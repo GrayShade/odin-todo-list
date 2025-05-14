@@ -97,6 +97,8 @@ class Main {
       document.getElementById('del-confirm-proj').style.display = 'none';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
+      const btnDiv = document.querySelectorAll('.btn-div');
+      btnDiv[0].classList.remove(".center-buttons");
 
       Main.#ui.removeToast('new-proj-footer', 'project');
       const newProjForm = document.getElementById('new-proj-form');
@@ -115,8 +117,11 @@ class Main {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
         document.getElementById('new-task-form').style.display = 'flex';
         document.getElementById('del-confirm-task').style.display = 'none';
+        document.querySelector('#task-modal-header h3').textContent = 'New Task';
         const addProjModalBtn = document.getElementById('add-task-btn');
         addProjModalBtn.textContent = 'Create Task';
+        const btnDiv = document.querySelectorAll('.btn-div');
+        btnDiv[1].classList.remove(".center-buttons");
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
