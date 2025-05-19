@@ -157,7 +157,13 @@ class Main {
     const allShowTasksSumArr = document.querySelectorAll('.tasks-sumry');
     for (let taskIdx = 0; taskIdx <= allShowTasksSumArr.length - 1; taskIdx++) {
       allShowTasksSumArr[taskIdx].addEventListener('click', (e) => {
-        const projId = e.target.id.split('-')[0].split('p')[1];
+        let projId = '';
+        // if icon is clicked, then that << span >> is selected instead of << p >>. So:
+        if (e.target.classList.contains('left-bar-span')) {
+          projId = e.target.parentElement.id.split('-')[0].split('p')[1];
+        } else {
+          projId = e.target.id.split('-')[0].split('p')[1];
+        }
         Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
       });
     }

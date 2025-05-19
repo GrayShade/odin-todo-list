@@ -8,6 +8,11 @@
   src: url('./../assets/fonts/Spectral-Italic.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'open-sans';
+  src: url('./../assets/fonts/OpenSans.ttf') format('truetype');
+}
+
 * {
   margin: 0;
   border: none;
@@ -30,10 +35,12 @@ body {
 
 
 body {
-  font-family: var(--system-ui);
+  /* font-family: var(--system-ui); */
   height: 100vh;
   display: grid;
   grid-template: 1fr 15fr / 1fr 3fr;
+  font-family: 'open-sans';
+  font-size: 0.95em;
 }
 
 #main-header {
@@ -53,6 +60,7 @@ body {
   line-height: 2em;
   color: lightgray;
   overflow-y: auto;
+  min-width: 200px;
 }
 
 #left-bar,
