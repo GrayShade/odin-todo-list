@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: 's-italic';
-  src: url('./../fonts/Spectral-Italic.ttf') format('truetype');
+  src: url('./../assets/fonts/Spectral-Italic.ttf') format('truetype');
 }
 
 * {
@@ -208,8 +208,8 @@ th {
   /* border: 1px solid grey; */
   width: 100%;
   table-layout: fixed;
-  font-family: 's-italic';
-
+  /* font-family: 's-italic'; */
+  font-size: 0.95em;
 }
 
 /* Below property is used to be able to change border color etc.
@@ -224,6 +224,10 @@ table {
   cursor: pointer;
 }
 
+.task-details-icon:hover {
+  color: #ffa500;
+}
+
 .at-pencil-edit:hover {
   color: #5f9ea0;
 }
@@ -232,52 +236,29 @@ table {
   color: #ff4500;
 }
 
-#proj-sum-table td:nth-of-type(1),
-#proj-sum-table td:nth-of-type(3),
-#proj-sum-table td:nth-of-type(4) {
-  font-family: s-italic;
-}
-
-/* #task-sum-table th:nth-of-type(odd), */
-#task-sum-table td:nth-of-type(odd) {
-  font-family: s-italic;
-}
-
-#task-sum-table th:nth-of-type(6),
-#task-sum-table td:nth-of-type(6),
-#task-sum-table th:nth-of-type(7),
-#task-sum-table td:nth-of-type(7),
-#task-sum-table th:nth-of-type(8),
-#task-sum-table td:nth-of-type(8) {
-  width: 20%;
-}
-
 #task-sum-table th:nth-of-type(1),
-#task-sum-table td:nth-of-type(1),
-#task-sum-table th:nth-of-type(3),
-#task-sum-table td:nth-of-type(3) {
-  width: 10%;
+#task-sum-table td:nth-of-type(1) {
+  width: 50px;
 }
 
 #task-sum-table th:nth-of-type(4),
-#task-sum-table td:nth-of-type(4) {
-  width: 40%;
+#task-sum-table td:nth-of-type(4),
+#task-sum-table th:nth-of-type(5),
+#task-sum-table td:nth-of-type(5),
+#task-sum-table th:nth-of-type(6),
+#task-sum-table td:nth-of-type(6) {
+  width: 100px;
+}
+
+#task-sum-table th:nth-of-type(3),
+#task-sum-table td:nth-of-type(3) {
+  width: 150px;
 }
 
 #task-sum-table th:nth-of-type(2),
 #task-sum-table td:nth-of-type(2) {
-  width: 60%;
+  width: 200px;
 }
-
-#task-sum-table th:nth-of-type(5),
-#task-sum-table td:nth-of-type(5) {
-  width: 70%;
-}
-
-/* #task-sum-table td:nth-of-type(2),
-#task-sum-table th:nth-of-type(2) {
-  color: #008080;
-} */
 
 #right-div th {
   text-align: start;
@@ -311,6 +292,10 @@ td {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* #proj-td5 {
+  display: flex;
+} */
 
 #right-div td:nth #right-div #proj-sum-div {
   height: 90%;
@@ -555,7 +540,7 @@ select {
   text-align: center;
 }
 
-.modal-content .center-buttons {
+.modal-content .btn-div {
   display: flex;
   justify-content: center;
 }

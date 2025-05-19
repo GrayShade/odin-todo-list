@@ -1,7 +1,9 @@
 import { compareAsc, format } from "date-fns";
 import { styles } from "./styles/styles.css"
 import { reset } from "./styles/reset.css"
-import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
+// import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
+// import {feather} from "./../node_modules/feather-icons/dist/feather.js";
+import { replace } from 'feather-icons';
 import { EventBus } from './eventBus.js';
 import { Projects } from "./projects";
 import { Tasks } from "./tasks";
@@ -11,6 +13,12 @@ import { TasksDisplay } from "./taskDisplay";
 import { Validation } from "./validation";
 
 class Main {
+
+  constructor() {
+    // for feather icons loading:
+    replace();
+
+  }
 
   // .........................EventBus AKA pub/sub pattern.........................................
   setupEventBusListeners() {
@@ -46,6 +54,10 @@ class Main {
   static #validate = new Validation();
 
   start() {
+    document.addEventListener('DOMContentLoaded', () => {
+      replace();
+    });
+
     Main.#proj.createDefaultProject('Default');
     this.#updateLBarProjectsAndTasks();
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
@@ -97,8 +109,8 @@ class Main {
       document.getElementById('del-confirm-proj').style.display = 'none';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
-      const btnDiv = document.querySelectorAll('.btn-div');
-      btnDiv[0].classList.remove(".center-buttons");
+      // const btnDiv = document.querySelectorAll('.btn-div');
+      // btnDiv[0].classList.remove(".center-buttons");
 
       Main.#ui.removeToast('new-proj-footer', 'project');
       const newProjForm = document.getElementById('new-proj-form');
@@ -120,8 +132,8 @@ class Main {
         document.querySelector('#task-modal-header h3').textContent = 'New Task';
         const addProjModalBtn = document.getElementById('add-task-btn');
         addProjModalBtn.textContent = 'Create Task';
-        const btnDiv = document.querySelectorAll('.btn-div');
-        btnDiv[1].classList.remove(".center-buttons");
+        // const btnDiv = document.querySelectorAll('.btn-div');
+        // btnDiv[1].classList.remove(".center-buttons");
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');

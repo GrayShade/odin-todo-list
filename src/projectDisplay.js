@@ -175,8 +175,8 @@ export class ProjectsDisplay {
           document.getElementById('del-confirm-proj').style.display = 'none';
         }
         addProjModalBtn.textContent = btnTitle;
-        const btnDiv = document.querySelectorAll('.btn-div');
-        btnDiv[0].classList.add(".center-buttons");
+        // const btnDiv = document.querySelectorAll('.btn-div');
+        // btnDiv[0].classList.add(".center-buttons");
         document.getElementById('new-proj-modal').style.display = 'block';
 
 
@@ -236,13 +236,21 @@ export class ProjectsDisplay {
       const projTd4 = document.createElement('td');
       const projTd5 = document.createElement('td');
 
+      projTd5.setAttribute('id', 'proj-td5');
+
       const projTd1Text = document.createTextNode(num);
       const projTd2Text = document.createTextNode(projObVal.title);
       const projTd3Text = document.createTextNode(projObVal.projId);
       const projTd4Text = document.createTextNode(Object.keys(projObVal.tasks).length);
 
+      const projTd5DetailsSpan = document.createElement('span');
       const projTd5EditSpan = document.createElement('span');
       const projTd5RemoveSpan = document.createElement('span');
+      projTd5DetailsSpan.setAttribute('id', `${projObKey}-proj-details`);
+      projTd5DetailsSpan.setAttribute('class', 'proj-details-icon');
+      const eyeIcon = document.createElement('i');
+      eyeIcon.setAttribute('data-feather', 'eye');
+      projTd5DetailsSpan.appendChild(eyeIcon);
       projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`);
       projTd5EditSpan.setAttribute('class', 'proj-edit-icon at-pencil-edit');
       projTd5RemoveSpan.setAttribute('id', `${projObKey}-proj-remove`)
@@ -253,6 +261,7 @@ export class ProjectsDisplay {
       projTd2.appendChild(projTd2Text);
       projTd3.appendChild(projTd3Text);
       projTd4.appendChild(projTd4Text);
+      projTd5.appendChild(projTd5DetailsSpan)
       projTd5.appendChild(projTd5EditSpan);
       projTd5.appendChild(projTd5RemoveSpan);
 

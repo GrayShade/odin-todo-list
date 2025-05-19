@@ -1,7 +1,11 @@
+// Calling replace() in constructor afterwards:
+import { replace } from 'feather-icons';
 export class TasksDisplay {
 
   constructor(eventBus) {
     this.eventBus = eventBus;
+    // for feather icons loading:
+    replace();
   }
 
   getAllTasks(projID) {
@@ -176,8 +180,8 @@ export class TasksDisplay {
             document.getElementById('new-task-reset').textContent = 'Cancel'
             document.getElementById('del-confirm-task').style.display = 'block';
             document.getElementById('task-proj-input-div').style.display = 'none';
-            const btnDiv = document.querySelectorAll('.btn-div');
-            btnDiv[1].classList.add(".center-buttons");
+            // const btnDiv = document.querySelectorAll('.btn-div');
+            // btnDiv[1].classList.add(".center-buttons");
             // const delConfirmP = document.createElement('p');
             // delConfirmP.setAttribute('id', 'del-confirm-task');
             // delConfirmP.textContent = 'Are You Sure?';
@@ -219,18 +223,18 @@ export class TasksDisplay {
 
     headerTd1.appendChild(headerNumText);
     headerTd2.appendChild(headerTitleText);
-    headerTd3.appendChild(headerTaskIdText);
+    // headerTd3.appendChild(headerTaskIdText);
     headerTd4.appendChild(headerProjIdText);
-    headerTd5.appendChild(headerDescText);
+    // headerTd5.appendChild(headerDescText);
     headerTd6.appendChild(headerDueDateText);
     headerTd7.appendChild(headerPriorityText);
     headerTd8.appendChild(headerControlsText);
 
     headerTr.appendChild(headerTd1);
     headerTr.appendChild(headerTd2);
-    headerTr.appendChild(headerTd3);
+    // headerTr.appendChild(headerTd3);
     headerTr.appendChild(headerTd4);
-    headerTr.appendChild(headerTd5);
+    // headerTr.appendChild(headerTd5);
     headerTr.appendChild(headerTd6);
     headerTr.appendChild(headerTd7);
     headerTr.appendChild(headerTd8);
@@ -252,26 +256,35 @@ export class TasksDisplay {
       const taskTr = document.createElement('tr');
       const taskTd1 = document.createElement('td');
       const taskTd2 = document.createElement('td');
-      const taskTd3 = document.createElement('td');
+      // const taskTd3 = document.createElement('td');
       const taskTd4 = document.createElement('td');
-      const taskTd5 = document.createElement('td');
+      // const taskTd5 = document.createElement('td');
       const taskTd6 = document.createElement('td');
       const taskTd7 = document.createElement('td');
       const taskTd8 = document.createElement('td');
 
+      taskTd8.setAttribute('id', 'task-td8');
 
       const taskTd1Text = document.createTextNode(num);
       const taskTd2Text = document.createTextNode(obj[1].title);
-      const taskTd3Text = document.createTextNode(obj[1].taskId);
+      // const taskTd3Text = document.createTextNode(obj[1].taskId);
       // const taskIdText = document.createTextNode('projTitle');
       const taskTd4Text = document.createTextNode(obj[1].projId);
-      const taskTd5Text = document.createTextNode(obj[1].description);
+      // const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
       const taskTd7Text = document.createTextNode(obj[1].priority);
       // const taskTd8Text = document.createTextNode('Controls');
 
+      const taskTd8DetailsSpan = document.createElement('span');
       const taskTd8EditSpan = document.createElement('span');
       const taskTd8RemoveSpan = document.createElement('span');
+
+      taskTd8DetailsSpan.setAttribute('id', `${taskId}-task-details`);
+      taskTd8DetailsSpan.setAttribute('class', 'task-details-icon');
+      const eyeIcon = document.createElement('i');
+      eyeIcon.setAttribute('data-feather', 'eye');
+      taskTd8DetailsSpan.appendChild(eyeIcon);
+
       taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);
       taskTd8EditSpan.setAttribute('class', 'task-edit-icon at-pencil-edit');
       taskTd8RemoveSpan.setAttribute('id', `${taskId}-task-remove`)
@@ -279,27 +292,28 @@ export class TasksDisplay {
 
       taskTd1.appendChild(taskTd1Text);
       taskTd2.appendChild(taskTd2Text);
-      taskTd3.appendChild(taskTd3Text);
+      // taskTd3.appendChild(taskTd3Text);
       taskTd4.appendChild(taskTd4Text);
-      taskTd5.appendChild(taskTd5Text);
+      // taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Text);
       // taskTd8.appendChild(taskTd8Text);
+      taskTd8.appendChild(taskTd8DetailsSpan);
       taskTd8.appendChild(taskTd8EditSpan);
       taskTd8.appendChild(taskTd8RemoveSpan);
 
       taskTr.appendChild(taskTd1);
       taskTr.appendChild(taskTd2);
-      taskTr.appendChild(taskTd3);
+      // taskTr.appendChild(taskTd3);
       taskTr.appendChild(taskTd4);
-      taskTr.appendChild(taskTd5);
+      // taskTr.appendChild(taskTd5);
       taskTr.appendChild(taskTd6);
       taskTr.appendChild(taskTd7);
       taskTr.appendChild(taskTd8);
 
 
       table.appendChild(taskTr);
-
+      replace();
       num++;
     }
   }
