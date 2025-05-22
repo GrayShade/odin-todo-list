@@ -4,20 +4,20 @@ export class ProjectsDisplay {
     this.eventBus = eventBus;
   }
 
-  showAllProjects(allProjects) {
+  // showAllProjects(allProjects) {
 
-    for (const obj of Object.entries(allProjects)) {
-      // console.log(obj[0]);
-    }
-  }
+  //   for (const obj of Object.entries(allProjects)) {
+  //     // console.log(obj[0]);
+  //   }
+  // }
 
-  showSingleProject(projId, allProjects) {
-    for (const obj of Object.entries(allProjects)) {
-      if (JSON.parse(obj[1])[`p${projId}`].projId == projId) {
-        return;
-      }
-    }
-  }
+  // showSingleProject(projId, allProjects) {
+  //   for (const obj of Object.entries(allProjects)) {
+  //     if (JSON.parse(obj[1])[`p${projId}`].projId == projId) {
+  //       return;
+  //     }
+  //   }
+  // }
 
   showLBarProjects(allProjects) {
     this.removeAllLeftBarProjects();

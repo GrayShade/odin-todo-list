@@ -64,28 +64,28 @@ class Main {
 
     this.setupEventBusListeners();
 
-    Main.#proj.updateProject(7, 'updated Project');
+    // Main.#proj.updateProject(7, 'updated Project');
     // console.log(Main.#proj.getProjectIdByTitle('Default'));
 
-    Main.#proj.deleteProject(3);
+    // Main.#proj.deleteProject(3);
     // Main.#task.deleteTask(1, 1);
-    Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
-    Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
+    // Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
+    // Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
     // Main.#taskUI.showAllTasks(0);
-    Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
+    // Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
 
-    const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
+    // const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
 
-    const updatedTask = {
-      taskId: 0,
-      projId: 0,
-      title: 'updated Task',
-      description: '',
-      dueDate: date,
-      priority: ''
-    };
-    // Main.#task.updateTask(0, 0, updatedTask);
-    Main.#task.getTask(0, 0);
+    // const updatedTask = {
+    //   taskId: 0,
+    //   projId: 0,
+    //   title: 'updated Task',
+    //   description: '',
+    //   dueDate: date,
+    //   priority: ''
+    // };
+    // // Main.#task.updateTask(0, 0, updatedTask);
+    // Main.#task.getTask(0, 0);
   }
 
   #updateLBarProjectsAndTasks() {
@@ -99,6 +99,7 @@ class Main {
     this.#expandCollapseDivs();
     Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects(), 'new-project');
     Main.#taskUI.setNewTaskModalUI();
+    Main.#taskUI.setTaskDetailsModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {

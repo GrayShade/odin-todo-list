@@ -8,13 +8,23 @@ export class Tasks {
   }
 
   setupEventBusListener() {
-    
+
     this.eventBus.on('populateTaskValues', (projId, taskId) => {
       const task = this.getTask(projId, taskId);
       document.getElementById('task-title').value = task.title;
       document.getElementById('task-desc').value = task.description;
       document.getElementById('task-dueDate').value = task.dueDate;
       document.getElementById('task-priority').value = task.priority;
+
+    });
+    this.eventBus.on('populateTaskDetailValues', (projId, taskId) => {
+      const task = this.getTask(projId, taskId);
+      document.getElementById('task-detail-id').value = task.taskId;
+      document.getElementById('task-detail-proj').value = task.projId;
+      document.getElementById('task-detail-title').value = task.title;
+      document.getElementById('task-detail-desc').value = task.desc;
+      document.getElementById('task-detail-date').value = task.dueDate;
+      document.getElementById('task-detail-priority').value = task.priority;
 
     });
   }
@@ -42,7 +52,7 @@ export class Tasks {
       if (currProjectId != undefined && currProjectId.projId == reqProjId) {
         const newObj = JSON.parse(obj[1]);
         let newId = 0;
-        const lastTaskID = this.getLastTaskID(reqProjId);
+        const lastTaskID = Number(this.getLastTaskID(reqProjId));
         if (lastTaskID != null) { newId = lastTaskID + 1; }
         newObj[`p${reqProjId}`].tasks[`t${newId}`] =
         {

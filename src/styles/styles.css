@@ -52,6 +52,11 @@ body {
   justify-content: center;
 }
 
+#main-header h1 {
+  color: #f0f8ff;
+  /* font-style: italic; */
+}
+
 #left-bar {
   grid-area: 2 / 1 / 3 / 2;
   background: radial-gradient(circle at -4% -12.9%, rgb(74, 98, 110) 0.3%, rgb(30, 33, 48) 90.2%);
@@ -228,7 +233,7 @@ table {
 
 
 #right-div table span {
-  padding: 0em 1em 0em 0em;
+  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -310,16 +315,17 @@ td {
   background-color: pink;
 }
 
-#main-header h1 {
-  color: #f0f8ff;
-  /* font-style: italic; */
+#right-div #task-td8 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 /* modal related code starting here........................................................ */
 
 .modal-content-form input,
-.modal-content-form select {
+.modal-content-form select,
+.modal-content-form textarea {
   font-size: 1em;
   padding: 5px;
   /* width: 220px; */
@@ -373,6 +379,10 @@ td {
   min-width: fit-content;
 }
 
+#details-modal-content {
+  width: 30%;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -422,7 +432,7 @@ td {
   color: #2f4f4f;
 }
 
-input {
+input, textarea {
   border-color: #E5E7EB;
   color: dimgray;
   font-family: s-italic;
@@ -444,6 +454,11 @@ input:invalid,
 select {
   color: #696969;
   font-family: 's-italic';
+}
+
+textarea {
+  /* width: 100%; */
+  height: 90px;
 }
 
 .modal-footer {
@@ -511,6 +526,10 @@ select {
   flex-direction: column;
   justify-content: space-between;
   margin: 3% 0%;
+}
+
+#task-details-form .form-input-div {
+  margin: 8px 0%;
 }
 
 .form-input-div label {

@@ -16,9 +16,9 @@ export class TasksDisplay {
       }
     }
   }
-  showSingleTask(task) {
-    console.log(task);
-  }
+  // showSingleTask(task) {
+  //   console.log(task);
+  // }
 
   showLBarTasks(allProjects) {
     const allProjEls = document.querySelectorAll('.project');
@@ -109,6 +109,37 @@ export class TasksDisplay {
       }
     });
   }
+  setTaskDetailsModalUI() {
+    const modal = document.getElementById('task-details-modal');
+    // const btn = document.getElementById('p0-new-task');
+    const newTaskBtns = document.querySelectorAll('.task-details-svg');
+    for (let key in newTaskBtns) {
+      // last index of this array is entries. Maybe a side effect
+      //  of using for...in loop. So:
+      if (key === 'entries') { break };
+      const btnEle = newTaskBtns[key]
+      btnEle.addEventListener('click', e => {
+        modal.style.display = 'block';
+      });
+    }
+    const span = document.getElementById('task-details-close');
+
+    span.addEventListener('click', e => {
+      this.resetNewTaskModalUI();
+      modal.style.display = 'none';
+      // controller.abort();
+    });
+
+    // for closing modal if clicked anywhere on screen while model is 
+    // opened:
+    window.addEventListener('click', e => {
+      if (e.target == modal) {
+        this.resetNewTaskModalUI();
+        modal.style.display = 'none';
+        // controller.abort();
+      }
+    });
+  }
   resetNewTaskModalUI() {
     const newProjTitle = document.getElementById('task-title');
     newProjTitle.style.borderColor = '';
@@ -131,13 +162,16 @@ export class TasksDisplay {
     this.createTableRows(table, projId);
 
     // to update task:
-    this.modifyTaskModal(projId, '.task-edit-icon', 'update-task', allProjects);
+    this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
-    this.modifyTaskModal(projId, '.task-remove-icon', 'delete-task');
+    this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
+    // to show task details:
+    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
+
 
   }
 
-  modifyTaskModal(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
+  handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
@@ -150,7 +184,11 @@ export class TasksDisplay {
         const addTaskModalBtn = document.getElementById('add-task-btn');
         // const formInputDiv = document.querySelector('.form-input-div');
         const taskForm = document.getElementById('new-task-form');
+
+
+
         const taskId = e.target.id.split('-')[0];
+
 
         if (actionType == 'update-task') {
 
@@ -186,7 +224,12 @@ export class TasksDisplay {
             // delConfirmP.setAttribute('id', 'del-confirm-task');
             // delConfirmP.textContent = 'Are You Sure?';
             // document.getElementById('new-proj-form').appendChild(delConfirmP);
-          } else {
+
+          }
+          // else
+
+
+          else {
             taskForm.style.display = 'flex';
             document.getElementById('del-confirm-task').style.display = 'none';
             document.getElementById('task-proj-input-div').style.display = 'none';
@@ -201,22 +244,69 @@ export class TasksDisplay {
     }
   }
 
+  handleShowDetails(projId, allTaskControlElsClass, actionType) {
+    const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
+    for (const idx in allTaskControlEls) {
+      if (idx === 'entries') { break; };
+      allTaskControlEls[idx].addEventListener('click', (e) => {
+        let modalHeader = document.querySelector('#task-modal-header h3');
+        // if (actionType == 'update-task') {
+
+        // }
+        // modalHeader.textContent = h3Title;
+        const addTaskModalBtn = document.getElementById('add-task-btn');
+        // const formInputDiv = document.querySelector('.form-input-div');
+        const taskForm = document.getElementById('new-task-form');
+        let taskId = '';
+        // eye icon SVG is composed of multiple elements & user can click on any of them. So 
+        // handling all of them:
+        if (e.target.classList.contains('feather')) {
+          // as eye icon for details is an SVG & not a class on << span >>, So getting Id of its
+          //  parent << span >> :
+          taskId = e.target.parentElement.id.split('-')[0];
+        } else {
+          taskId = e.target.parentElement.parentElement.id.split('-')[0];
+        }
+
+        // if (actionType == 'task-details') {
+        // this.setTaskDetailsModalUI();
+        const modal = document.getElementById('task-details-modal');
+        // const btn = document.getElementById('p0-new-task');
+        const newTaskLinks = document.querySelectorAll('.task-details-icon');
+        // for (let key in newTaskLinks) {
+        //   // last index of this array is entries. Maybe a side effect
+        //   //  of using for...in loop. So:
+        //   if (key === 'entries') { break };
+        //   const btnEle = newTaskLinks[key]
+        //   btnEle.addEventListener('click', e => {
+        //     modal.style.display = 'block';
+        //   });
+        // }
+        modal.style.display = 'block';
+        this.eventBus.emit('populateTaskDetailValues', projId, taskId); // notify projects.js to get project
+        this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
+      });
+    }
+  }
+
+
+
   createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
     const headerTd2 = document.createElement('th');
-    const headerTd3 = document.createElement('th');
+    // const headerTd3 = document.createElement('th');
     const headerTd4 = document.createElement('th');
-    const headerTd5 = document.createElement('th');
+    // const headerTd5 = document.createElement('th');
     const headerTd6 = document.createElement('th');
     const headerTd7 = document.createElement('th');
     const headerTd8 = document.createElement('th');
 
     const headerNumText = document.createTextNode('#');
     const headerTitleText = document.createTextNode('Title');
-    const headerTaskIdText = document.createTextNode('ID');
+    // const headerTaskIdText = document.createTextNode('ID');
     const headerProjIdText = document.createTextNode('Project');
-    const headerDescText = document.createTextNode('Description');
+    // const headerDescText = document.createTextNode('Description');
     const headerDueDateText = document.createTextNode('Due Date');
     const headerPriorityText = document.createTextNode('Priority');
     const headerControlsText = document.createTextNode('Controls');
@@ -283,6 +373,7 @@ export class TasksDisplay {
       taskTd8DetailsSpan.setAttribute('class', 'task-details-icon');
       const eyeIcon = document.createElement('i');
       eyeIcon.setAttribute('data-feather', 'eye');
+      eyeIcon.setAttribute('class', 'task-details-svg');
       taskTd8DetailsSpan.appendChild(eyeIcon);
 
       taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);

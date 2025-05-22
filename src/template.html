@@ -58,7 +58,7 @@
   <div id="right-div">
 
   </div>
-  <!-- .....................project modal related code:...................starting here..... -->
+  <!-- .....................Add / Delete Project Modal related code:...................starting here..... -->
   <div id="new-proj-modal" class="modal">
     <div class="modal-content">
       <header id="proj-modal-header" class="modal-header">
@@ -95,7 +95,7 @@
       </div>
     </div>
   </div>
-  <!-- .....................project model related code......................... ending here... -->
+  <!-- .....................Add / Delete Project Modal related code......................... ending here... -->
 
   <!-- .....................create task modal related code:...................starting here..... -->
   <div id="new-task-modal" class="modal">
@@ -190,7 +190,52 @@
   </div>
   <!-- .....................create task model related code......................... ending here... -->
 
-
+  <!-- .....................create task details modal related code:...................starting here..... -->
+  <div id="task-details-modal" class="modal">
+    <div id="details-modal-content" class="modal-content">
+      <header id="task-details-modal-header" class="modal-header">
+        <h3>Task Details</h3>
+        <span id="task-details-close" class="close">&times;</span>
+      </header>
+      <div class="modal-content-form">
+        <form action="#" id="task-details-form" onsubmit="event.preventDefault();">
+          <div class="form-input-div">
+            <label for="task-detail-id" class="heading">Task ID: </label>
+            <input type="text" class="optional form-inputs" id="task-detail-id" name="task-detail-id" disabled>
+          </div>
+          <div class="form-input-div">
+            <label for="task-detail-proj" class="heading">Project: </label>
+            <input type="text" class="optional form-inputs" id="task-detail-proj" name="task-detail-proj" disabled>
+          </div>
+          <div class="form-input-div">
+            <label for="task-detail-title" class="heading">Title: </label>
+            <input type="text" class="optional form-inputs" id="task-detail-title" name="task-detail-title" disabled>
+          </div>
+          <div class="form-input-div">
+            <label for="task-detail-desc" class="heading">Description: </label>
+            <textarea height="200px" width="400px" class="optional form-inputs" id="task-detail-desc"
+              name="task-detail-desc" disabled>
+            </textarea>
+          </div>
+          <div class="form-input-div">
+            <label for="task-detail-date" class="heading">Due Date: </label>
+            <input type="text" class="optional form-inputs" id="task-detail-date" name="task-detail-date" disabled>
+          </div>
+          <div class="form-input-div">
+            <label for="task-detail-priority" class="heading">Priority: </label>
+            <input type="text" class="optional form-inputs" id="task-detail-priority" name="task-detail-priority" disabled>
+          </div>
+        </form>
+        <div class="btn-div">
+          <button class="form-button" id="task-details-btn" form="new-task-form" type="submit">Go Back</button>
+          <!-- <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button> -->
+        </div>
+      </div>
+      <div id="task-details-footer" class="modal-footer">
+      </div>
+    </div>
+  </div>
+  <!-- .....................create task details model related code......................... ending here... -->
 </body>
 
 </html>
