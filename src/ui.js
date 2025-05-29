@@ -35,7 +35,9 @@ export class UI {
       showHideDivParent = showHideDiv.parentElement;
     }
     this.showHideClicked(showHideDivParent);
-    // this.hideSiblings(showHideDivParent);
+    //  Uncomment below line if other expanded project siblings need to be collapsed
+    //   on expanding current project.
+    this.hideSiblings(showHideDivParent);
   }
 
   showHideClicked(showHideDivParent) {
@@ -90,10 +92,8 @@ export class UI {
         continue;
       }
       else {
-        // Uncomment below 2 lines if other expanded project siblings need to
-        //  be collapsed on expanding current project.
-        // currentEle.lastElementChild.classList.add('hidden');
-        // this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
+        currentEle.lastElementChild.classList.add('hidden');
+        this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
       }
     }
   }
@@ -140,10 +140,11 @@ export class UI {
       }
     });
   }
-  resetNewModalUI(newTitle, message) {
-    newTitle.style.borderColor = '';
-    message.style.color = '';
-    message.innerHTML = '';
-    this.removeToast(modalFooterId, targetType)
-  }
+
+  // resetNewModalUI(newTitle, message) {
+  //   newTitle.style.borderColor = '';
+  //   message.style.color = '';
+  //   message.innerHTML = '';
+  //   this.removeToast(modalFooterId, targetType)
+  // }
 }

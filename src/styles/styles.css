@@ -66,6 +66,7 @@ body {
   color: lightgray;
   overflow-y: auto;
   min-width: 200px;
+  font-size: 0.95em;
 }
 
 #left-bar,
@@ -249,6 +250,26 @@ table {
   color: #ff4500;
 }
 
+#proj-sum-table th:nth-of-type(1),
+#proj-sum-table td:nth-of-type(1),
+#proj-sum-table th:nth-of-type(3),
+#proj-sum-table td:nth-of-type(3),
+#proj-sum-table th:nth-of-type(4),
+#proj-sum-table td:nth-of-type(4) {
+  width: 50px;
+}
+
+#proj-sum-table th:nth-of-type(2),
+#proj-sum-table td:nth-of-type(2) {
+  width: 200px;
+}
+
+#proj-sum-table th:nth-of-type(5),
+#proj-sum-table td:nth-of-type(5) {
+  width: 100px;
+}
+
+
 #task-sum-table th:nth-of-type(1),
 #task-sum-table td:nth-of-type(1) {
   width: 50px;
@@ -275,7 +296,7 @@ table {
 
 #right-div th {
   text-align: start;
-  background: #4a4a4a;
+  background: #494949;
   color: whitesmoke;
 }
 
@@ -293,7 +314,7 @@ table {
 }
 
 #right-div tr:hover {
-  background: linear-gradient(45deg, #607D8B, transparent);
+  background: darkgrey;
   color: black;
 }
 
@@ -380,7 +401,7 @@ td {
 }
 
 #details-modal-content {
-  width: 30%;
+  width: 70%;
 }
 
 .modal-header {
@@ -595,7 +616,8 @@ textarea {
   background: #008080;
 }
 
-.form-button[type='reset'] {
+.form-button[type='reset'],
+.form-button[type='button'] {
   background: #f9fafa;
   border: 1px solid #d3d3d3;
   color: #696969;

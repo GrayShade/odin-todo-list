@@ -99,7 +99,8 @@ class Main {
     this.#expandCollapseDivs();
     Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects(), 'new-project');
     Main.#taskUI.setNewTaskModalUI();
-    Main.#taskUI.setTaskDetailsModalUI();
+    Main.#taskUI.closeDetailDeleteModals();
+    Main.#taskUI.setTaskUpdateDeleteModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
@@ -108,6 +109,10 @@ class Main {
       // to show input div again if it was removed when showing delete project modal: 
       document.querySelector('.form-input-div').style.display = 'flex';
       document.getElementById('del-confirm-proj').style.display = 'none';
+      document.getElementById('del-proj-btn').style.display = 'none';
+      document.getElementById('del-proj-cancel').style.display = 'none';
+      document.getElementById('add-proj-btn').style.display = 'block';
+      document.getElementById('new-proj-reset').style.display = 'block';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
       // const btnDiv = document.querySelectorAll('.btn-div');
@@ -130,11 +135,18 @@ class Main {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
         document.getElementById('new-task-form').style.display = 'flex';
         document.getElementById('del-confirm-task').style.display = 'none';
+        document.getElementById('del-task-btn').style.display = 'none';
+        document.getElementById('del-task-cancel').style.display = 'none';
         document.querySelector('#task-modal-header h3').textContent = 'New Task';
+
+        // Show & reset form buttons & labels again if changed by task edit & task delete modals:
         const addProjModalBtn = document.getElementById('add-task-btn');
+        addProjModalBtn.style.display = 'block';
         addProjModalBtn.textContent = 'Create Task';
-        // const btnDiv = document.querySelectorAll('.btn-div');
-        // btnDiv[1].classList.remove(".center-buttons");
+        const newTaskReset = document.getElementById('new-task-reset');
+        newTaskReset.style.display = 'block';
+        newTaskReset.textContent = 'Reset Form';
+
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
@@ -210,13 +222,13 @@ class Main {
       const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
       const optInputs = document.querySelectorAll(`#${formId} input.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
-      const allInputs = document.querySelectorAll(`#${formId} input,select`);
+      const allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
 
       let projIdOfTask;
       let reqFieldsStatus;
       let toastMessage;
       // for deletion, we don't need validation:
-      const statusCheckSkipped = ['delete-project', 'delete-task'];
+      const statusCheckSkipped = ['delete-project', 'delete-task', 'task-details'];
       if (statusCheckSkipped.includes(actionType)) {
         reqFieldsStatus = true;
       } else {
@@ -233,6 +245,7 @@ class Main {
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
           case 'new-task':
+            // Main.#taskUI.resetNewTaskModalUI();
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();

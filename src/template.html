@@ -86,8 +86,11 @@
         <!-- Show for delete confirmation: -->
         <p id="del-confirm-proj">Are You Sure To Remove Project ?</p>
         <div class="btn-div">
+          <!-- Below buttons are shown or hidden depending on type of form: -->
           <button class="form-button" id="add-proj-btn" form="new-proj-form" type="submit">Add Project</button>
           <button class="form-button" id="new-proj-reset" form="new-proj-form" type="reset">Reset Form</button>
+          <button class="form-button" id="del-proj-btn" form="new-proj-form" type="submit">Remove</button>
+          <button class="form-button" id="del-proj-cancel" form="new-proj-form" type="button">Cancel</button>
         </div>
       </div>
       <!-- <span class="close">&times;</span> -->
@@ -131,10 +134,10 @@
               <label for="task-title" class="heading">Title: <span aria-label="required">*</span><span
                   id="task-title-info-brackets" class="form-info-brackets">(Required)</span></label>
               <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+                data-tooltip="Minimum 1 & maximum 50 characters, no space at start/end & only single space between words">?</span>
             </div>
             <input type="text" class="required form-inputs" id="task-title" name="task-title" minlength="1"
-              maxlength="30" pattern="^[\w\S]+( [\w\S]+)*$">
+              maxlength="50" pattern="^[\w\S]+( [\w\S]+)*$">
             <span class="required message" id="task-title-message"></span>
           </div>
 
@@ -143,10 +146,12 @@
               <label for="task-desc" class="heading">Description: <span id="task-desc-info-brackets"
                   class="form-info-brackets">(Optional)</span></label>
               <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+                data-tooltip="Minimum 1 & maximum 400 characters, no space at start/end & only single space between words">?</span>
             </div>
-            <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1" maxlength="79"
-              pattern="^[\w\S]+( [\w\S]+)*$">
+            <!-- <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
+              maxlength="400" pattern="^[\w\S]+( [\w\S]+)*$"> -->
+            <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc"
+              name="task-desc"></textarea>
             <span class="optional message" id="task-desc-message"></span>
           </div>
 
@@ -180,8 +185,11 @@
         <!-- Show for delete confirmation: -->
         <p id="del-confirm-task">Are You Sure To Remove Task ?</p>
         <div class="btn-div">
+          <!-- Below buttons are shown or hidden depending on type of form: -->
           <button class="form-button" id="add-task-btn" form="new-task-form" type="submit">Create Task</button>
           <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
+          <button class="form-button" id="del-task-btn" form="new-task-form" type="submit">Remove</button>
+          <button class="form-button" id="del-task-cancel" form="new-task-form" type="button">Cancel</button>
         </div>
       </div>
       <div id="new-task-footer" class="modal-footer">
@@ -214,8 +222,7 @@
           <div class="form-input-div">
             <label for="task-detail-desc" class="heading">Description: </label>
             <textarea height="200px" width="400px" class="optional form-inputs" id="task-detail-desc"
-              name="task-detail-desc" disabled>
-            </textarea>
+              name="task-detail-desc" disabled></textarea>
           </div>
           <div class="form-input-div">
             <label for="task-detail-date" class="heading">Due Date: </label>
@@ -223,7 +230,8 @@
           </div>
           <div class="form-input-div">
             <label for="task-detail-priority" class="heading">Priority: </label>
-            <input type="text" class="optional form-inputs" id="task-detail-priority" name="task-detail-priority" disabled>
+            <input type="text" class="optional form-inputs" id="task-detail-priority" name="task-detail-priority"
+              disabled>
           </div>
         </form>
         <div class="btn-div">

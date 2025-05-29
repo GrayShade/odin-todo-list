@@ -146,15 +146,7 @@ export class Validation {
           allInputs[1].style.borderColor = 'red';
           const msg_span = document.getElementById('task-title-message');
           msg_span.style.color = 'red';
-          const currProjId = projId.split('-')[0].split('p')[1];
-          const currProjTitle = JSON.parse(allProjects[currProjId])[`p${currProjId}`].title;
-          const inputProjTitle = document.getElementById('task-project').value;
-          if (updatedProjTitle == '' || (currProjTitle == inputProjTitle)) {
-            msg_span.innerHTML = "Task Is Duplicated For Current Project!";
-          }
-          else {
-            msg_span.innerHTML = "Task Is Duplicated For Above Project!";
-          }
+          msg_span.innerHTML = "Task Is Duplicated For Above Project!";
           return false;
         }
         // .......................Snippet End................................
@@ -213,24 +205,19 @@ export class Validation {
 
   checkTaskDuplication(parameterObject) {
     const { projId, projectAlreadyExists, allProjects, updatedProjTitle, updatedProjId } = parameterObject;
-    const currProjId = projId.split('-')[0].split('p')[1];
-    let projTasks = {};
-    // for checking duplication of tasks in current project:
-    if (updatedProjTitle == '') {
-      projTasks = JSON.parse(allProjects[currProjId])[`p${currProjId}`].tasks;
-    }
-    // for checking duplication of tasks in specified project:
+    const formattedProjId = projId.split('-')[0].split('p')[1];
+    const currProjTitle = JSON.parse(allProjects[formattedProjId])[`p${formattedProjId}`].title;
+    if (updatedProjTitle == '' || (currProjTitle == updatedProjTitle)) { return true; }
     if (projectAlreadyExists != false && updatedProjTitle != '') {
-      projTasks = JSON.parse(allProjects[updatedProjId])[`p${updatedProjId}`].tasks;
-    }
-    const taskTitleEle = document.getElementById('task-title');
-    for (const key in projTasks) {
-      const currLoopTask = projTasks[key];
-      if (currLoopTask.title == taskTitleEle.value) {
-        return false;
+      const updatedProjTasks = JSON.parse(allProjects[updatedProjId])[`p${updatedProjId}`].tasks;
+      const taskTitleEle = document.getElementById('task-title');
+      for (const key in updatedProjTasks) {
+        const currLoopTask = updatedProjTasks[key];
+        if (currLoopTask.title == taskTitleEle.value) {
+          return false;
+        }
       }
     }
-    // }
     return true;
   }
 

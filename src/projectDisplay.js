@@ -101,6 +101,7 @@ export class ProjectsDisplay {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById(buttonId);
     const span = document.getElementById('new-proj-close');
+    const deleteCancelBtn = document.getElementById('del-proj-cancel');
 
     // const newProjForm = document.getElementById('new-proj-form');
 
@@ -108,7 +109,7 @@ export class ProjectsDisplay {
       modal.style.display = 'block';
 
     });
-
+    // if clicked on close button of modal:
     span.addEventListener('click', e => {
       this.resetNewProjModalUI();
       modal.style.display = 'none';
@@ -124,6 +125,10 @@ export class ProjectsDisplay {
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
       }
+    });
+    // if clicked on cancel button of delete project modal:
+    deleteCancelBtn.addEventListener('click', (e) => {
+      modal.style.display = 'none';
     });
   }
 
@@ -170,9 +175,18 @@ export class ProjectsDisplay {
         if (actionType == 'delete-project') {
           formInputDiv.style.display = 'none';
           document.getElementById('del-confirm-proj').style.display = 'block';
+          document.getElementById('add-proj-btn').style.display = 'none';
+          document.getElementById('new-proj-reset').style.display = 'none';
+          document.getElementById('del-proj-btn').style.display = 'block';
+          document.getElementById('del-proj-cancel').style.display = 'block';
         } else {
           formInputDiv.style.display = 'flex';
           document.getElementById('del-confirm-proj').style.display = 'none';
+          // Hide buttons added by delete project modal in case they are displaying:
+          document.getElementById('del-proj-btn').style.display = 'none';
+          document.getElementById('del-proj-cancel').style.display = 'none';
+          document.getElementById('add-proj-btn').style.display = 'block';
+          document.getElementById('new-proj-reset').style.display = 'block';
         }
         addProjModalBtn.textContent = btnTitle;
         // const btnDiv = document.querySelectorAll('.btn-div');
@@ -247,15 +261,10 @@ export class ProjectsDisplay {
       const projTd5EditSpan = document.createElement('span');
       const projTd5RemoveSpan = document.createElement('span');
       projTd5DetailsSpan.setAttribute('id', `${projObKey}-proj-details`);
-      projTd5DetailsSpan.setAttribute('class', 'proj-details-icon');
-      const eyeIcon = document.createElement('i');
-      eyeIcon.setAttribute('data-feather', 'eye');
-      projTd5DetailsSpan.appendChild(eyeIcon);
       projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`);
       projTd5EditSpan.setAttribute('class', 'proj-edit-icon at-pencil-edit');
       projTd5RemoveSpan.setAttribute('id', `${projObKey}-proj-remove`)
       projTd5RemoveSpan.setAttribute('class', 'proj-remove-icon at-xmark-folder');
-
 
       projTd1.appendChild(projTd1Text);
       projTd2.appendChild(projTd2Text);
@@ -264,7 +273,6 @@ export class ProjectsDisplay {
       projTd5.appendChild(projTd5DetailsSpan)
       projTd5.appendChild(projTd5EditSpan);
       projTd5.appendChild(projTd5RemoveSpan);
-
 
       projTr.appendChild(projTd1);
       projTr.appendChild(projTd2);

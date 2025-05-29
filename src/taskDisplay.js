@@ -88,6 +88,7 @@ export class TasksDisplay {
       if (key === 'entries') { break };
       const btnEle = newTaskBtns[key]
       btnEle.addEventListener('click', e => {
+        // this.resetNewTaskModalUI();
         modal.style.display = 'block';
       });
     }
@@ -105,41 +106,57 @@ export class TasksDisplay {
       if (e.target == modal) {
         this.resetNewTaskModalUI();
         modal.style.display = 'none';
-        // controller.abort();
       }
     });
   }
-  setTaskDetailsModalUI() {
-    const modal = document.getElementById('task-details-modal');
-    // const btn = document.getElementById('p0-new-task');
-    const newTaskBtns = document.querySelectorAll('.task-details-svg');
-    for (let key in newTaskBtns) {
-      // last index of this array is entries. Maybe a side effect
-      //  of using for...in loop. So:
-      if (key === 'entries') { break };
-      const btnEle = newTaskBtns[key]
-      btnEle.addEventListener('click', e => {
-        modal.style.display = 'block';
-      });
-    }
-    const span = document.getElementById('task-details-close');
+  closeDetailDeleteModals() {
+    const taskDetailModal = document.getElementById('task-details-modal');
+    const taskDeleteModal = document.getElementById('new-task-modal');
+    // // const btn = document.getElementById('p0-new-task');
+    // const newTaskBtns = document.querySelectorAll('.task-details-svg');
+    // for (let key in newTaskBtns) {
+    //   // last index of this array is entries. Maybe a side effect
+    //   //  of using for...in loop. So:
+    //   if (key === 'entries') { break };
+    //   const btnEle = newTaskBtns[key]
+    //   btnEle.addEventListener('click', e => {
+    //     modal.style.display = 'block';
+    //   });
+    // }
+    const detailsSpan = document.getElementById('task-details-close');
+    const detailsCloseBtn = document.getElementById('task-details-btn');
+    const deleteCancelBtn = document.getElementById('del-task-cancel');
 
-    span.addEventListener('click', e => {
-      this.resetNewTaskModalUI();
-      modal.style.display = 'none';
-      // controller.abort();
+    [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
+      ele.addEventListener('click', e => {
+        if (ele == detailsSpan || ele == detailsCloseBtn) {
+        this.resetNewTaskModalUI();
+        taskDetailModal.style.display = 'none';
+        } else
+        if (ele == deleteCancelBtn) {
+          taskDeleteModal.style.display = 'none';
+        }
+        // controller.abort();
+      });
     });
+
+
 
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
     window.addEventListener('click', e => {
-      if (e.target == modal) {
+      if (e.target == taskDetailModal || e.target == taskDeleteModal) {
         this.resetNewTaskModalUI();
-        modal.style.display = 'none';
-        // controller.abort();
+        taskDetailModal.style.display = 'none';
+        taskDeleteModal.style.display = 'none';
       }
     });
   }
+
+  setTaskUpdateDeleteModalUI() {
+
+  }
+
   resetNewTaskModalUI() {
     const newProjTitle = document.getElementById('task-title');
     newProjTitle.style.borderColor = '';
@@ -161,87 +178,13 @@ export class TasksDisplay {
     this.createTableHeaders(table, rightDiv);
     this.createTableRows(table, projId);
 
+    // to show task details:
+    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
     // to update task:
     this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
     this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
-    // to show task details:
-    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
 
-
-  }
-
-  handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
-    const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
-    for (const idx in allTaskControlEls) {
-      if (idx === 'entries') { break; };
-      allTaskControlEls[idx].addEventListener('click', (e) => {
-        let modalHeader = document.querySelector('#task-modal-header h3');
-        // if (actionType == 'update-task') {
-
-        // }
-        // modalHeader.textContent = h3Title;
-        const addTaskModalBtn = document.getElementById('add-task-btn');
-        // const formInputDiv = document.querySelector('.form-input-div');
-        const taskForm = document.getElementById('new-task-form');
-
-
-
-        const taskId = e.target.id.split('-')[0];
-
-
-        if (actionType == 'update-task') {
-
-          modalHeader.textContent = 'Update Task';
-          addTaskModalBtn.textContent = 'Update Task';
-
-          document.getElementById('new-task-form').style.display = 'flex';
-          document.getElementById('del-confirm-task').style.display = 'none';
-
-          document.getElementById('task-proj-input-div').style.display = 'block';
-
-          const dataListEle = document.getElementById('task-list-projects');
-          // to prevent duplication of datalist options in form:
-          dataListEle.textContent = '';
-          for (const key in allProjects) {
-            const projTitle = JSON.parse(allProjects[key])[`p${key}`].title;
-            const optionEle = document.createElement('option');
-            optionEle.setAttribute('value', projTitle);
-            dataListEle.appendChild(optionEle);
-          }
-
-        } else
-          if (actionType == 'delete-task') {
-            taskForm.style.display = 'none';
-            modalHeader.textContent = 'Delete Task';
-            addTaskModalBtn.textContent = 'Remove';
-            document.getElementById('new-task-reset').textContent = 'Cancel'
-            document.getElementById('del-confirm-task').style.display = 'block';
-            document.getElementById('task-proj-input-div').style.display = 'none';
-            // const btnDiv = document.querySelectorAll('.btn-div');
-            // btnDiv[1].classList.add(".center-buttons");
-            // const delConfirmP = document.createElement('p');
-            // delConfirmP.setAttribute('id', 'del-confirm-task');
-            // delConfirmP.textContent = 'Are You Sure?';
-            // document.getElementById('new-proj-form').appendChild(delConfirmP);
-
-          }
-          // else
-
-
-          else {
-            taskForm.style.display = 'flex';
-            document.getElementById('del-confirm-task').style.display = 'none';
-            document.getElementById('task-proj-input-div').style.display = 'none';
-          }
-
-        document.getElementById('new-task-modal').style.display = 'block';
-
-        this.eventBus.emit('populateTaskValues', projId, taskId); // notify projects.js to get project
-        this.eventBus.emit('removeTaskToast'); // Notify UI to remove toast
-        this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
-      });
-    }
   }
 
   handleShowDetails(projId, allTaskControlElsClass, actionType) {
@@ -284,12 +227,98 @@ export class TasksDisplay {
         // }
         modal.style.display = 'block';
         this.eventBus.emit('populateTaskDetailValues', projId, taskId); // notify projects.js to get project
-        this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
+        // this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
       });
     }
   }
 
+  handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
+    const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
+    for (const idx in allTaskControlEls) {
+      if (idx === 'entries') { break; };
+      allTaskControlEls[idx].addEventListener('click', (e) => {
+        let modalHeader = document.querySelector('#task-modal-header h3');
+        // if (actionType == 'update-task') {
 
+        // }
+        // modalHeader.textContent = h3Title;
+        const addTaskModalBtn = document.getElementById('add-task-btn');
+        // const formInputDiv = document.querySelector('.form-input-div');
+        const taskForm = document.getElementById('new-task-form');
+
+
+
+        const taskId = e.target.id.split('-')[0];
+
+        // for updating & deleting tasks, We are not adding a new modal but modifying the previous one 
+        if (actionType == 'update-task') {
+
+          modalHeader.textContent = 'Update Task';
+          addTaskModalBtn.style.display = 'block';
+          document.getElementById('new-task-reset').style.display = 'block';
+          addTaskModalBtn.textContent = 'Update Task';
+
+          document.getElementById('new-task-form').style.display = 'flex';
+          document.getElementById('del-confirm-task').style.display = 'none';
+          document.getElementById('task-proj-input-div').style.display = 'block';
+
+          // Hide buttons added by delete task modal in case they are displaying:
+          document.getElementById('del-task-btn').style.display = 'none';
+          document.getElementById('del-task-cancel').style.display = 'none';
+
+          document.getElementById('new-task-reset').textContent = 'Reset Form';
+
+
+          const currProjTitle = JSON.parse(allProjects[projId])[`p${projId}`].title;
+          const dataListEle = document.getElementById('task-list-projects');
+          // to prevent duplication of datalist options in form:
+          dataListEle.textContent = '';
+          for (const key in allProjects) {
+            const projTitle = JSON.parse(allProjects[key])[`p${key}`].title;
+            // Don't show current project:
+            if (projTitle == currProjTitle) { continue };
+            const optionEle = document.createElement('option');
+            optionEle.setAttribute('value', projTitle);
+            dataListEle.appendChild(optionEle);
+          }
+
+        } else
+          if (actionType == 'delete-task') {
+            taskForm.style.display = 'none';
+            modalHeader.textContent = 'Delete Task';
+            // document.getElementById('new-task-form').style.display = 'flex';
+            addTaskModalBtn.style.display = 'none';
+            document.getElementById('new-task-reset').style.display = 'none';
+            document.getElementById('del-confirm-task').style.display = 'block';
+            document.getElementById('task-proj-input-div').style.display = 'none';
+
+
+            // document.getElementById('del-confirm-task').style.display = 'none';
+            document.getElementById('del-task-btn').style.display = 'block';
+            document.getElementById('del-task-cancel').style.display = 'block';
+            // const btnDiv = document.querySelectorAll('.btn-div');
+            // btnDiv[1].classList.add(".center-buttons");
+            // const delConfirmP = document.createElement('p');
+            // delConfirmP.setAttribute('id', 'del-confirm-task');
+            // delConfirmP.textContent = 'Are You Sure?';
+            // document.getElementById('new-proj-form').appendChild(delConfirmP);
+
+          }
+
+          else {
+            taskForm.style.display = 'flex';
+            document.getElementById('del-confirm-task').style.display = 'none';
+            document.getElementById('task-proj-input-div').style.display = 'none';
+          }
+
+        document.getElementById('new-task-modal').style.display = 'block';
+
+        this.eventBus.emit('populateTaskValues', projId, taskId); // notify projects.js to get project
+        this.eventBus.emit('removeTaskToast'); // Notify UI to remove toast
+        this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
+      });
+    }
+  }
 
   createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
