@@ -130,12 +130,12 @@ export class TasksDisplay {
     [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
       ele.addEventListener('click', e => {
         if (ele == detailsSpan || ele == detailsCloseBtn) {
-        this.resetNewTaskModalUI();
-        taskDetailModal.style.display = 'none';
+          this.resetNewTaskModalUI();
+          taskDetailModal.style.display = 'none';
         } else
-        if (ele == deleteCancelBtn) {
-          taskDeleteModal.style.display = 'none';
-        }
+          if (ele == deleteCancelBtn) {
+            taskDeleteModal.style.display = 'none';
+          }
         // controller.abort();
       });
     });
@@ -207,6 +207,8 @@ export class TasksDisplay {
           // as eye icon for details is an SVG & not a class on << span >>, So getting Id of its
           //  parent << span >> :
           taskId = e.target.parentElement.id.split('-')[0];
+        } else if (e.target.classList.contains('task-details-icon')) {
+          taskId = e.target.id.split('-')[0];
         } else {
           taskId = e.target.parentElement.parentElement.id.split('-')[0];
         }
