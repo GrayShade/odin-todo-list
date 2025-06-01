@@ -93,6 +93,8 @@ export class UI {
       }
       else {
         currentEle.lastElementChild.classList.add('hidden');
+        // Hide non active element color:
+        showHideDivArr[showHideIdx].firstChild.style.color = '';
         this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
       }
     }

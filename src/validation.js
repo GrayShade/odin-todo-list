@@ -164,7 +164,9 @@ export class Validation {
           }
         }
       }
-      // checking html pattern validation:
+      
+    }
+    // checking html pattern validation:
       if (ele.value != '' && ele.checkValidity() === true) {
         msg_span.innerHTML = '';
         return true;
@@ -174,8 +176,7 @@ export class Validation {
         msg_span.innerHTML = "*Field Required!"
         return false;
       }
-    }
-    return true;
+    // return true;
   }
 
 

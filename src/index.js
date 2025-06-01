@@ -17,7 +17,7 @@ class Main {
   constructor() {
     // for feather icons loading:
     replace();
-
+    this.rerun = false;
   }
 
   // .........................EventBus AKA pub/sub pattern.........................................
@@ -186,10 +186,26 @@ class Main {
     // to expand or collapse divs:
     const showHideDivArr = document.querySelectorAll('.showHide');
     for (let showHideIdx = 0; showHideIdx <= showHideDivArr.length - 1; showHideIdx++) {
+
+      // On updating projects & tasks, left bar elements are removed & constructed again. On
+      //  them, listeners need to be redefined. .showHide before Projects container is not
+      //  removed, So skipping it to prevent multiple event listeners calling:
+      if (this.rerun && showHideDivArr[showHideIdx].classList.contains('skip-rerun')) {
+        continue;
+      }
+      this.rerun = true;
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
+
         Main.#ui.showHideDivs(e);
+
       });
+      // If it was the div containing all projects, above function should have expanded or collapsed
+      //  it on click. Now return. Otherwise, on each iteration, it will keep expanding / collapsing too.
+      // if (e.target.id == 'proj-showHide-left-p') {
+      // return;
+      // }
     }
+
   }
 
   // Below default parameter << taskOrProjId >> is for updating tasks or projects: 
