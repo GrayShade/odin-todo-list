@@ -60,7 +60,8 @@ export class Tasks {
           title: allInputs[1].value,
           description: allInputs[2].value,
           dueDate: allInputs[3].value,
-          priority: allInputs[4].value
+          priority: allInputs[4].value,
+          completed: 0
         };
 
         localStorage.setItem(reqProjId, JSON.stringify(newObj));

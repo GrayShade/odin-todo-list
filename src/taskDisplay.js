@@ -28,6 +28,14 @@ export class TasksDisplay {
       const projId = allProjEls[key].id;
       const projTasks = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
 
+      // Showing Only Non Completed Tasks In Left Bar Tasks:
+      let nonCompletedTasks = this.getRequiredTasks(projTasks, 0);
+      for (const taskKey in projTasks) {
+        if (projTasks[taskKey].completed == 0) {
+          nonCompletedTasks[taskKey] = projTasks[taskKey];
+        }
+      }
+
       // for <div class="project-tasks hidden"></div>
       const taskMD = document.createElement('div');
       taskMD.setAttribute('class', 'project-tasks hidden');
@@ -50,15 +58,28 @@ export class TasksDisplay {
       taskMDTaskSumP.setAttribute('class', `tasks-sumry`);
       // taskMDTaskSumyP.setAttribute('class', 'new-task');
       taskMD.appendChild(taskMDTaskSumP);
-      taskMDTaskSumP.innerText = 'Tasks Summary'
+      taskMDTaskSumP.innerText = 'Tasks Summary';
 
       const taskMDTaskSumSpan = document.createElement('span');
       // taskMDTaskSumSpan.setAttribute('id', 'p0-tasks-summary');
       taskMDTaskSumSpan.setAttribute('class', 'left-bar-span at-list-file');
       taskMDTaskSumP.prepend(taskMDTaskSumSpan);
 
+      const taskMDTaskComP = document.createElement('p');
+      taskMDTaskComP.setAttribute('id', `${projId}-tasks-completed`);
+      taskMDTaskComP.setAttribute('class', `tasks-completed`);
+      taskMDTaskComP.innerText = 'Completed Tasks';
+      taskMD.appendChild(taskMDTaskComP);
+
+      const taskMDTaskComSpan = document.createElement('span');
+      // taskMDTaskSumSpan.setAttribute('id', 'p0-tasks-summary');
+      taskMDTaskComSpan.setAttribute('class', 'left-bar-span at-check-file');
+      taskMDTaskComP.prepend(taskMDTaskComSpan);
+
+
+
       // <p><span id="p1-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
-      for (const key in projTasks) {
+      for (const key in nonCompletedTasks) {
         if (key === 'entries') { break };
         // const proj
         const taskMDTaskP = document.createElement('p');
@@ -70,12 +91,22 @@ export class TasksDisplay {
 
         const taskMDTaskPSpan2 = document.createElement('span');
         taskMDTaskPSpan2.setAttribute('class', 'left-bar-span-task task-title');
-        taskMDTaskPSpan2.innerText = projTasks[key].title;
+        taskMDTaskPSpan2.innerText = nonCompletedTasks[key].title;
         taskMDTaskP.prepend(taskMDTaskPSpan2);
         taskMDTaskP.prepend(taskMDTaskPSpan1);
 
       }
     }
+  }
+
+  getRequiredTasks(projTasks, taskCompleted) {
+    let requiredTasks = {};
+    for (const taskKey in projTasks) {
+      if (projTasks[taskKey].completed == taskCompleted) {
+        requiredTasks[taskKey] = projTasks[taskKey];
+      }
+    }
+    return requiredTasks;
   }
 
   setNewTaskModalUI() {
@@ -184,8 +215,23 @@ export class TasksDisplay {
     this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
     this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
-
+    // to show completed tasks:
+    this.handleModifyAndDelete(projId, '.task-complete-icon', 'complete-task');
   }
+
+  // handleCheckCompleted(projId, allTaskControlElsClass, actionType) {
+  //   alert('here');
+  //   const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
+  //   for (const idx in allTaskControlEls) {
+  //     if (idx === 'entries') { break; };
+  //     allTaskControlEls[idx].addEventListener('click', (e) => {
+  //       const taskId = e.target.id.split('-')[0];
+  //       alert('here');
+  //       // this.eventBus.emit('populateTaskDetailValues', projId, taskId); // notify projects.js to get project
+  //       this.eventBus.emit('handleComptedTask', actionType, projId, taskId); // Notify index.js to handle Modal
+  //     });
+  //   }
+  // }
 
   handleShowDetails(projId, allTaskControlElsClass, actionType) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
@@ -228,7 +274,9 @@ export class TasksDisplay {
         //   });
         // }
         modal.style.display = 'block';
-        this.eventBus.emit('populateTaskDetailValues', projId, taskId); // notify projects.js to get project
+        // notify projects.js to get project & populate values
+        this.eventBus.emit('populateTaskDetailValues', projId, taskId);
+
         // this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
       });
     }
@@ -262,10 +310,12 @@ export class TasksDisplay {
 
           document.getElementById('new-task-form').style.display = 'flex';
           document.getElementById('del-confirm-task').style.display = 'none';
+          document.getElementById('complete-confirm-task').style.display = 'none';
           document.getElementById('task-proj-input-div').style.display = 'block';
 
           // Hide buttons added by delete task modal in case they are displaying:
           document.getElementById('del-task-btn').style.display = 'none';
+          document.getElementById('complete-task-btn').style.display = 'none';
           document.getElementById('del-task-cancel').style.display = 'none';
 
           document.getElementById('new-task-reset').textContent = 'Reset Form';
@@ -292,10 +342,12 @@ export class TasksDisplay {
             addTaskModalBtn.style.display = 'none';
             document.getElementById('new-task-reset').style.display = 'none';
             document.getElementById('del-confirm-task').style.display = 'block';
+            document.getElementById('complete-confirm-task').style.display = 'none';
             document.getElementById('task-proj-input-div').style.display = 'none';
 
 
             // document.getElementById('del-confirm-task').style.display = 'none';
+            document.getElementById('complete-task-btn').style.display = 'none';
             document.getElementById('del-task-btn').style.display = 'block';
             document.getElementById('del-task-cancel').style.display = 'block';
             // const btnDiv = document.querySelectorAll('.btn-div');
@@ -305,13 +357,30 @@ export class TasksDisplay {
             // delConfirmP.textContent = 'Are You Sure?';
             // document.getElementById('new-proj-form').appendChild(delConfirmP);
 
-          }
+          } else
+            if (actionType == 'complete-task') {
+              taskForm.style.display = 'none';
+              modalHeader.textContent = 'Complete Task';
+              // document.getElementById('new-task-form').style.display = 'flex';
+              addTaskModalBtn.style.display = 'none';
+              document.getElementById('new-task-reset').style.display = 'none';
+              document.getElementById('del-confirm-task').style.display = 'none';
+              document.getElementById('complete-confirm-task').style.display = 'block';
+              document.getElementById('task-proj-input-div').style.display = 'none';
 
-          else {
-            taskForm.style.display = 'flex';
-            document.getElementById('del-confirm-task').style.display = 'none';
-            document.getElementById('task-proj-input-div').style.display = 'none';
-          }
+
+              // document.getElementById('del-confirm-task').style.display = 'none';
+              document.getElementById('del-task-btn').style.display = 'none';
+              document.getElementById('complete-task-btn').style.display = 'block';
+              document.getElementById('del-task-cancel').style.display = 'block';
+            }
+
+            else {
+              taskForm.style.display = 'flex';
+              document.getElementById('del-confirm-task').style.display = 'none';
+              document.getElementById('complete-confirm-task').style.display = 'none';
+              document.getElementById('task-proj-input-div').style.display = 'none';
+            }
 
         document.getElementById('new-task-modal').style.display = 'block';
 
@@ -321,6 +390,35 @@ export class TasksDisplay {
       });
     }
   }
+
+  showAllTasksCompleted(allProjects, projId) {
+    const rightDiv = document.getElementById('right-div');
+    rightDiv.innerHTML = '';
+    const heading = document.createElement('h2');
+    heading.textContent = 'Completed Tasks';
+    rightDiv.appendChild(heading);
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'task-com-table');
+
+    this.createTableHeaders(table, rightDiv);
+    this.createTableRows(table, projId);
+
+    // to show task details:
+    // this.handleShowDetails(projId, '.task-details-icon', 'task-details');
+    // to update task:
+    // this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
+    // to delete task:
+    // this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
+    // to show completed tasks:
+    // this.handleShowCompleted(projId, '.task-details-icon', 'task-details');
+    // to show task details:
+    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
+  }
+
+  // handleShowCompleted(projId, allTaskControlElsClass, actionType) {
+
+  // }
 
   createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
@@ -369,8 +467,19 @@ export class TasksDisplay {
     let num = 1;
 
     const allTasks = this.getAllTasks(projId);
+    // Showing Only Non Completed Tasks For Tasks Summary Option:
+    const nonCompletedTasks = this.getRequiredTasks(allTasks, 0);
+    // Showing Only Completed Tasks For Completed Tasks Option:
+    const completedTasks = this.getRequiredTasks(allTasks, 1);
 
-    for (const obj of Object.entries(allTasks)) {
+    let requiredTasks;
+    if (table.id == 'task-com-table') {
+      requiredTasks = completedTasks;
+    } else {
+      requiredTasks = nonCompletedTasks;
+    }
+
+    for (const obj of Object.entries(requiredTasks)) {
 
       const taskId = obj[1].taskId;
 
@@ -399,6 +508,7 @@ export class TasksDisplay {
       const taskTd8DetailsSpan = document.createElement('span');
       const taskTd8EditSpan = document.createElement('span');
       const taskTd8RemoveSpan = document.createElement('span');
+      const taskTd8CompleteSpan = document.createElement('span');
 
       taskTd8DetailsSpan.setAttribute('id', `${taskId}-task-details`);
       taskTd8DetailsSpan.setAttribute('class', 'task-details-icon');
@@ -407,10 +517,7 @@ export class TasksDisplay {
       eyeIcon.setAttribute('class', 'task-details-svg');
       taskTd8DetailsSpan.appendChild(eyeIcon);
 
-      taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);
-      taskTd8EditSpan.setAttribute('class', 'task-edit-icon at-pencil-edit');
-      taskTd8RemoveSpan.setAttribute('id', `${taskId}-task-remove`)
-      taskTd8RemoveSpan.setAttribute('class', 'task-remove-icon at-xmark-folder');
+
 
       taskTd1.appendChild(taskTd1Text);
       taskTd2.appendChild(taskTd2Text);
@@ -421,8 +528,19 @@ export class TasksDisplay {
       taskTd7.appendChild(taskTd7Text);
       // taskTd8.appendChild(taskTd8Text);
       taskTd8.appendChild(taskTd8DetailsSpan);
-      taskTd8.appendChild(taskTd8EditSpan);
-      taskTd8.appendChild(taskTd8RemoveSpan);
+
+      // No Need To Show Unnecessary Controls For Completed Tasks Screen:
+      if (table.id != 'task-com-table') {
+        taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);
+        taskTd8EditSpan.setAttribute('class', 'task-edit-icon at-pencil-edit');
+        taskTd8RemoveSpan.setAttribute('id', `${taskId}-task-remove`)
+        taskTd8RemoveSpan.setAttribute('class', 'task-remove-icon at-xmark-folder');
+        taskTd8CompleteSpan.setAttribute('id', `${taskId}-task-complete`);
+        taskTd8CompleteSpan.setAttribute('class', 'task-complete-icon at-check-circle');
+        taskTd8.appendChild(taskTd8EditSpan);
+        taskTd8.appendChild(taskTd8RemoveSpan);
+        taskTd8.appendChild(taskTd8CompleteSpan);
+      }
 
       taskTr.appendChild(taskTd1);
       taskTr.appendChild(taskTd2);

@@ -114,6 +114,8 @@ export class ProjectsDisplay {
       this.resetNewProjModalUI();
       modal.style.display = 'none';
       this.showAllProjectsSummary(allProjects);
+      this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
+      // this.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
       // controller.abort();
     });
 
@@ -124,6 +126,8 @@ export class ProjectsDisplay {
         this.resetNewProjModalUI();
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
+        this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
+        // this.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
       }
     });
     // if clicked on cancel button of delete project modal:

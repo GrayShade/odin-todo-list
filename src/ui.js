@@ -18,11 +18,15 @@ export class UI {
     // When eventBus of << projDisplay.js >> emits << 'removeToast' >>, then:
     this.eventBus.on('removeProjToast', () => this.removeToast('new-proj-footer', 'project'));
     this.eventBus.on('removeTaskToast', () => this.removeToast('new-task-footer', 'task'));
+
+    this.eventBus.on('callShowHideTaskTableControls', (tableId, controlTdIndex, controlTdId) => {
+      this.showHideTaskTableControls(tableId, controlTdIndex, controlTdId);
+    });
   }
 
   // .................divs expand collapse related code starting here........................... 
 
-  
+
 
   showHideDivs(e) {
     let showHideDiv;
@@ -100,6 +104,68 @@ export class UI {
     }
   }
   // .................divs expand collapse related code ending here........................... 
+
+  setUpShowHideTableControls() {
+    const projSumTable = document.getElementById('proj-sum-table');
+    // The childNodes property returns a live NodeList:
+    const projSumTableRows = projSumTable.childNodes;
+    for (let tr = 0; tr < projSumTableRows.length; tr++) {
+      // if (i == 'entries' || i == 'keys' || i == 'values') { continue; };
+      // debugger;
+      projSumTableRows[tr].addEventListener('mouseenter', (e) => {
+        console.log('here');
+        // e.target.childNodes[4].style.visibility = 'visible';
+        const rowTds = e.target.childNodes;
+        for (let td = 0; td < rowTds.length; td++) {
+          if (td == 4 && rowTds[td].id == 'proj-td5') {
+            // e.target.childNodes[x].style.visibility = 'visible';
+            const tdSpans = rowTds[td].childNodes;
+            for (let span = 0; span < tdSpans.length; span++) {
+              tdSpans[span].style.visibility = 'visible';
+            }
+          }
+        }
+      });
+    }
+  }
+
+  showHideTaskTableControls(tableId, controlTdIndex, controlTdId) {
+    const table = document.getElementById(tableId);
+    // The childNodes property returns a live NodeList:
+    const tableRows = table.childNodes;
+    for (let tr = 0; tr < tableRows.length; tr++) {
+      // if (i == 'entries' || i == 'keys' || i == 'values') { continue; };
+      // debugger;
+      // At 0 index, it will be table header row needing no controls: 
+      if (tr == 0) { continue; };
+      tableRows[tr].addEventListener('mouseenter', (e) => {
+        // e.target.childNodes[4].style.visibility = 'visible';
+        const rowTds = e.target.childNodes;
+        for (let td = 0; td < rowTds.length; td++) {
+          if (td == controlTdIndex && rowTds[td].id == controlTdId) {
+            // e.target.childNodes[x].style.visibility = 'visible';
+            const tdSpans = rowTds[td].childNodes;
+            for (let span = 0; span < tdSpans.length; span++) {
+              tdSpans[span].style.visibility = 'visible';
+            }
+          }
+        }
+      });
+      tableRows[tr].addEventListener('mouseleave', (e) => {
+        // e.target.childNodes[4].style.visibility = 'visible';
+        const rowTds = e.target.childNodes;
+        for (let td = 0; td < rowTds.length; td++) {
+          if (td == controlTdIndex && rowTds[td].id == controlTdId) {
+            // e.target.childNodes[x].style.visibility = 'visible';
+            const tdSpans = rowTds[td].childNodes;
+            for (let span = 0; span < tdSpans.length; span++) {
+              tdSpans[span].style.visibility = 'hidden';
+            }
+          }
+        }
+      });
+    }
+  }
 
   // for adding & removing toasts appearing beneath modals....................................
 

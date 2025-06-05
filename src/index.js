@@ -61,8 +61,9 @@ class Main {
     Main.#proj.createDefaultProject('Default');
     this.#updateLBarProjectsAndTasks();
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
-
+    Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     this.setupEventBusListeners();
+    
 
     // Main.#proj.updateProject(7, 'updated Project');
     // console.log(Main.#proj.getProjectIdByTitle('Default'));
@@ -135,6 +136,8 @@ class Main {
       allTasksArr[taskIdx].addEventListener('click', (e) => {
         document.getElementById('new-task-form').style.display = 'flex';
         document.getElementById('del-confirm-task').style.display = 'none';
+        document.getElementById('complete-confirm-task').style.display = 'none';
+        document.getElementById('complete-task-btn').style.display = 'none';
         document.getElementById('del-task-btn').style.display = 'none';
         document.getElementById('del-task-cancel').style.display = 'none';
         document.querySelector('#task-modal-header h3').textContent = 'New Task';
@@ -164,9 +167,9 @@ class Main {
     // to show all projects summary:
     document.getElementById('projects-sumry').addEventListener('click', (e) => {
       Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
-
+      Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     });
-    // to show all tasks summary:
+    // to show all tasks summary gainst a project:
     const allShowTasksSumArr = document.querySelectorAll('.tasks-sumry');
     for (let taskIdx = 0; taskIdx <= allShowTasksSumArr.length - 1; taskIdx++) {
       allShowTasksSumArr[taskIdx].addEventListener('click', (e) => {
@@ -178,6 +181,23 @@ class Main {
           projId = e.target.id.split('-')[0].split('p')[1];
         }
         Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
+        Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+      });
+    }
+
+    // to show all completed tasks against a project:
+    const allShowTasksComArr = document.querySelectorAll('.tasks-completed');
+    for (let taskIdx = 0; taskIdx <= allShowTasksComArr.length - 1; taskIdx++) {
+      allShowTasksComArr[taskIdx].addEventListener('click', (e) => {
+        let projId = '';
+        // if icon is clicked, then that << span >> is selected instead of << p >>. So:
+        if (e.target.classList.contains('left-bar-span')) {
+          projId = e.target.parentElement.id.split('-')[0].split('p')[1];
+        } else {
+          projId = e.target.id.split('-')[0].split('p')[1];
+        }
+        Main.#taskUI.showAllTasksCompleted(Main.#proj.getAllProjects(), projId);
+        Main.#ui.showHideTaskTableControls('task-com-table', 5, 'task-td8');
       });
     }
   }
@@ -244,7 +264,7 @@ class Main {
       let reqFieldsStatus;
       let toastMessage;
       // for deletion, we don't need validation:
-      const statusCheckSkipped = ['delete-project', 'delete-task', 'task-details'];
+      const statusCheckSkipped = ['delete-project', 'delete-task', 'task-details', 'complete-task'];
       if (statusCheckSkipped.includes(actionType)) {
         reqFieldsStatus = true;
       } else {
@@ -257,6 +277,7 @@ class Main {
             Main.#proj.createProject(reqInputs[0].value);
             this.#updateLBarProjectsAndTasks();
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -266,6 +287,7 @@ class Main {
             Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
             toastMessage = 'Task Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -279,6 +301,7 @@ class Main {
             Main.#proj.updateProject(taskOrProjId, newTitle);
             this.#updateLBarProjectsAndTasks();
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -291,6 +314,7 @@ class Main {
             Main.#proj.deleteProject(taskOrProjId);
             this.#updateLBarProjectsAndTasks();
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Deleted Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -324,6 +348,7 @@ class Main {
 
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
             toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -333,7 +358,20 @@ class Main {
             Main.#task.deleteTask(projIdOfTask, taskOrProjId);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
             toastMessage = 'Task Deleted Successfully';
+            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            break;
+          case 'complete-task':
+            // alert('in index');
+            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            let task = Main.#task.getTask(projIdOfTask, taskOrProjId);
+            task.completed = 1;
+            Main.#task.updateTask(projIdOfTask, taskOrProjId, task);
+            this.#updateLBarProjectsAndTasks();
+            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+            toastMessage = 'Task Mark As Completed!';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
         }
