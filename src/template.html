@@ -74,11 +74,11 @@
               <label for="new-proj-title" class="heading">Title: <span aria-label="required">*</span><span
                   id="new-proj-title-info-brackets" class="form-info-brackets">(Required)</span></label>
               <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+                data-tooltip="Minimum 1 & maximum 40 characters, no space at start/end & only single space between words">?</span>
             </div>
             <!-- below regex pattern taken & modified from https://stackoverflow.com/a/35702586. -->
             <input type="text" class="required form-inputs" id="new-proj-title" name="new-proj-title" minlength="1"
-              maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              maxlength="40" pattern="^[\w\S]+( [\w\S]+)*$">
             <span class="required message" id="new-proj-title-message"></span>
           </div>
 
@@ -115,10 +115,10 @@
               <label for="task-project" class="heading">Project: <span id="task-project-info-brackets"
                   class="form-info-brackets">(Optional)</span></label>
               <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+                data-tooltip="Minimum 1 & maximum 40 characters, no space at start/end & only single space between words">?</span>
             </div>
             <input list="task-list-projects" type="text" class="optional form-inputs" id="task-project"
-              name="task-project" minlength="1" maxlength="79" pattern="^[\w\S]+( [\w\S]+)*$">
+              name="task-project" minlength="1" maxlength="40" pattern="^[\w\S]+( [\w\S]+)*$">
             <datalist id="task-list-projects">
               <!-- <option value="Internet Explorer">
                   <option value="Firefox">
@@ -150,8 +150,8 @@
             </div>
             <!-- <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
               maxlength="400" pattern="^[\w\S]+( [\w\S]+)*$"> -->
-            <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc"
-              name="task-desc"></textarea>
+            <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
+              maxlength="400" pattern="^[\w\S]+( [\w\S]+)*$"></textarea>
             <span class="optional message" id="task-desc-message"></span>
           </div>
 
@@ -191,7 +191,7 @@
           <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button>
           <button class="form-button" id="del-task-btn" form="new-task-form" type="submit">Remove</button>
           <button class="form-button" id="complete-task-btn" form="new-task-form" type="submit">Complete</button>
-          <button class="form-button" id="del-task-cancel" form="new-task-form" type="button">Cancel</button>        
+          <button class="form-button" id="del-task-cancel" form="new-task-form" type="button">Cancel</button>
         </div>
       </div>
       <div id="new-task-footer" class="modal-footer">

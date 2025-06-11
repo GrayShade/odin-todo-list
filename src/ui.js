@@ -101,7 +101,7 @@ export class UI {
       }
       else {
         currentEle.lastElementChild.classList.add('hidden');
-        const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
+        const leftP = document.querySelector(`#${currentEle.id} .showHide-left-p`);
         leftP.style['font-weight'] = 'normal';
         // Hide non active element color:
         showHideDivArr[showHideIdx].firstChild.style.color = '';
