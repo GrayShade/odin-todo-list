@@ -268,7 +268,7 @@ export class ProjectsDisplay {
       projTd5EditSpan.setAttribute('id', `${projObKey}-proj-edit`);
       projTd5EditSpan.setAttribute('class', 'proj-edit-icon at-pencil-edit');
       projTd5RemoveSpan.setAttribute('id', `${projObKey}-proj-remove`)
-      projTd5RemoveSpan.setAttribute('class', 'proj-remove-icon at-xmark-folder');
+      projTd5RemoveSpan.setAttribute('class', 'proj-remove-icon at-xmark-clipboard');
 
       projTd1.appendChild(projTd1Text);
       projTd2.appendChild(projTd2Text);

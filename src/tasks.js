@@ -17,10 +17,10 @@ export class Tasks {
       document.getElementById('task-priority').value = task.priority;
 
     });
-    this.eventBus.on('populateTaskDetailValues', (projId, taskId) => {
+    this.eventBus.on('populateTaskDetailValues', (projTitle, projId, taskId) => {
       const task = this.getTask(projId, taskId);
       document.getElementById('task-detail-id').value = task.taskId;
-      document.getElementById('task-detail-proj').value = task.projId;
+      document.getElementById('task-detail-proj').value = projTitle;
       document.getElementById('task-detail-title').value = task.title;
       document.getElementById('task-detail-desc').value = task.description;
       document.getElementById('task-detail-date').value = task.dueDate;
@@ -52,6 +52,7 @@ export class Tasks {
         const newObj = JSON.parse(obj[1]);
         let newId = 0;
         const lastTaskID = Number(this.getLastTaskID(reqProjId));
+        // const lastTaskID = this.getLastTaskID(reqProjId);
         if (lastTaskID != null) { newId = lastTaskID + 1; }
         newObj[`p${reqProjId}`].tasks[`t${newId}`] =
         {
@@ -109,6 +110,7 @@ export class Tasks {
   }
 
   updateTask(currProjId, currTaskId, updatedTask) {
+    currTaskId = Number(currTaskId);
     for (const obj of Object.entries({ ...localStorage })) {
       if (obj[0] != currProjId) { continue; };
       if (JSON.parse(obj[1])[`p${currProjId}`].projId == currProjId) {

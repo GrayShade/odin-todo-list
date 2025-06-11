@@ -47,10 +47,6 @@ class Main {
   // .............................................................................................
 
   static #controller = new AbortController();
-
-  // static #proj = new Projects();
-  // static #task = new Tasks();
-  // static #taskUI = new TasksDisplay();
   static #validate = new Validation();
 
   start() {
@@ -63,7 +59,7 @@ class Main {
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     this.setupEventBusListeners();
-    
+
 
     // Main.#proj.updateProject(7, 'updated Project');
     // console.log(Main.#proj.getProjectIdByTitle('Default'));
@@ -97,7 +93,7 @@ class Main {
   }
 
   #setEventListeners() {
-    this.#expandCollapseDivs();
+    this.#expandCollapseDivs(Main.#proj.getAllProjects(), 'new-project');
     Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects(), 'new-project');
     Main.#taskUI.setNewTaskModalUI();
     Main.#taskUI.closeDetailDeleteModals();
@@ -202,7 +198,7 @@ class Main {
     }
   }
 
-  #expandCollapseDivs() {
+  #expandCollapseDivs(allProjects) {
     // to expand or collapse divs:
     const showHideDivArr = document.querySelectorAll('.showHide');
     for (let showHideIdx = 0; showHideIdx <= showHideDivArr.length - 1; showHideIdx++) {
@@ -216,7 +212,10 @@ class Main {
       this.rerun = true;
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
 
-        Main.#ui.showHideDivs(e);
+        if (Main.#ui.showHideDivs(e) == 'hidden') { 
+          Main.#projUI.showAllProjectsSummary(allProjects);
+          Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5'); 
+        };
 
       });
       // If it was the div containing all projects, above function should have expanded or collapsed
@@ -328,8 +327,9 @@ class Main {
               updatedProjId = Main.#proj.getProjectIdByTitle(updatedProjId);
             }
             const updatedTask = {
-              taskId: taskOrProjId,
-              projId: updatedProjId,
+              completed: 0,
+              taskId: Number(taskOrProjId),
+              projId: Number(updatedProjId),
               title: document.getElementById('task-title').value,
               description: document.getElementById('task-desc').value,
               dueDate: document.getElementById('task-dueDate').value,

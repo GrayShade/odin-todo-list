@@ -197,6 +197,7 @@ export class TasksDisplay {
   }
 
   showAllTasksSummary(allProjects, projId) {
+    const projTitle = JSON.parse(allProjects[projId])[`p${projId}`].title;
     const rightDiv = document.getElementById('right-div');
     rightDiv.innerHTML = '';
     const heading = document.createElement('h2');
@@ -207,10 +208,10 @@ export class TasksDisplay {
     table.setAttribute('id', 'task-sum-table');
 
     this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projId);
-
+    this.createTableRows(table, projTitle, projId);
+    
     // to show task details:
-    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
+    this.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
     // to update task:
     this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
@@ -233,7 +234,7 @@ export class TasksDisplay {
   //   }
   // }
 
-  handleShowDetails(projId, allTaskControlElsClass, actionType) {
+  handleShowDetails(projTitle, projId, allTaskControlElsClass, actionType) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
@@ -275,7 +276,7 @@ export class TasksDisplay {
         // }
         modal.style.display = 'block';
         // notify projects.js to get project & populate values
-        this.eventBus.emit('populateTaskDetailValues', projId, taskId);
+        this.eventBus.emit('populateTaskDetailValues', projTitle, projId, taskId);
 
         // this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
       });
@@ -392,6 +393,7 @@ export class TasksDisplay {
   }
 
   showAllTasksCompleted(allProjects, projId) {
+    const projTitle = JSON.parse(allProjects[projId])[`p${projId}`].title;
     const rightDiv = document.getElementById('right-div');
     rightDiv.innerHTML = '';
     const heading = document.createElement('h2');
@@ -402,7 +404,7 @@ export class TasksDisplay {
     table.setAttribute('id', 'task-com-table');
 
     this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projId);
+    this.createTableRows(table, projTitle, projId);
 
     // to show task details:
     // this.handleShowDetails(projId, '.task-details-icon', 'task-details');
@@ -413,7 +415,7 @@ export class TasksDisplay {
     // to show completed tasks:
     // this.handleShowCompleted(projId, '.task-details-icon', 'task-details');
     // to show task details:
-    this.handleShowDetails(projId, '.task-details-icon', 'task-details');
+    this.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
   }
 
   // handleShowCompleted(projId, allTaskControlElsClass, actionType) {
@@ -463,7 +465,7 @@ export class TasksDisplay {
 
   }
 
-  createTableRows(table, projId) {
+  createTableRows(table, projTitle, projId) {
     let num = 1;
 
     const allTasks = this.getAllTasks(projId);
@@ -499,7 +501,7 @@ export class TasksDisplay {
       const taskTd2Text = document.createTextNode(obj[1].title);
       // const taskTd3Text = document.createTextNode(obj[1].taskId);
       // const taskIdText = document.createTextNode('projTitle');
-      const taskTd4Text = document.createTextNode(obj[1].projId);
+      const taskTd4Text = document.createTextNode(projTitle);
       // const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
       const taskTd7Text = document.createTextNode(obj[1].priority);
@@ -526,7 +528,9 @@ export class TasksDisplay {
       // taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Text);
-      // taskTd8.appendChild(taskTd8Text);
+
+      this.setPriorityTextColor(taskTd7, taskTd7Text);
+
       taskTd8.appendChild(taskTd8DetailsSpan);
 
       // No Need To Show Unnecessary Controls For Completed Tasks Screen:
@@ -534,7 +538,7 @@ export class TasksDisplay {
         taskTd8EditSpan.setAttribute('id', `${taskId}-task-edit`);
         taskTd8EditSpan.setAttribute('class', 'task-edit-icon at-pencil-edit');
         taskTd8RemoveSpan.setAttribute('id', `${taskId}-task-remove`)
-        taskTd8RemoveSpan.setAttribute('class', 'task-remove-icon at-xmark-folder');
+        taskTd8RemoveSpan.setAttribute('class', 'task-remove-icon at-xmark-clipboard');
         taskTd8CompleteSpan.setAttribute('id', `${taskId}-task-complete`);
         taskTd8CompleteSpan.setAttribute('class', 'task-complete-icon at-check-circle');
         taskTd8.appendChild(taskTd8EditSpan);
@@ -555,6 +559,20 @@ export class TasksDisplay {
       table.appendChild(taskTr);
       replace();
       num++;
+    }
+  }
+  setPriorityTextColor(taskTd7, taskTd7Text) {
+    
+    switch (taskTd7Text.textContent) {
+      case 'high':
+        taskTd7.style.color = '#f08080';
+        break;
+      case 'normal':
+        taskTd7.style.color = '#2e8b57';
+        break;
+      case 'low':
+        taskTd7.style.color = '#1e90ff';
+        break;
     }
   }
 }

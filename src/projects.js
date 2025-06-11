@@ -44,7 +44,7 @@ export class Projects {
     for (const idx in Object.entries((allProjects))) {
 
       const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
-        if (loopProj.title == title) {
+      if (loopProj.title == title) {
         return loopProj.projId;
       }
     }

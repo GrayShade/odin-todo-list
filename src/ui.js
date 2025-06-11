@@ -38,28 +38,32 @@ export class UI {
       showHideDiv = e.target.parentElement.parentElement;
       showHideDivParent = showHideDiv.parentElement;
     }
-    this.showHideClicked(showHideDivParent);
+    const shownOrHidden = this.showHideClicked(showHideDivParent);
     //  Uncomment below line if other expanded project siblings need to be collapsed
     //   on expanding current project.
     this.hideSiblings(showHideDivParent);
+    return shownOrHidden;
   }
 
   showHideClicked(showHideDivParent) {
     for (let ele of showHideDivParent.children) {
+      const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
       if (ele.classList.contains('showHide')) {
         continue;
       } else {
         if (ele.classList.contains('hidden')) {
           ele.classList.remove('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
-          const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
-
           leftP.style.color = '#ffa500';
+          leftP.style['font-weight'] = '600';
+          return 'shown';
         } else {
           ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
-          const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
+          // const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
           leftP.style.color = '';
+          leftP.style['font-weight'] = 'normal';
+          return 'hidden';
         }
       }
     }
@@ -97,6 +101,8 @@ export class UI {
       }
       else {
         currentEle.lastElementChild.classList.add('hidden');
+        const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
+        leftP.style['font-weight'] = 'normal';
         // Hide non active element color:
         showHideDivArr[showHideIdx].firstChild.style.color = '';
         this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
