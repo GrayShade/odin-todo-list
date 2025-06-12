@@ -436,7 +436,7 @@ export class TasksDisplay {
     const headerNumText = document.createTextNode('#');
     const headerTitleText = document.createTextNode('Title');
     // const headerTaskIdText = document.createTextNode('ID');
-    const headerProjIdText = document.createTextNode('Project');
+    // const headerProjIdText = document.createTextNode('Project');
     // const headerDescText = document.createTextNode('Description');
     const headerDueDateText = document.createTextNode('Due Date');
     const headerPriorityText = document.createTextNode('Priority');
@@ -445,7 +445,7 @@ export class TasksDisplay {
     headerTd1.appendChild(headerNumText);
     headerTd2.appendChild(headerTitleText);
     // headerTd3.appendChild(headerTaskIdText);
-    headerTd4.appendChild(headerProjIdText);
+    // headerTd4.appendChild(headerProjIdText);
     // headerTd5.appendChild(headerDescText);
     headerTd6.appendChild(headerDueDateText);
     headerTd7.appendChild(headerPriorityText);
@@ -454,7 +454,7 @@ export class TasksDisplay {
     headerTr.appendChild(headerTd1);
     headerTr.appendChild(headerTd2);
     // headerTr.appendChild(headerTd3);
-    headerTr.appendChild(headerTd4);
+    // headerTr.appendChild(headerTd4);
     // headerTr.appendChild(headerTd5);
     headerTr.appendChild(headerTd6);
     headerTr.appendChild(headerTd7);
@@ -489,7 +489,7 @@ export class TasksDisplay {
       const taskTd1 = document.createElement('td');
       const taskTd2 = document.createElement('td');
       // const taskTd3 = document.createElement('td');
-      const taskTd4 = document.createElement('td');
+      // const taskTd4 = document.createElement('td');
       // const taskTd5 = document.createElement('td');
       const taskTd6 = document.createElement('td');
       const taskTd7 = document.createElement('td');
@@ -501,7 +501,7 @@ export class TasksDisplay {
       const taskTd2Text = document.createTextNode(obj[1].title);
       // const taskTd3Text = document.createTextNode(obj[1].taskId);
       // const taskIdText = document.createTextNode('projTitle');
-      const taskTd4Text = document.createTextNode(projTitle);
+      // const taskTd4Text = document.createTextNode(projTitle);
       // const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
       const taskTd7Text = document.createTextNode(obj[1].priority);
@@ -524,7 +524,7 @@ export class TasksDisplay {
       taskTd1.appendChild(taskTd1Text);
       taskTd2.appendChild(taskTd2Text);
       // taskTd3.appendChild(taskTd3Text);
-      taskTd4.appendChild(taskTd4Text);
+      // taskTd4.appendChild(taskTd4Text);
       // taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Text);
@@ -549,7 +549,7 @@ export class TasksDisplay {
       taskTr.appendChild(taskTd1);
       taskTr.appendChild(taskTd2);
       // taskTr.appendChild(taskTd3);
-      taskTr.appendChild(taskTd4);
+      // taskTr.appendChild(taskTd4);
       // taskTr.appendChild(taskTd5);
       taskTr.appendChild(taskTd6);
       taskTr.appendChild(taskTd7);

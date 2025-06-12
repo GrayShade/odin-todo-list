@@ -38,6 +38,7 @@ export class UI {
       showHideDiv = e.target.parentElement.parentElement;
       showHideDivParent = showHideDiv.parentElement;
     }
+
     const shownOrHidden = this.showHideClicked(showHideDivParent);
     //  Uncomment below line if other expanded project siblings need to be collapsed
     //   on expanding current project.

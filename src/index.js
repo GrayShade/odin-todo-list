@@ -54,6 +54,11 @@ class Main {
       replace();
     });
 
+    // Give projects Container Orange Color As it is Open from the get go:
+    const projContainerP = document.getElementById('proj-showHide-left-p');
+    projContainerP.style.color = '#ffa500';
+    projContainerP.style['font-weight'] = '600';
+
     Main.#proj.createDefaultProject('Default');
     this.#updateLBarProjectsAndTasks();
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
@@ -177,7 +182,7 @@ class Main {
           projId = e.target.id.split('-')[0].split('p')[1];
         }
         Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
-        Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+        Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
       });
     }
 
@@ -193,7 +198,7 @@ class Main {
           projId = e.target.id.split('-')[0].split('p')[1];
         }
         Main.#taskUI.showAllTasksCompleted(Main.#proj.getAllProjects(), projId);
-        Main.#ui.showHideTaskTableControls('task-com-table', 5, 'task-td8');
+        Main.#ui.showHideTaskTableControls('task-com-table', 4, 'task-td8');
       });
     }
   }
@@ -212,9 +217,9 @@ class Main {
       this.rerun = true;
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
 
-        if (Main.#ui.showHideDivs(e) == 'hidden') { 
+        if (Main.#ui.showHideDivs(e) == 'hidden') {
           Main.#projUI.showAllProjectsSummary(allProjects);
-          Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5'); 
+          Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
         };
 
       });
@@ -286,7 +291,7 @@ class Main {
             Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Added Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -348,7 +353,7 @@ class Main {
 
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Updated Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -358,7 +363,7 @@ class Main {
             Main.#task.deleteTask(projIdOfTask, taskOrProjId);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Deleted Successfully';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
@@ -370,7 +375,7 @@ class Main {
             Main.#task.updateTask(projIdOfTask, taskOrProjId, task);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 5, 'task-td8');
+            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Mark As Completed!';
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
