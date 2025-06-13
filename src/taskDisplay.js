@@ -83,6 +83,8 @@ export class TasksDisplay {
         if (key === 'entries') { break };
         // const proj
         const taskMDTaskP = document.createElement('p');
+        taskMDTaskP.setAttribute('id', `${projId}-${key}-p`);
+        taskMDTaskP.setAttribute('class', 'left-bar-p-task');
         taskMD.appendChild(taskMDTaskP);
 
         const taskMDTaskPSpan1 = document.createElement('span');
@@ -209,7 +211,7 @@ export class TasksDisplay {
 
     this.createTableHeaders(table, rightDiv);
     this.createTableRows(table, projTitle, projId);
-    
+
     // to show task details:
     this.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
     // to update task:
@@ -562,7 +564,7 @@ export class TasksDisplay {
     }
   }
   setPriorityTextColor(taskTd7, taskTd7Text) {
-    
+
     switch (taskTd7Text.textContent) {
       case 'high':
         taskTd7.style.color = '#f08080';

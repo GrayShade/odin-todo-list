@@ -186,6 +186,34 @@ class Main {
       });
     }
 
+    const allLeftBarProjTasks = document.querySelectorAll('.left-bar-p-task');
+    for (let taskIdx = 0; taskIdx <= allLeftBarProjTasks.length - 1; taskIdx++) {
+      allLeftBarProjTasks[taskIdx].addEventListener('click', (e) => {
+        let projId = '';
+        // if icon is clicked, then that << span >> is selected instead of << p >>. So:
+        if (e.target.classList.contains('left-bar-span-task')) {
+          projId = e.target.parentElement.id.split('-')[0].split('p')[1];
+        } else {
+          projId = e.target.id.split('-')[0].split('p')[1];
+        }
+
+        const allProjects = Main.#proj.getAllProjects();
+        const projTitle = JSON.parse(allProjects[projId])[`p${projId}`].title;
+        let taskId = '';
+        if (e.target.classList.contains('left-bar-span-task')) {
+          taskId = e.target.parentElement.id.split('-')[1].split('t')[1];
+        } else {
+          taskId = e.target.id.split('-')[1].split('t')[1];
+        }
+        // Main.#taskUI.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
+        const modal = document.getElementById('task-details-modal');
+        modal.style.display = 'block';
+        Main.#task.populateTaskDetailValues(projTitle, projId, taskId);
+        // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
+        // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+      });
+    }
+
     // to show all completed tasks against a project:
     const allShowTasksComArr = document.querySelectorAll('.tasks-completed');
     for (let taskIdx = 0; taskIdx <= allShowTasksComArr.length - 1; taskIdx++) {
