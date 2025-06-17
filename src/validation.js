@@ -1,4 +1,4 @@
-import { compareAsc, format } from "date-fns";
+import { isAfter, format } from "date-fns";
 
 export class Validation {
   constructor() {
@@ -92,14 +92,18 @@ export class Validation {
           message.innerHTML = ''
         }
         else {
-
-          ele.style.borderColor = 'red';
-          message.style.color = 'red';
-          message.innerHTML = "*Field Required!"
+          this.showErrorMessage(ele, message, '*Field Required!');
+          // ele.style.borderColor = 'red';
+          // message.style.color = 'red';
+          // message.innerHTML = "*Field Required!"
         }
-
   }
 
+  showErrorMessage(ele, messageSpan, messageText) {
+    ele.style.borderColor = 'red';
+    messageSpan.style.color = 'red';
+    messageSpan.innerHTML = messageText;
+  }
 
   validateReqAfterSubmit(parameterObject, updatedProjId = '') {
     // destructuring object below. Note that the variable names should be
@@ -110,10 +114,13 @@ export class Validation {
       for (let obj of (Object.entries(allProjects))) {
         const project = JSON.parse(obj[1])[`p${obj[0]}`];
         if (project.title === ele.value) {
-          ele.style.borderColor = 'red';
-          msg_span.style.color = 'red';
-          msg_span.innerHTML = "*Title already exists!"
+          this.showErrorMessage(ele, msg_span, '*Title already exists!');
+          // ele.style.borderColor = 'red';
+          // msg_span.style.color = 'red';
+          // msg_span.innerHTML = "*Title already exists!"
           return false;
+        } else if (ele.value.split('').every((ele) => { ele == '' })) {
+          this.showErrorMessage(ele, msg_span, "*Title Can't be Null!");
         }
       }
     } else if (ele.id == 'task-title') {
@@ -129,10 +136,11 @@ export class Validation {
         const projectAlreadyExists = this.CheckProjectExistence(allProjects, updatedProjTitle);
         // Specified project must either exist or field should be left blank: 
         if (projectAlreadyExists == false && updatedProjTitle != '') {
-          allInputs[0].style.borderColor = 'red';
-          const projMsgSpan = document.getElementById('task-project-message');
-          projMsgSpan.style.color = 'red';
-          projMsgSpan.innerHTML = "Project Does Not Exist!";
+          // allInputs[0].style.borderColor = 'red';
+          // const projMsgSpan = document.getElementById('task-project-message');
+          // projMsgSpan.style.color = 'red';
+          // projMsgSpan.innerHTML = "Project Does Not Exist!";
+          this.showErrorMessage(allInputs[0], projMsgSpan, 'Project Does Not Exist!');
           return false;
         }
         // ......................Snippet End...............................
@@ -143,10 +151,11 @@ export class Validation {
         // check if same task exists in other project:
         const isTaskDuplicated = this.checkTaskDuplication(checkTaskDupArgs);
         if (isTaskDuplicated == false) {
-          allInputs[1].style.borderColor = 'red';
-          const msg_span = document.getElementById('task-title-message');
-          msg_span.style.color = 'red';
-          msg_span.innerHTML = "Task Is Duplicated For Above Project!";
+          // allInputs[1].style.borderColor = 'red';
+          // const msg_span = document.getElementById('task-title-message');
+          // msg_span.style.color = 'red';
+          // msg_span.innerHTML = "Task Is Duplicated For Above Project!";
+          this.showErrorMessage(allInputs[1], msg_span, 'Task Is Duplicated For Above Project!');
           return false;
         }
         // .......................Snippet End................................
@@ -157,25 +166,30 @@ export class Validation {
           const taskTitle = Object.entries(allTasksObj)[idx][1].title;
 
           if (taskTitle == ele.value) {
-            ele.style.borderColor = 'red';
-            msg_span.style.color = 'red';
-            msg_span.innerHTML = "*Title Already Exists!"
+            // ele.style.borderColor = 'red';
+            // msg_span.style.color = 'red';
+            // msg_span.innerHTML = "*Title Already Exists!"
+            this.showErrorMessage(ele, msg_span, '*Title Already Exists!');
             return false;
           }
         }
       }
-      
+
     }
     // checking html pattern validation:
-      if (ele.value != '' && ele.checkValidity() === true) {
-        msg_span.innerHTML = '';
-        return true;
-      } else {
-        ele.style.borderColor = 'red';
-        msg_span.style.color = 'red';
-        msg_span.innerHTML = "*Field Required!"
-        return false;
-      }
+    if (ele.value != '' && ele.checkValidity() === true) {
+      msg_span.innerHTML = '';
+      return true;
+    } else if (ele.value == '') {
+      this.showErrorMessage(ele, msg_span, '*Field Required!');
+      return false;
+    } else {
+      // ele.style.borderColor = 'red';
+      // msg_span.style.color = 'red';
+      // msg_span.innerHTML = "*Field Required!"
+      this.showErrorMessage(ele, msg_span, '*Title Already Exists !');
+      return false;
+    }
     // return true;
   }
 
@@ -183,15 +197,60 @@ export class Validation {
   validateOptAfterSubmit(ele, msg_span) {
 
     // checking html pattern validation:
-    if (ele.value != '' && ele.checkValidity() === true) {
+    // if (ele.type == 'textarea') {
+    if (ele.type == 'text' && ele.checkValidity()) {
       msg_span.innerHTML = '';
       return true;
-    } else {
-      ele.style.borderColor = 'red';
-      msg_span.style.color = 'red';
-      msg_span.innerHTML = "*Field Required!"
-      return false;
     }
+    // As HTML pattern attribute is not supported by textarea:
+    // else if (ele.type == 'textarea') {
+    else if (ele.type == 'textarea' && this.checkTextAreaValidity(ele)) {
+      msg_span.innerHTML = '';
+      return true;
+      // }
+    }
+    else if (ele.type == 'date' && this.checkDateValidity(ele)) {
+      msg_span.innerHTML = '';
+      return true;
+    }
+    else {
+      // ele.style.borderColor = 'red';
+      // msg_span.style.color = 'red';
+      // msg_span.innerHTML = "Some Error Occurred!";
+      if (ele.type == 'date') {
+        this.showErrorMessage(ele, msg_span, 'Previous Date Not Allowed!');
+      } else {
+        this.showErrorMessage(ele, msg_span, 'Some Error Occurred!');
+        return false;
+      }
+    }
+  }
+
+  checkTextAreaValidity(ele) {
+    const eleValue = ele.value;
+    const eleArr = eleValue.split('');
+    // if (eleArr[0] == '' && eleArr.length != 0) { return false };
+    // if (eleArr[eleArr.length - 1] == '') { return false };
+    for (let i = 0; i < eleArr.length - 1; i++) {
+      if (eleArr[i] == ' ' && eleArr[i + 1] == ' ') { return false };
+    }
+    return true;
+  }
+
+  checkDateValidity(ele) {
+    if (ele.value.length == 0) { return true };
+    const inputValArr = ele.value.split('-');
+    const inputY = inputValArr[0];
+    // JavaScript's Date constructor treats months as 0-indexed (January = 0, February = 1, etc.), 
+    // while date-fns displays them as normal 1-indexed months. So removing 1 month from input:
+    const inputM = inputValArr[1] - 1;
+    const inputD = inputValArr[2];
+    const inputDate = format(new Date(inputY, inputM, inputD), 'dd-MMM-yy');
+    const todayDate = format(new Date(), 'dd-MMM-yy')
+    if (isAfter(todayDate, inputDate)) {
+      return false
+    };
+    return true;
   }
 
   CheckProjectExistence(allProjects, updatedProjTitle) {

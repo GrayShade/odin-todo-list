@@ -288,12 +288,14 @@ class Main {
     newForm.addEventListener(('submit'), (e) => {
       const reqInputs = document.querySelectorAll(`#${formId} input.required`);
       const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
-      const optInputs = document.querySelectorAll(`#${formId} input.optional`);
+      const optInputs = document.querySelectorAll(`#${formId} input.optional, #${formId} textarea.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
-      const allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
-
+      let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
+      // to trim trailing spaces allowed by HTML pattern attribute:
+      for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
       let projIdOfTask;
       let reqFieldsStatus;
+      let optFieldsStatus;
       let toastMessage;
       // for deletion, we don't need validation:
       const statusCheckSkipped = ['delete-project', 'delete-task', 'task-details', 'complete-task'];
@@ -301,9 +303,10 @@ class Main {
         reqFieldsStatus = true;
       } else {
         reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
+        optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
-      if (reqFieldsStatus == true || statusCheckSkipped.includes(actionType)) {
+      if ((reqFieldsStatus == true && optFieldsStatus == true) || statusCheckSkipped.includes(actionType)) {
         switch (actionType) {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
