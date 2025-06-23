@@ -129,7 +129,7 @@ class Main {
     document.getElementById('new-proj-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
       Main.#ui.removeToast(modalFooterId, 'project');
-      Main.#projUI.resetNewProjModalUI();
+      Main.#projUI.resetNewProjModalUI('new-proj-form');
     });
     // To add a new Task:
     const allTasksArr = document.querySelectorAll('.new-task');
@@ -162,7 +162,7 @@ class Main {
     document.getElementById('new-task-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
       Main.#ui.removeToast(modalFooterId, 'task');
-      Main.#taskUI.resetNewTaskModalUI();
+      Main.#taskUI.resetNewTaskModalUI('new-task-form');
     });
 
     // to show all projects summary:
@@ -209,8 +209,6 @@ class Main {
         const modal = document.getElementById('task-details-modal');
         modal.style.display = 'block';
         Main.#task.populateTaskDetailValues(projTitle, projId, taskId);
-        // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
-        // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
       });
     }
 
@@ -262,17 +260,6 @@ class Main {
 
   // Below default parameter << taskOrProjId >> is for updating tasks or projects: 
   #handleModal(newForm, LBarBtnId, actionType, taskOrProjId = '') {
-    const targetType = actionType.split('-')[1];
-    // remember that 'submit' event works only for form, not for buttons:
-    const formId = document.getElementById(newForm.id).id;
-    const inputs = document.querySelectorAll(`#${formId} .form-inputs`);
-    for (let input of inputs) {
-      input.addEventListener(('input'), e => {
-        const eleName = e.target.name;
-        const eleMessage = `${eleName}-message`;
-        Main.#validate.validateBeforeSubmit(e, eleName, eleMessage);
-      });
-    }
 
     // Abort previous listener before creating a new one:
     Main.#controller.abort();
@@ -285,6 +272,19 @@ class Main {
     // As signal to be attached to a listener << { signal } >> can't be static variable, Storing it as a normal variable:
     let signal = Main.#controller.signal;
 
+    const targetType = actionType.split('-')[1];
+    // remember that 'submit' event works only for form, not for buttons:
+    const formId = document.getElementById(newForm.id).id;
+    const inputs = document.querySelectorAll(`#${formId} .form-inputs, #${formId} .form-inputs`);
+
+    for (let input of inputs) {
+      input.addEventListener(('input'), e => {
+        const eleName = e.target.name;
+        const eleMessage = `${eleName}-message`;
+        Main.#validate.validateBeforeSubmit(e, eleName, eleMessage);
+      }, { signal });
+    }
+
     newForm.addEventListener(('submit'), (e) => {
       const reqInputs = document.querySelectorAll(`#${formId} input.required`);
       const reqMsgSpans = document.querySelectorAll(`#${formId} span.required`);
@@ -293,7 +293,9 @@ class Main {
       let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
       // to trim trailing spaces allowed by HTML pattern attribute:
       for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
+      
       let projIdOfTask;
+      projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
       let reqFieldsStatus;
       let optFieldsStatus;
       let toastMessage;
@@ -303,7 +305,8 @@ class Main {
         reqFieldsStatus = true;
       } else {
         reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
-        optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans);
+        const task = Main.#task.getTask(projIdOfTask, taskOrProjId);
+        optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans, actionType);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if ((reqFieldsStatus == true && optFieldsStatus == true) || statusCheckSkipped.includes(actionType)) {
@@ -411,7 +414,6 @@ class Main {
             this.handleSuccessToast(modalFooterId, targetType, toastMessage);
             break;
         }
-        // this.handleSuccessToast(modalFooterId, toastMessage, targetType);
       }
       else {
         this.handleErrorToast(modalFooterId, targetType, toastMessage);
@@ -436,10 +438,11 @@ class Main {
     return reqFieldsStatus;
   }
 
-  getOptionalFieldsStatus(optionalInputs, optionalSpans) {
+  getOptionalFieldsStatus(optionalInputs, optionalSpans, actionType) {
+    if (optionalInputs.length == 0) {return true};
     let optFieldsStatus = false;
     for (let i = 0; i < optionalInputs.length; i++) {
-      optFieldsStatus = Main.#validate.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i]);
+      optFieldsStatus = Main.#validate.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i], actionType);
       if (optFieldsStatus == false) {
         break;
       }

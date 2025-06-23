@@ -238,10 +238,21 @@ table {
   border-collapse: collapse;
 }
 
-
-#right-div table span {
+table span {
   margin-right: 10px;
   cursor: pointer;
+}
+
+.priority-btn {
+  background: #dcdcdc;
+  padding: 8px 5px;
+  border-radius: 25px;
+  /* color: #ffffff; */
+  font-weight: bold;
+  /* margin: 20px 3px 0px; */
+  width: 80%;
+  text-transform: capitalize;
+  font-family: 's-italic';
 }
 
 #task-td8 span,
@@ -276,10 +287,6 @@ table {
   line-height: 1px;
 } */
 
-table td {
-  /* border-left: 1px solid #d3d3d3; */
-  /* border-right: 1px solid #d3d3d3; */
-}
 
 #proj-sum-table th:nth-of-type(1),
 #proj-sum-table td:nth-of-type(1),
@@ -298,6 +305,14 @@ table td {
 #proj-sum-table th:nth-of-type(5),
 #proj-sum-table td:nth-of-type(5) {
   width: 100px;
+}
+
+#task-sum-table td:nth-of-type(1),
+#task-sum-table td:nth-of-type(3),
+#task-com-table td:nth-of-type(1),
+#task-com-table td:nth-of-type(3) {
+  font-family: 's-italic';
+  font-size: 1.1em;
 }
 
 
@@ -339,6 +354,15 @@ table td {
   width: 100px;
 }
 
+/* #task-sum-table tr td:nth-child(4) {
+  text-transform: capitalize;
+  font-family: 's-italic';
+  font-weight: 600;
+  font-size: 1.1em;
+  border-radius: 25px;
+  padding: 0px 15px;
+} */
+
 #task-sum-table th:nth-of-type(5),
 #task-sum-table td:nth-of-type(5),
 #task-com-table th:nth-of-type(5),
@@ -353,10 +377,10 @@ table td {
   color: whitesmoke;
 }
 
-#right-div th,
+/* #right-div th,
 #right-div tr {
-  /* border: 1px solid #d3d3d3; */
-}
+  border: 1px solid #d3d3d3;
+} */
 
 
 /* #right-div table tr:hover {
@@ -365,7 +389,8 @@ table td {
 } */
 
 #right-div tr:nth-of-type(even) {
-  background: #e7e7e7;
+  background: #ececec;
+  /* background: #efefef; */
 }
 
 #right-div tr:nth-of-type(odd) {
@@ -373,17 +398,16 @@ table td {
 }
 
 #right-div tr:hover {
-  background: darkgrey;
+  background: lightgrey;
   color: black;
 }
 
-#right-div th,
-td {
-  padding: 5px;
-  text-align: start;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+#right-div #proj-sum-table td {
+  padding: 8px 5px;
+}
+
+#right-div #task-sum-table td {
+  padding: 8px 5px;
 }
 
 /* #proj-td5 {
@@ -404,7 +428,6 @@ td {
 }
 
 #right-div tr td:nth-child(5) {
-  text-transform: uppercase;
   font-weight: 600;
 }
 
@@ -733,10 +756,10 @@ textarea {
 /* <datalist> and <option> styling */
 datalist {
   position: absolute;
-  max-height: 20em;
+  max-height: 1px;
   border: 0 none;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 datalist option {

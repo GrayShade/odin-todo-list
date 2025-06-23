@@ -1,4 +1,4 @@
-import { isAfter, format } from "date-fns";
+import { isAfter, isEqual, format } from "date-fns";
 
 export class Validation {
   constructor() {
@@ -72,7 +72,16 @@ export class Validation {
     }
 
     const toolTipSpan = ele.previousElementSibling.lastElementChild;
-    if (ele.checkValidity() === false) {
+    let validityCheck;
+    if (ele.type == 'text') {
+      validityCheck = ele.checkValidity();
+    } else if (ele.type == 'textarea') {
+      validityCheck = this.checkTextAreaValidity(ele);
+    }
+    else if (ele.type == 'date') {
+      validityCheck = this.checkDateValidity(ele);
+    }
+    if (validityCheck === false) {
       toolTipSpan.style.display = 'block';
     }
     else {
@@ -83,11 +92,11 @@ export class Validation {
       ele.style.borderColor = 'blue';
       message.innerHTML = '';
     } else
-      if (ele_val != '' && ele.checkValidity() === true) {
+      if (ele_val != '' && validityCheck === true) {
         ele.style.borderColor = 'blue';
         message.innerHTML = ''
       } else
-        if (ele_val != '' && ele.checkValidity() === false) {
+        if (ele_val != '' && validityCheck === false) {
           ele.style.borderColor = 'red';
           message.innerHTML = ''
         }
@@ -194,7 +203,7 @@ export class Validation {
   }
 
 
-  validateOptAfterSubmit(ele, msg_span) {
+  validateOptAfterSubmit(ele, msg_span, actionType) {
 
     // checking html pattern validation:
     // if (ele.type == 'textarea') {
@@ -209,7 +218,7 @@ export class Validation {
       return true;
       // }
     }
-    else if (ele.type == 'date' && this.checkDateValidity(ele)) {
+    else if (ele.type == 'date' && this.checkDateValidity(ele, actionType)) {
       msg_span.innerHTML = '';
       return true;
     }
@@ -229,15 +238,14 @@ export class Validation {
   checkTextAreaValidity(ele) {
     const eleValue = ele.value;
     const eleArr = eleValue.split('');
-    // if (eleArr[0] == '' && eleArr.length != 0) { return false };
-    // if (eleArr[eleArr.length - 1] == '') { return false };
+    if (eleArr[0] == ' ') { return false };
     for (let i = 0; i < eleArr.length - 1; i++) {
       if (eleArr[i] == ' ' && eleArr[i + 1] == ' ') { return false };
     }
     return true;
   }
 
-  checkDateValidity(ele) {
+  checkDateValidity(ele, actionType) {
     if (ele.value.length == 0) { return true };
     const inputValArr = ele.value.split('-');
     const inputY = inputValArr[0];
@@ -247,8 +255,9 @@ export class Validation {
     const inputD = inputValArr[2];
     const inputDate = format(new Date(inputY, inputM, inputD), 'dd-MMM-yy');
     const todayDate = format(new Date(), 'dd-MMM-yy')
-    if (isAfter(todayDate, inputDate)) {
-      return false
+    // return false on previous date:
+    if (isAfter(todayDate, inputDate) && actionType != 'update-task') { 
+      return false;
     };
     return true;
   }

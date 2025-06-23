@@ -128,7 +128,7 @@ export class TasksDisplay {
     const span = document.getElementById('new-task-close');
 
     span.addEventListener('click', e => {
-      this.resetNewTaskModalUI();
+      this.resetNewTaskModalUI('new-task-form');
       modal.style.display = 'none';
       // controller.abort();
     });
@@ -137,7 +137,7 @@ export class TasksDisplay {
     // opened:
     window.addEventListener('click', e => {
       if (e.target == modal) {
-        this.resetNewTaskModalUI();
+        this.resetNewTaskModalUI('new-task-form');
         modal.style.display = 'none';
       }
     });
@@ -163,7 +163,7 @@ export class TasksDisplay {
     [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
       ele.addEventListener('click', e => {
         if (ele == detailsSpan || ele == detailsCloseBtn) {
-          this.resetNewTaskModalUI();
+          this.resetNewTaskModalUI('new-task-form');
           taskDetailModal.style.display = 'none';
         } else
           if (ele == deleteCancelBtn) {
@@ -179,7 +179,7 @@ export class TasksDisplay {
     // opened:
     window.addEventListener('click', e => {
       if (e.target == taskDetailModal || e.target == taskDeleteModal) {
-        this.resetNewTaskModalUI();
+        this.resetNewTaskModalUI('new-task-form');
         taskDetailModal.style.display = 'none';
         taskDeleteModal.style.display = 'none';
       }
@@ -190,9 +190,16 @@ export class TasksDisplay {
 
   }
 
-  resetNewTaskModalUI() {
-    const newProjTitle = document.getElementById('task-title');
-    newProjTitle.style.borderColor = '';
+  resetNewTaskModalUI(formId) {
+    // const newProjTitle = document.getElementById('task-title');
+    // newProjTitle.style.borderColor = '';
+    let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
+    for (let i = 0; i < allInputs.length; i++) {
+      // to prevent priority dropdown from being empty:
+      if (i == 4) { continue; };
+      allInputs[i].style.borderColor = '#E5E7EB';
+      allInputs[i].value = '';
+    }
     let message = document.getElementById('task-title-message');
     message.style.color = '';
     message.innerHTML = ''
@@ -506,7 +513,10 @@ export class TasksDisplay {
       // const taskTd4Text = document.createTextNode(projTitle);
       // const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
-      const taskTd7Text = document.createTextNode(obj[1].priority);
+      // const taskTd7Text = document.createTextNode(obj[1].priority);
+      const taskTd7Btn = document.createElement('button');
+      taskTd7Btn.setAttribute('class', 'priority-btn');
+      taskTd7Btn.textContent = obj[1].priority;
       // const taskTd8Text = document.createTextNode('Controls');
 
       const taskTd8DetailsSpan = document.createElement('span');
@@ -529,9 +539,9 @@ export class TasksDisplay {
       // taskTd4.appendChild(taskTd4Text);
       // taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
-      taskTd7.appendChild(taskTd7Text);
+      taskTd7.appendChild(taskTd7Btn);
 
-      this.setPriorityTextColor(taskTd7, taskTd7Text);
+      this.setPriorityTextColor(taskTd7, taskTd7Btn);
 
       taskTd8.appendChild(taskTd8DetailsSpan);
 
@@ -563,17 +573,17 @@ export class TasksDisplay {
       num++;
     }
   }
-  setPriorityTextColor(taskTd7, taskTd7Text) {
+  setPriorityTextColor(taskTd7, taskTd7Btn) {
 
-    switch (taskTd7Text.textContent) {
+    switch (taskTd7Btn.textContent) {
       case 'high':
-        taskTd7.style.color = '#f08080';
+        taskTd7Btn.style.color = '#f08080';
         break;
       case 'normal':
-        taskTd7.style.color = '#2e8b57';
+        taskTd7Btn.style.color = '#2e8b57';
         break;
       case 'low':
-        taskTd7.style.color = '#1e90ff';
+        taskTd7Btn.style.color = '#1e90ff';
         break;
     }
   }

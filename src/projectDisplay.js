@@ -111,7 +111,7 @@ export class ProjectsDisplay {
     });
     // if clicked on close button of modal:
     span.addEventListener('click', e => {
-      this.resetNewProjModalUI();
+      this.resetNewProjModalUI('new-proj-form');
       modal.style.display = 'none';
       this.showAllProjectsSummary(allProjects);
       this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
@@ -123,7 +123,7 @@ export class ProjectsDisplay {
     // opened:
     window.addEventListener('click', e => {
       if (e.target == modal) {
-        this.resetNewProjModalUI();
+        this.resetNewProjModalUI('new-proj-form');
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
         this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
@@ -137,9 +137,13 @@ export class ProjectsDisplay {
   }
 
 
-  resetNewProjModalUI() {
+  resetNewProjModalUI(formId) {
     const newProjTitle = document.getElementById('new-proj-title');
     newProjTitle.style.borderColor = '';
+    let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
+    for (let i = 0; i < allInputs.length; i++) { 
+      allInputs[i].value = '';
+    }
     let message = document.getElementById('new-proj-title-message');
     message.style.color = '';
     message.innerHTML = '';
