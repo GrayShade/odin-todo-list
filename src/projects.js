@@ -1,5 +1,3 @@
-import { compareAsc, format } from "date-fns";
-
 export class Projects {
 
   constructor(eventBus) {

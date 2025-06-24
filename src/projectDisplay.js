@@ -4,21 +4,6 @@ export class ProjectsDisplay {
     this.eventBus = eventBus;
   }
 
-  // showAllProjects(allProjects) {
-
-  //   for (const obj of Object.entries(allProjects)) {
-  //     // console.log(obj[0]);
-  //   }
-  // }
-
-  // showSingleProject(projId, allProjects) {
-  //   for (const obj of Object.entries(allProjects)) {
-  //     if (JSON.parse(obj[1])[`p${projId}`].projId == projId) {
-  //       return;
-  //     }
-  //   }
-  // }
-
   showLBarProjects(allProjects) {
     this.removeAllLeftBarProjects();
 
@@ -33,11 +18,9 @@ export class ProjectsDisplay {
     const prjContainer = document.getElementById('projects-container');
     prjContainer.textContent = '';
     console.log('here');
-
   }
 
   #createNewProjAndSumNodes(prjContainer) {
-    // for <p id="new-project"><span class="left-bar-span at-folder-plus"></span>New Project</p>
     const newProjP = document.createElement('p');
     newProjP.setAttribute('id', 'new-project');
     newProjP.textContent = 'New Project';
@@ -47,7 +30,6 @@ export class ProjectsDisplay {
     newProjPSpan.setAttribute('class', 'left-bar-span at-folder-plus');
     newProjP.prepend(newProjPSpan);
 
-    // <p id="projects-sumry"><span class="left-bar-span at-dots-clipboard"></span>Projects Summary</p>
     const projSummaryP = document.createElement('p');
     projSummaryP.setAttribute('id', 'projects-sumry');
     projSummaryP.textContent = 'Projects Summary';
@@ -63,18 +45,15 @@ export class ProjectsDisplay {
       const prjObKey = `p${obj[0]}`;
       const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
 
-      // for <div id="p0" class="project"></div>
       const prjMainD = document.createElement('div');
       prjMainD.setAttribute('id', prjObKey);
       prjMainD.setAttribute('class', 'project');
       prjContainer.appendChild(prjMainD);
 
-      // for <div class="showHide">
       const prjShowHideSubD = document.createElement('div');
       prjShowHideSubD.setAttribute('class', 'showHide');
       prjMainD.appendChild(prjShowHideSubD);
 
-      // for <p class="sub-showHide showHide-left-p"><span class="left-bar-span at-folder-text"></span>Default</p>
       const prjShowHideSubDP1 = document.createElement('p');
       prjShowHideSubDP1.setAttribute('class', 'sub-showHide showHide-left-p');
       const prjTitle = prjObVal.title;
@@ -85,7 +64,6 @@ export class ProjectsDisplay {
       prjShowHideSubDP1Span.setAttribute('class', 'left-bar-span project-icon at-arrow-right')
       prjShowHideSubDP1.prepend(prjShowHideSubDP1Span);
 
-      // for <p class="showHide-right-p"><span id="arrow-p0" class="arrow arrow-collapse"></p>
       const prjShowHideSubDP2 = document.createElement('p');
       prjShowHideSubDP2.setAttribute('class', 'showHide-right-p');
       prjShowHideSubD.appendChild(prjShowHideSubDP2);
@@ -103,20 +81,16 @@ export class ProjectsDisplay {
     const span = document.getElementById('new-proj-close');
     const deleteCancelBtn = document.getElementById('del-proj-cancel');
 
-    // const newProjForm = document.getElementById('new-proj-form');
-
-    btn.addEventListener('click', e => {
+    btn.addEventListener('click', () => {
       modal.style.display = 'block';
 
     });
     // if clicked on close button of modal:
-    span.addEventListener('click', e => {
+    span.addEventListener('click', () => {
       this.resetNewProjModalUI('new-proj-form');
       modal.style.display = 'none';
       this.showAllProjectsSummary(allProjects);
       this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
-      // this.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
-      // controller.abort();
     });
 
     // for closing modal if clicked anywhere on screen while model is 
@@ -127,11 +101,10 @@ export class ProjectsDisplay {
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
         this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
-        // this.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
       }
     });
     // if clicked on cancel button of delete project modal:
-    deleteCancelBtn.addEventListener('click', (e) => {
+    deleteCancelBtn.addEventListener('click', () => {
       modal.style.display = 'none';
     });
   }
@@ -141,7 +114,7 @@ export class ProjectsDisplay {
     const newProjTitle = document.getElementById('new-proj-title');
     newProjTitle.style.borderColor = '';
     let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
-    for (let i = 0; i < allInputs.length; i++) { 
+    for (let i = 0; i < allInputs.length; i++) {
       allInputs[i].value = '';
     }
     let message = document.getElementById('new-proj-title-message');
@@ -197,8 +170,6 @@ export class ProjectsDisplay {
           document.getElementById('new-proj-reset').style.display = 'block';
         }
         addProjModalBtn.textContent = btnTitle;
-        // const btnDiv = document.querySelectorAll('.btn-div');
-        // btnDiv[0].classList.add(".center-buttons");
         document.getElementById('new-proj-modal').style.display = 'block';
 
 

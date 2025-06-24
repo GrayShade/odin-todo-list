@@ -1,8 +1,6 @@
 import { compareAsc, format } from "date-fns";
 import { styles } from "./styles/styles.css"
 import { reset } from "./styles/reset.css"
-// import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
-// import {feather} from "./../node_modules/feather-icons/dist/feather.js";
 import { replace } from 'feather-icons';
 import { EventBus } from './eventBus.js';
 import { Projects } from "./projects";
@@ -65,29 +63,6 @@ class Main {
     Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     this.setupEventBusListeners();
 
-
-    // Main.#proj.updateProject(7, 'updated Project');
-    // console.log(Main.#proj.getProjectIdByTitle('Default'));
-
-    // Main.#proj.deleteProject(3);
-    // Main.#task.deleteTask(1, 1);
-    // Main.#projUI.showAllProjects(Main.#proj.getAllProjects());
-    // Main.#projUI.showSingleProject(0, Main.#proj.getAllProjects());
-    // Main.#taskUI.showAllTasks(0);
-    // Main.#taskUI.showSingleTask(Main.#task.getTask(0, 0));
-
-    // const date = format(new Date(2025, 1, 26), 'dd-MMM-yy');
-
-    // const updatedTask = {
-    //   taskId: 0,
-    //   projId: 0,
-    //   title: 'updated Task',
-    //   description: '',
-    //   dueDate: date,
-    //   priority: ''
-    // };
-    // // Main.#task.updateTask(0, 0, updatedTask);
-    // Main.#task.getTask(0, 0);
   }
 
   #updateLBarProjectsAndTasks() {
@@ -117,8 +92,6 @@ class Main {
       document.getElementById('new-proj-reset').style.display = 'block';
       const addProjModalBtn = document.getElementById('add-proj-btn');
       addProjModalBtn.textContent = 'Add Project';
-      // const btnDiv = document.querySelectorAll('.btn-div');
-      // btnDiv[0].classList.remove(".center-buttons");
 
       Main.#ui.removeToast('new-proj-footer', 'project');
       const newProjForm = document.getElementById('new-proj-form');
@@ -144,9 +117,9 @@ class Main {
         document.querySelector('#task-modal-header h3').textContent = 'New Task';
 
         // Show & reset form buttons & labels again if changed by task edit & task delete modals:
-        const addProjModalBtn = document.getElementById('add-task-btn');
-        addProjModalBtn.style.display = 'block';
-        addProjModalBtn.textContent = 'Create Task';
+        const addTaskModalBtn = document.getElementById('add-task-btn');
+        addTaskModalBtn.style.display = 'block';
+        addTaskModalBtn.textContent = 'Create Task';
         const newTaskReset = document.getElementById('new-task-reset');
         newTaskReset.style.display = 'block';
         newTaskReset.textContent = 'Reset Form';
@@ -154,6 +127,7 @@ class Main {
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
+        Main.#taskUI.resetNewTaskModalUI('new-task-form', 'new-task');
         const newTaskForm = document.getElementById('new-task-form');
         this.#handleModal(newTaskForm, e.target.id, 'new-task');
       });
@@ -205,7 +179,6 @@ class Main {
         } else {
           taskId = e.target.id.split('-')[1].split('t')[1];
         }
-        // Main.#taskUI.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
         const modal = document.getElementById('task-details-modal');
         modal.style.display = 'block';
         Main.#task.populateTaskDetailValues(projTitle, projId, taskId);
@@ -249,11 +222,6 @@ class Main {
         };
 
       });
-      // If it was the div containing all projects, above function should have expanded or collapsed
-      //  it on click. Now return. Otherwise, on each iteration, it will keep expanding / collapsing too.
-      // if (e.target.id == 'proj-showHide-left-p') {
-      // return;
-      // }
     }
 
   }
@@ -281,7 +249,7 @@ class Main {
       input.addEventListener(('input'), e => {
         const eleName = e.target.name;
         const eleMessage = `${eleName}-message`;
-        Main.#validate.validateBeforeSubmit(e, eleName, eleMessage);
+        Main.#validate.validateBeforeSubmit(e, eleName, eleMessage, actionType);
       }, { signal });
     }
 
@@ -291,9 +259,8 @@ class Main {
       const optInputs = document.querySelectorAll(`#${formId} input.optional, #${formId} textarea.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
       let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
-      // to trim trailing spaces allowed by HTML pattern attribute:
-      for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
-      
+
+
       let projIdOfTask;
       projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
       let reqFieldsStatus;
@@ -305,11 +272,12 @@ class Main {
         reqFieldsStatus = true;
       } else {
         reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
-        const task = Main.#task.getTask(projIdOfTask, taskOrProjId);
         optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans, actionType);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if ((reqFieldsStatus == true && optFieldsStatus == true) || statusCheckSkipped.includes(actionType)) {
+        // to trim trailing spaces allowed by HTML pattern attribute:
+        for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
         switch (actionType) {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
@@ -317,17 +285,16 @@ class Main {
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Added Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
           case 'new-task':
-            // Main.#taskUI.resetNewTaskModalUI();
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             Main.#task.createTask(allInputs, projIdOfTask);
             this.#updateLBarProjectsAndTasks();
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Added Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
           case 'update-project':
             if (taskOrProjId == 0) {
@@ -341,7 +308,7 @@ class Main {
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Updated Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
           case 'delete-project':
             if (taskOrProjId == 0) {
@@ -354,7 +321,7 @@ class Main {
             Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
             Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Deleted Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
           case 'update-task':
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
@@ -389,7 +356,7 @@ class Main {
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Updated Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
 
           case 'delete-task':
@@ -399,10 +366,9 @@ class Main {
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Deleted Successfully';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
           case 'complete-task':
-            // alert('in index');
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             let task = Main.#task.getTask(projIdOfTask, taskOrProjId);
             task.completed = 1;
@@ -411,7 +377,7 @@ class Main {
             Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
             Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Mark As Completed!';
-            this.handleSuccessToast(modalFooterId, targetType, toastMessage);
+            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
             break;
         }
       }
@@ -439,7 +405,7 @@ class Main {
   }
 
   getOptionalFieldsStatus(optionalInputs, optionalSpans, actionType) {
-    if (optionalInputs.length == 0) {return true};
+    if (optionalInputs.length == 0) { return true };
     let optFieldsStatus = false;
     for (let i = 0; i < optionalInputs.length; i++) {
       optFieldsStatus = Main.#validate.validateOptAfterSubmit(optionalInputs[i], optionalSpans[i], actionType);
@@ -450,7 +416,9 @@ class Main {
     return optFieldsStatus;
   }
 
-  handleSuccessToast(modalFooterId, targetType, toastMessage) {
+  handleSuccessToast(formId, modalFooterId, actionType, toastMessage) {
+    const targetType = actionType.split('-')[1];
+    Main.#taskUI.resetNewTaskModalUI(formId, actionType);
     Main.#ui.removeToast(modalFooterId, targetType);
     Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
   }

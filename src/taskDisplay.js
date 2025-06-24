@@ -16,9 +16,6 @@ export class TasksDisplay {
       }
     }
   }
-  // showSingleTask(task) {
-  //   console.log(task);
-  // }
 
   showLBarTasks(allProjects) {
     const allProjEls = document.querySelectorAll('.project');
@@ -36,12 +33,10 @@ export class TasksDisplay {
         }
       }
 
-      // for <div class="project-tasks hidden"></div>
       const taskMD = document.createElement('div');
       taskMD.setAttribute('class', 'project-tasks hidden');
       projEle.appendChild(taskMD);
 
-      // for <p id="p0-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
       const taskMDAddTaskP = document.createElement('p');
       taskMDAddTaskP.setAttribute('id', `${projId}-new-task`);
       taskMDAddTaskP.setAttribute('class', 'new-task');
@@ -52,16 +47,13 @@ export class TasksDisplay {
       taskMDAddTaskSpan.setAttribute('class', 'left-bar-span at-document');
       taskMDAddTaskP.prepend(taskMDAddTaskSpan);
 
-      // for <p id="p0-tasks-smry"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
       const taskMDTaskSumP = document.createElement('p');
       taskMDTaskSumP.setAttribute('id', `${projId}-tasks-summary`);
       taskMDTaskSumP.setAttribute('class', `tasks-sumry`);
-      // taskMDTaskSumyP.setAttribute('class', 'new-task');
       taskMD.appendChild(taskMDTaskSumP);
       taskMDTaskSumP.innerText = 'Tasks Summary';
 
       const taskMDTaskSumSpan = document.createElement('span');
-      // taskMDTaskSumSpan.setAttribute('id', 'p0-tasks-summary');
       taskMDTaskSumSpan.setAttribute('class', 'left-bar-span at-list-file');
       taskMDTaskSumP.prepend(taskMDTaskSumSpan);
 
@@ -72,16 +64,11 @@ export class TasksDisplay {
       taskMD.appendChild(taskMDTaskComP);
 
       const taskMDTaskComSpan = document.createElement('span');
-      // taskMDTaskSumSpan.setAttribute('id', 'p0-tasks-summary');
       taskMDTaskComSpan.setAttribute('class', 'left-bar-span at-check-file');
       taskMDTaskComP.prepend(taskMDTaskComSpan);
 
-
-
-      // <p><span id="p1-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
       for (const key in nonCompletedTasks) {
         if (key === 'entries') { break };
-        // const proj
         const taskMDTaskP = document.createElement('p');
         taskMDTaskP.setAttribute('id', `${projId}-${key}-p`);
         taskMDTaskP.setAttribute('class', 'left-bar-p-task');
@@ -113,24 +100,21 @@ export class TasksDisplay {
 
   setNewTaskModalUI() {
     const modal = document.getElementById('new-task-modal');
-    // const btn = document.getElementById('p0-new-task');
     const newTaskBtns = document.querySelectorAll('.new-task');
     for (let key in newTaskBtns) {
       // last index of this array is entries. Maybe a side effect
       //  of using for...in loop. So:
       if (key === 'entries') { break };
       const btnEle = newTaskBtns[key]
-      btnEle.addEventListener('click', e => {
-        // this.resetNewTaskModalUI();
+      btnEle.addEventListener('click', () => {
         modal.style.display = 'block';
       });
     }
     const span = document.getElementById('new-task-close');
 
-    span.addEventListener('click', e => {
+    span.addEventListener('click', () => {
       this.resetNewTaskModalUI('new-task-form');
       modal.style.display = 'none';
-      // controller.abort();
     });
 
     // for closing modal if clicked anywhere on screen while model is 
@@ -145,23 +129,12 @@ export class TasksDisplay {
   closeDetailDeleteModals() {
     const taskDetailModal = document.getElementById('task-details-modal');
     const taskDeleteModal = document.getElementById('new-task-modal');
-    // // const btn = document.getElementById('p0-new-task');
-    // const newTaskBtns = document.querySelectorAll('.task-details-svg');
-    // for (let key in newTaskBtns) {
-    //   // last index of this array is entries. Maybe a side effect
-    //   //  of using for...in loop. So:
-    //   if (key === 'entries') { break };
-    //   const btnEle = newTaskBtns[key]
-    //   btnEle.addEventListener('click', e => {
-    //     modal.style.display = 'block';
-    //   });
-    // }
     const detailsSpan = document.getElementById('task-details-close');
     const detailsCloseBtn = document.getElementById('task-details-btn');
     const deleteCancelBtn = document.getElementById('del-task-cancel');
 
     [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
-      ele.addEventListener('click', e => {
+      ele.addEventListener('click', () => {
         if (ele == detailsSpan || ele == detailsCloseBtn) {
           this.resetNewTaskModalUI('new-task-form');
           taskDetailModal.style.display = 'none';
@@ -169,7 +142,6 @@ export class TasksDisplay {
           if (ele == deleteCancelBtn) {
             taskDeleteModal.style.display = 'none';
           }
-        // controller.abort();
       });
     });
 
@@ -190,19 +162,17 @@ export class TasksDisplay {
 
   }
 
-  resetNewTaskModalUI(formId) {
-    // const newProjTitle = document.getElementById('task-title');
-    // newProjTitle.style.borderColor = '';
+  resetNewTaskModalUI(formId, actionType = '') {
     let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
+    let message = document.querySelectorAll('#new-task-form .message')
     for (let i = 0; i < allInputs.length; i++) {
       // to prevent priority dropdown from being empty:
       if (i == 4) { continue; };
       allInputs[i].style.borderColor = '#E5E7EB';
-      allInputs[i].value = '';
+      if (actionType == 'new-task') { allInputs[i].value = ''; }
+      message[i].style.color = '';
+      message[i].innerHTML = ''
     }
-    let message = document.getElementById('task-title-message');
-    message.style.color = '';
-    message.innerHTML = ''
   }
 
   showAllTasksSummary(allProjects, projId) {
@@ -217,10 +187,10 @@ export class TasksDisplay {
     table.setAttribute('id', 'task-sum-table');
 
     this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projTitle, projId);
+    this.createTableRows(table, projId);
 
     // to show task details:
-    this.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
+    this.handleShowDetails(projTitle, projId, '.task-details-icon');
     // to update task:
     this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
@@ -229,33 +199,11 @@ export class TasksDisplay {
     this.handleModifyAndDelete(projId, '.task-complete-icon', 'complete-task');
   }
 
-  // handleCheckCompleted(projId, allTaskControlElsClass, actionType) {
-  //   alert('here');
-  //   const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
-  //   for (const idx in allTaskControlEls) {
-  //     if (idx === 'entries') { break; };
-  //     allTaskControlEls[idx].addEventListener('click', (e) => {
-  //       const taskId = e.target.id.split('-')[0];
-  //       alert('here');
-  //       // this.eventBus.emit('populateTaskDetailValues', projId, taskId); // notify projects.js to get project
-  //       this.eventBus.emit('handleComptedTask', actionType, projId, taskId); // Notify index.js to handle Modal
-  //     });
-  //   }
-  // }
-
-  handleShowDetails(projTitle, projId, allTaskControlElsClass, actionType) {
+  handleShowDetails(projTitle, projId, allTaskControlElsClass) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
       allTaskControlEls[idx].addEventListener('click', (e) => {
-        let modalHeader = document.querySelector('#task-modal-header h3');
-        // if (actionType == 'update-task') {
-
-        // }
-        // modalHeader.textContent = h3Title;
-        const addTaskModalBtn = document.getElementById('add-task-btn');
-        // const formInputDiv = document.querySelector('.form-input-div');
-        const taskForm = document.getElementById('new-task-form');
         let taskId = '';
         // eye icon SVG is composed of multiple elements & user can click on any of them. So 
         // handling all of them:
@@ -269,25 +217,10 @@ export class TasksDisplay {
           taskId = e.target.parentElement.parentElement.id.split('-')[0];
         }
 
-        // if (actionType == 'task-details') {
-        // this.setTaskDetailsModalUI();
         const modal = document.getElementById('task-details-modal');
-        // const btn = document.getElementById('p0-new-task');
-        const newTaskLinks = document.querySelectorAll('.task-details-icon');
-        // for (let key in newTaskLinks) {
-        //   // last index of this array is entries. Maybe a side effect
-        //   //  of using for...in loop. So:
-        //   if (key === 'entries') { break };
-        //   const btnEle = newTaskLinks[key]
-        //   btnEle.addEventListener('click', e => {
-        //     modal.style.display = 'block';
-        //   });
-        // }
         modal.style.display = 'block';
         // notify projects.js to get project & populate values
         this.eventBus.emit('populateTaskDetailValues', projTitle, projId, taskId);
-
-        // this.eventBus.emit('handleModalTask', actionType, projId, taskId); // Notify index.js to handle Modal
       });
     }
   }
@@ -298,16 +231,8 @@ export class TasksDisplay {
       if (idx === 'entries') { break; };
       allTaskControlEls[idx].addEventListener('click', (e) => {
         let modalHeader = document.querySelector('#task-modal-header h3');
-        // if (actionType == 'update-task') {
-
-        // }
-        // modalHeader.textContent = h3Title;
         const addTaskModalBtn = document.getElementById('add-task-btn');
-        // const formInputDiv = document.querySelector('.form-input-div');
         const taskForm = document.getElementById('new-task-form');
-
-
-
         const taskId = e.target.id.split('-')[0];
 
         // for updating & deleting tasks, We are not adding a new modal but modifying the previous one 
@@ -348,38 +273,25 @@ export class TasksDisplay {
           if (actionType == 'delete-task') {
             taskForm.style.display = 'none';
             modalHeader.textContent = 'Delete Task';
-            // document.getElementById('new-task-form').style.display = 'flex';
             addTaskModalBtn.style.display = 'none';
             document.getElementById('new-task-reset').style.display = 'none';
             document.getElementById('del-confirm-task').style.display = 'block';
             document.getElementById('complete-confirm-task').style.display = 'none';
             document.getElementById('task-proj-input-div').style.display = 'none';
 
-
-            // document.getElementById('del-confirm-task').style.display = 'none';
             document.getElementById('complete-task-btn').style.display = 'none';
             document.getElementById('del-task-btn').style.display = 'block';
             document.getElementById('del-task-cancel').style.display = 'block';
-            // const btnDiv = document.querySelectorAll('.btn-div');
-            // btnDiv[1].classList.add(".center-buttons");
-            // const delConfirmP = document.createElement('p');
-            // delConfirmP.setAttribute('id', 'del-confirm-task');
-            // delConfirmP.textContent = 'Are You Sure?';
-            // document.getElementById('new-proj-form').appendChild(delConfirmP);
-
           } else
             if (actionType == 'complete-task') {
               taskForm.style.display = 'none';
               modalHeader.textContent = 'Complete Task';
-              // document.getElementById('new-task-form').style.display = 'flex';
               addTaskModalBtn.style.display = 'none';
               document.getElementById('new-task-reset').style.display = 'none';
               document.getElementById('del-confirm-task').style.display = 'none';
               document.getElementById('complete-confirm-task').style.display = 'block';
               document.getElementById('task-proj-input-div').style.display = 'none';
 
-
-              // document.getElementById('del-confirm-task').style.display = 'none';
               document.getElementById('del-task-btn').style.display = 'none';
               document.getElementById('complete-task-btn').style.display = 'block';
               document.getElementById('del-task-cancel').style.display = 'block';
@@ -413,58 +325,32 @@ export class TasksDisplay {
     table.setAttribute('id', 'task-com-table');
 
     this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projTitle, projId);
-
-    // to show task details:
-    // this.handleShowDetails(projId, '.task-details-icon', 'task-details');
-    // to update task:
-    // this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
-    // to delete task:
-    // this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
-    // to show completed tasks:
-    // this.handleShowCompleted(projId, '.task-details-icon', 'task-details');
-    // to show task details:
-    this.handleShowDetails(projTitle, projId, '.task-details-icon', 'task-details');
+    this.createTableRows(table, projId);
+    this.handleShowDetails(projTitle, projId, '.task-details-icon');
   }
-
-  // handleShowCompleted(projId, allTaskControlElsClass, actionType) {
-
-  // }
 
   createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
     const headerTd2 = document.createElement('th');
-    // const headerTd3 = document.createElement('th');
-    const headerTd4 = document.createElement('th');
-    // const headerTd5 = document.createElement('th');
     const headerTd6 = document.createElement('th');
     const headerTd7 = document.createElement('th');
     const headerTd8 = document.createElement('th');
 
     const headerNumText = document.createTextNode('#');
     const headerTitleText = document.createTextNode('Title');
-    // const headerTaskIdText = document.createTextNode('ID');
-    // const headerProjIdText = document.createTextNode('Project');
-    // const headerDescText = document.createTextNode('Description');
     const headerDueDateText = document.createTextNode('Due Date');
     const headerPriorityText = document.createTextNode('Priority');
     const headerControlsText = document.createTextNode('Controls');
 
     headerTd1.appendChild(headerNumText);
     headerTd2.appendChild(headerTitleText);
-    // headerTd3.appendChild(headerTaskIdText);
-    // headerTd4.appendChild(headerProjIdText);
-    // headerTd5.appendChild(headerDescText);
     headerTd6.appendChild(headerDueDateText);
     headerTd7.appendChild(headerPriorityText);
     headerTd8.appendChild(headerControlsText);
 
     headerTr.appendChild(headerTd1);
     headerTr.appendChild(headerTd2);
-    // headerTr.appendChild(headerTd3);
-    // headerTr.appendChild(headerTd4);
-    // headerTr.appendChild(headerTd5);
     headerTr.appendChild(headerTd6);
     headerTr.appendChild(headerTd7);
     headerTr.appendChild(headerTd8);
@@ -474,7 +360,7 @@ export class TasksDisplay {
 
   }
 
-  createTableRows(table, projTitle, projId) {
+  createTableRows(table, projId) {
     let num = 1;
 
     const allTasks = this.getAllTasks(projId);
@@ -497,9 +383,6 @@ export class TasksDisplay {
       const taskTr = document.createElement('tr');
       const taskTd1 = document.createElement('td');
       const taskTd2 = document.createElement('td');
-      // const taskTd3 = document.createElement('td');
-      // const taskTd4 = document.createElement('td');
-      // const taskTd5 = document.createElement('td');
       const taskTd6 = document.createElement('td');
       const taskTd7 = document.createElement('td');
       const taskTd8 = document.createElement('td');
@@ -508,16 +391,10 @@ export class TasksDisplay {
 
       const taskTd1Text = document.createTextNode(num);
       const taskTd2Text = document.createTextNode(obj[1].title);
-      // const taskTd3Text = document.createTextNode(obj[1].taskId);
-      // const taskIdText = document.createTextNode('projTitle');
-      // const taskTd4Text = document.createTextNode(projTitle);
-      // const taskTd5Text = document.createTextNode(obj[1].description);
       const taskTd6Text = document.createTextNode(obj[1].dueDate);
-      // const taskTd7Text = document.createTextNode(obj[1].priority);
       const taskTd7Btn = document.createElement('button');
       taskTd7Btn.setAttribute('class', 'priority-btn');
       taskTd7Btn.textContent = obj[1].priority;
-      // const taskTd8Text = document.createTextNode('Controls');
 
       const taskTd8DetailsSpan = document.createElement('span');
       const taskTd8EditSpan = document.createElement('span');
@@ -531,17 +408,12 @@ export class TasksDisplay {
       eyeIcon.setAttribute('class', 'task-details-svg');
       taskTd8DetailsSpan.appendChild(eyeIcon);
 
-
-
       taskTd1.appendChild(taskTd1Text);
       taskTd2.appendChild(taskTd2Text);
-      // taskTd3.appendChild(taskTd3Text);
-      // taskTd4.appendChild(taskTd4Text);
-      // taskTd5.appendChild(taskTd5Text);
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Btn);
 
-      this.setPriorityTextColor(taskTd7, taskTd7Btn);
+      this.setPriorityTextColor(taskTd7Btn);
 
       taskTd8.appendChild(taskTd8DetailsSpan);
 
@@ -560,9 +432,6 @@ export class TasksDisplay {
 
       taskTr.appendChild(taskTd1);
       taskTr.appendChild(taskTd2);
-      // taskTr.appendChild(taskTd3);
-      // taskTr.appendChild(taskTd4);
-      // taskTr.appendChild(taskTd5);
       taskTr.appendChild(taskTd6);
       taskTr.appendChild(taskTd7);
       taskTr.appendChild(taskTd8);
@@ -573,7 +442,7 @@ export class TasksDisplay {
       num++;
     }
   }
-  setPriorityTextColor(taskTd7, taskTd7Btn) {
+  setPriorityTextColor(taskTd7Btn) {
 
     switch (taskTd7Btn.textContent) {
       case 'high':

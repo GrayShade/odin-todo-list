@@ -15,8 +15,6 @@
 
     <!-- code related to expanding & collapsing of divs starting here -->
     <div class="showHide skip-rerun">
-      <!-- <p id="proj-showHide-left-p" class="showHide-left-p"><span class="left-bar-span at-folder-dots"></span> Projects
-      </p> -->
       <p id="proj-showHide-left-p" class="showHide-left-p"><span class="left-bar-span at-folder-dots"></span> Projects
       </p>
       <p class="showHide-right-p"><span id="arrow-left-bar" class="arrow arrow-expand"></p>
@@ -26,33 +24,7 @@
     <div id="projects-container">
       <p id="new-project"><span class="left-bar-span at-folder-plus"></span>New Project</p>
       <p id="projects-sumry"><span class="left-bar-span at-dots-clipboard"></span>Projects Summary</p>
-
-      <!-- <div id="p0" class="project">
-        <div class="showHide">
-          <p class="sub-showHide showHide-left-p"><span class="left-bar-span at-folder-text"></span>Default</p>
-          <p class="showHide-right-p"><span id="arrow-p0" class="arrow arrow-collapse"></span></p>
-        </div> -->
-      <!-- <div class="project-tasks hidden">
-          <p id="p0-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
-          <p id="p0-tasks-smry"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
-          <p><span id="p0-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
-          <p><span id="p0-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
-          <p><span id="p0-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
-        </div> -->
     </div>
-    <!-- <div id="p1" class="project">
-        <div class="showHide">
-          <p class="sub-showHide showHide-left-p"><span class="left-bar-span at-folder-text"></span>Project 1</p>
-          <p class="showHide-right-p"><span id="arrow-p1" class="arrow arrow-collapse"></p>
-        </div>
-        <div class="project-tasks hidden">
-          <p id="p1-new-task" class="new-task"><span class="left-bar-span at-document"></span>Add Task</p>
-          <p id="p1-tasks-summary"><span class="left-bar-span at-list-file"></span>Tasks Summary</p>
-          <p><span id="p1-t1" class="left-bar-span-task at-arrow-right"></span>Task1</p>
-          <p><span id="p1-t2" class="left-bar-span-task at-arrow-right"></span>Task2</p>
-          <p><span id="p1-t3" class="left-bar-span-task at-arrow-right"></span>Task3</p>
-        </div>
-      </div> -->
   </div>
   </div>
   <div id="right-div">
@@ -63,8 +35,6 @@
     <div class="modal-content">
       <header id="proj-modal-header" class="modal-header">
         <h3>New Project</h3>
-        <!-- <span onclick="document.getElementById('myModal').style.display='none'" 
-        class="w3-button w3-display-topright">&times;</span> -->
         <span id="new-proj-close" class="close">&times;</span>
       </header>
       <div class="modal-content-form">
@@ -93,7 +63,6 @@
           <button class="form-button" id="del-proj-cancel" form="new-proj-form" type="button">Cancel</button>
         </div>
       </div>
-      <!-- <span class="close">&times;</span> -->
       <div id="new-proj-footer" class="modal-footer">
       </div>
     </div>
@@ -120,11 +89,6 @@
             <input list="task-list-projects" type="text" class="optional form-inputs" id="task-project"
               name="task-project" minlength="1" maxlength="40" pattern="^\S+(?: \S+)* ?$">
             <datalist id="task-list-projects">
-              <!-- <option value="Internet Explorer">
-                  <option value="Firefox">
-                  <option value="Chrome">
-                  <option value="Opera">
-                  <option value="Safari"> -->
             </datalist>
             <span class="optional message" id="task-project-message"></span>
           </div>
@@ -150,8 +114,8 @@
             </div>
             <!-- <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
               maxlength="400" pattern="^\S+(?: \S+)* ?$"> -->
-            <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
-              maxlength="400" pattern="^\S+(?: \S+)* ?$"></textarea>
+            <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc" name="task-desc"
+              minlength="1" maxlength="400" pattern="^\S+(?: \S+)* ?$"></textarea>
             <span class="optional message" id="task-desc-message"></span>
           </div>
 
@@ -159,8 +123,7 @@
             <div class="label-and-tooltip-pair-div">
               <label for="task-dueDate" class="heading">Due Date: <span id="task-dueDate-info-brackets"
                   class="form-info-brackets">(Optional)</span></label>
-              <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
+              <span class="tooltip" data-tooltip="Date before today is not allowed">?</span>
             </div>
             <input type="date" class="optional form-inputs" id="task-dueDate" name="task-dueDate" minlength="1"
               maxlength="79" pattern="^\S+(?: \S+)* ?$" placeholder="DD-Mon-YYYY">
@@ -168,18 +131,11 @@
           </div>
 
           <div class="form-input-div">
-            <div class="label-and-tooltip-pair-div">
-              <label for="task-priority" class="heading">Priority: <span id="task-priority-info-brackets"
-                  class="form-info-brackets">(Optional)</span></label>
-              <span class="tooltip"
-                data-tooltip="Minimum 1 & maximum 79 characters, no space at start/end & only single space between words">?</span>
-            </div>
             <select name="task-priority" class="optional-form-inputs" id="task-priority">
               <option value="high">High</option>
               <option value="normal">Normal</option>
               <option value="low">Low</option>
             </select>
-            <span class="optional message" id="task-priority-message"></span>
           </div>
         </form>
         <!-- Show for delete confirmation: -->
@@ -238,7 +194,6 @@
         </form>
         <div class="btn-div">
           <button class="form-button" id="task-details-btn" form="new-task-form" type="submit">Go Back</button>
-          <!-- <button class="form-button" id="new-task-reset" form="new-task-form" type="reset">Reset Form</button> -->
         </div>
       </div>
       <div id="task-details-footer" class="modal-footer">

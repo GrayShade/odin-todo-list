@@ -1,6 +1,3 @@
-import { compareAsc, format } from "date-fns";
-import { styles } from "./styles/styles.css"
-import { reset } from "./styles/reset.css"
 import { icons } from "./../node_modules/@vectopus/atlas-icons/style.css";
 
 export class UI {
@@ -61,7 +58,6 @@ export class UI {
         } else {
           ele.classList.add('hidden');
           this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
-          // const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
           leftP.style.color = '';
           leftP.style['font-weight'] = 'normal';
           return 'hidden';
@@ -117,15 +113,11 @@ export class UI {
     // The childNodes property returns a live NodeList:
     const projSumTableRows = projSumTable.childNodes;
     for (let tr = 0; tr < projSumTableRows.length; tr++) {
-      // if (i == 'entries' || i == 'keys' || i == 'values') { continue; };
-      // debugger;
       projSumTableRows[tr].addEventListener('mouseenter', (e) => {
         console.log('here');
-        // e.target.childNodes[4].style.visibility = 'visible';
         const rowTds = e.target.childNodes;
         for (let td = 0; td < rowTds.length; td++) {
           if (td == 4 && rowTds[td].id == 'proj-td5') {
-            // e.target.childNodes[x].style.visibility = 'visible';
             const tdSpans = rowTds[td].childNodes;
             for (let span = 0; span < tdSpans.length; span++) {
               tdSpans[span].style.visibility = 'visible';
@@ -141,16 +133,11 @@ export class UI {
     // The childNodes property returns a live NodeList:
     const tableRows = table.childNodes;
     for (let tr = 0; tr < tableRows.length; tr++) {
-      // if (i == 'entries' || i == 'keys' || i == 'values') { continue; };
-      // debugger;
-      // At 0 index, it will be table header row needing no controls: 
       if (tr == 0) { continue; };
       tableRows[tr].addEventListener('mouseenter', (e) => {
-        // e.target.childNodes[4].style.visibility = 'visible';
         const rowTds = e.target.childNodes;
         for (let td = 0; td < rowTds.length; td++) {
           if (td == controlTdIndex && rowTds[td].id == controlTdId) {
-            // e.target.childNodes[x].style.visibility = 'visible';
             const tdSpans = rowTds[td].childNodes;
             for (let span = 0; span < tdSpans.length; span++) {
               tdSpans[span].style.visibility = 'visible';
@@ -159,11 +146,9 @@ export class UI {
         }
       });
       tableRows[tr].addEventListener('mouseleave', (e) => {
-        // e.target.childNodes[4].style.visibility = 'visible';
         const rowTds = e.target.childNodes;
         for (let td = 0; td < rowTds.length; td++) {
           if (td == controlTdIndex && rowTds[td].id == controlTdId) {
-            // e.target.childNodes[x].style.visibility = 'visible';
             const tdSpans = rowTds[td].childNodes;
             for (let span = 0; span < tdSpans.length; span++) {
               tdSpans[span].style.visibility = 'hidden';
@@ -189,7 +174,6 @@ export class UI {
   }
 
   removeToast(modalFooterId, targetType) {
-    // targetType = targetType.split('-')[0];
     const modalFooterEle = document.getElementById(modalFooterId);
     if (modalFooterEle.children.length == 0) { return; }
     const toastContainer = document.getElementById(`${targetType}-toast-div`);
@@ -215,11 +199,4 @@ export class UI {
       }
     });
   }
-
-  // resetNewModalUI(newTitle, message) {
-  //   newTitle.style.borderColor = '';
-  //   message.style.color = '';
-  //   message.innerHTML = '';
-  //   this.removeToast(modalFooterId, targetType)
-  // }
 }
