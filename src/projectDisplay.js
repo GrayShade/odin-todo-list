@@ -2,13 +2,57 @@ export class ProjectsDisplay {
 
   constructor(eventBus) {
     this.eventBus = eventBus;
+    this.setEventListeners();
+  }
+
+  setEventListeners() {
+
+    const modal = document.getElementById('new-proj-modal');
+    const span = document.getElementById('new-proj-close');
+    const deleteCancelBtn = document.getElementById('del-proj-cancel');
+    
+    let allProjects;
+    // Set up the listener(Subscriber) once, outside the click handler so it does not
+    // get duplicated. Emitter can be used inside handler though: 
+    this.eventBus.on('returnAllProjects', (response) => {
+      allProjects = response;
+    });
+    // if clicked on close button of modal:
+    span.addEventListener('click', () => {
+      if (modal.style.display == 'block') {
+        // Emitter
+        this.eventBus.emit('requestAllProjects');
+
+        this.resetNewProjModalUI('new-proj-form');
+        modal.style.display = 'none';
+        this.showAllProjectsSummary(allProjects);
+        this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
+      }
+    });
+
+    // for closing modal if clicked anywhere on screen while model is 
+    // opened:
+    window.addEventListener('click', e => {
+
+      if (e.target == modal) {
+        // Emitter
+        this.eventBus.emit('requestAllProjects');
+
+        this.resetNewProjModalUI('new-proj-form');
+        modal.style.display = 'none';
+        this.showAllProjectsSummary(allProjects);
+        this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
+      }
+    });
+    // if clicked on cancel button of delete project modal:
+    deleteCancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
   }
 
   showLBarProjects(allProjects) {
     this.removeAllLeftBarProjects();
-
     const prjContainer = document.getElementById('projects-container');
-
     this.#createNewProjAndSumNodes(prjContainer);
     this.#createIndividualProjectNodes(prjContainer, allProjects);
 
@@ -78,35 +122,13 @@ export class ProjectsDisplay {
   setNewProjModalUI(allProjects, buttonId) {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById(buttonId);
-    const span = document.getElementById('new-proj-close');
-    const deleteCancelBtn = document.getElementById('del-proj-cancel');
+
 
     btn.addEventListener('click', () => {
       modal.style.display = 'block';
 
     });
-    // if clicked on close button of modal:
-    span.addEventListener('click', () => {
-      this.resetNewProjModalUI('new-proj-form');
-      modal.style.display = 'none';
-      this.showAllProjectsSummary(allProjects);
-      this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
-    });
 
-    // for closing modal if clicked anywhere on screen while model is 
-    // opened:
-    window.addEventListener('click', e => {
-      if (e.target == modal) {
-        this.resetNewProjModalUI('new-proj-form');
-        modal.style.display = 'none';
-        this.showAllProjectsSummary(allProjects);
-        this.eventBus.emit('callShowHideTaskTableControls', 'proj-sum-table', 4, 'proj-td5');
-      }
-    });
-    // if clicked on cancel button of delete project modal:
-    deleteCancelBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
   }
 
 

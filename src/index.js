@@ -62,6 +62,23 @@ class Main {
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     this.setupEventBusListeners();
+    // Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects(), 'new-project');
+    // Main.#taskUI.setNewTaskModalUI();
+    Main.#taskUI.closeDetailDeleteModals();
+    Main.#taskUI.setTaskUpdateDeleteModalUI();
+
+        // to reset project modal:
+    document.getElementById('new-proj-reset').addEventListener('click', (e) => {
+      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
+      Main.#ui.removeToast(modalFooterId, 'project');
+      Main.#projUI.resetNewProjModalUI('new-proj-form');
+    });
+        // to reset task modal:
+    document.getElementById('new-task-reset').addEventListener('click', (e) => {
+      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
+      Main.#ui.removeToast(modalFooterId, 'task');
+      Main.#taskUI.resetNewTaskModalUI('new-task-form');
+    });
 
   }
 
@@ -76,8 +93,8 @@ class Main {
     this.#expandCollapseDivs(Main.#proj.getAllProjects(), 'new-project');
     Main.#projUI.setNewProjModalUI(Main.#proj.getAllProjects(), 'new-project');
     Main.#taskUI.setNewTaskModalUI();
-    Main.#taskUI.closeDetailDeleteModals();
-    Main.#taskUI.setTaskUpdateDeleteModalUI();
+    // Main.#taskUI.closeDetailDeleteModals();
+    // Main.#taskUI.setTaskUpdateDeleteModalUI();
 
     // to create a new project:
     document.getElementById('new-project').addEventListener('click', (e) => {
@@ -98,12 +115,7 @@ class Main {
       this.#handleModal(newProjForm, e.target.id, 'new-project');
     });
 
-    // to reset project modal:
-    document.getElementById('new-proj-reset').addEventListener('click', (e) => {
-      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
-      Main.#ui.removeToast(modalFooterId, 'project');
-      Main.#projUI.resetNewProjModalUI('new-proj-form');
-    });
+
     // To add a new Task:
     const allTasksArr = document.querySelectorAll('.new-task');
     for (let taskIdx = 0; taskIdx <= allTasksArr.length - 1; taskIdx++) {
@@ -132,12 +144,7 @@ class Main {
         this.#handleModal(newTaskForm, e.target.id, 'new-task');
       });
     }
-    // to reset task modal:
-    document.getElementById('new-task-reset').addEventListener('click', (e) => {
-      const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
-      Main.#ui.removeToast(modalFooterId, 'task');
-      Main.#taskUI.resetNewTaskModalUI('new-task-form');
-    });
+
 
     // to show all projects summary:
     document.getElementById('projects-sumry').addEventListener('click', (e) => {
@@ -251,6 +258,11 @@ class Main {
         const eleMessage = `${eleName}-message`;
         Main.#validate.validateBeforeSubmit(e, eleName, eleMessage, actionType);
       }, { signal });
+
+      input.addEventListener('click', (e) => {
+        const modalFooterId = e.target.parentElement.parentElement.id.split('-form')[0].concat('-footer');
+        Main.#ui.removeToast(modalFooterId, targetType)
+      }, { signal });
     }
 
     newForm.addEventListener(('submit'), (e) => {
@@ -271,7 +283,8 @@ class Main {
       if (statusCheckSkipped.includes(actionType)) {
         reqFieldsStatus = true;
       } else {
-        reqFieldsStatus = this.getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, LBarBtnId);
+        const elementsParameter = { allInputs, reqInputs, reqMsgSpans };
+        reqFieldsStatus = this.getRequiredFieldsStatus(taskOrProjId, elementsParameter, LBarBtnId, actionType);
         optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans, actionType);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
@@ -350,6 +363,15 @@ class Main {
               Main.#task.createTask(allInputs, updatedTask.projId);
               // delete task from previous project:
               Main.#task.deleteTask(projIdOfTask, taskOrProjId);
+              this.#updateLBarProjectsAndTasks();
+              Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+              Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+              toastMessage = 'Task Moved Successfully';
+              this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+              // break;
+              const modal = document.getElementById('new-task-modal');
+              Main.#taskUI.resetNewTaskModalUI('new-task-form');
+              modal.style.display = 'none';
             }
 
             this.#updateLBarProjectsAndTasks();
@@ -387,7 +409,8 @@ class Main {
     }, { signal });
   }
 
-  getRequiredFieldsStatus(allInputs, reqInputs, reqMsgSpans, addBtnId) {
+  getRequiredFieldsStatus(taskOrProjId, elementsParameter, addBtnId, actionType) {
+    const { allInputs, reqInputs, reqMsgSpans } = elementsParameter;
     let reqFieldsStatus = false;
     const allProjects = Main.#proj.getAllProjects();
     let updatedProjId = '';
@@ -396,9 +419,9 @@ class Main {
     }
     for (let i = 0; i < reqInputs.length; i++) {
       const ele = reqInputs[i];
-      const msg_span = reqMsgSpans[i];
-      const parameters = { allProjects, allInputs, ele, msg_span, addBtnId };
-      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(parameters, updatedProjId);
+      const msgSpan = reqMsgSpans[i];
+      const parameters = { allProjects, allInputs, ele, msgSpan, addBtnId };
+      reqFieldsStatus = Main.#validate.validateReqAfterSubmit(parameters, actionType, taskOrProjId, updatedProjId);
       if (reqFieldsStatus == false) { return false };
     }
     return reqFieldsStatus;
@@ -418,7 +441,7 @@ class Main {
 
   handleSuccessToast(formId, modalFooterId, actionType, toastMessage) {
     const targetType = actionType.split('-')[1];
-    Main.#taskUI.resetNewTaskModalUI(formId, actionType);
+    // if (actionType != 'update-task') { Main.#taskUI.resetNewTaskModalUI(formId, actionType); }
     Main.#ui.removeToast(modalFooterId, targetType);
     Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
   }

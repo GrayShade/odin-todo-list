@@ -68,6 +68,7 @@ export class Tasks {
         };
 
         localStorage.setItem(reqProjId, JSON.stringify(newObj));
+        // return newId;
         return;
       }
     }

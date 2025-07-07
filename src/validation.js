@@ -111,27 +111,66 @@ export class Validation {
     messageSpan.innerHTML = messageText;
   }
 
-  validateReqAfterSubmit(parameterObject, updatedProjId = '') {
+  validateReqAfterSubmit(parameterObject, actionType, taskOrProjId, updatedProjId = '') {
     // destructuring object below. Note that the variable names should be
     // same as arguments passed:
-    const { allProjects, allInputs, ele, msg_span, addBtnId } = parameterObject;
+    const { allProjects, allInputs, ele, msgSpan, addBtnId } = parameterObject;
+    for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
+    // let currentProj;
+    let currentTask;
+    if (actionType == 'update-project') {
+      // currentProj = JSON.parse(allProjects[taskOrProjId])[`p${taskOrProjId}`];
+    }
+    else if (actionType == 'update-task') {
+      // currentTask = addBtnId.split('-')[0].split('p')[1];
+    }
+
+    const projMsgSpan = document.getElementById('task-project-message');
     // checking if same title exists for project:
     if (ele.id === 'new-proj-title') {
       for (let obj of (Object.entries(allProjects))) {
-        const project = JSON.parse(obj[1])[`p${obj[0]}`];
-        if (project.title === ele.value) {
-          this.showErrorMessage(ele, msg_span, '*Title already exists!');
+        const loopProj = JSON.parse(obj[1])[`p${obj[0]}`];
+        if (actionType == 'new-project' && loopProj.title === ele.value) {
+          this.showErrorMessage(ele, msgSpan, '*Title already exists!');
           return false;
-        } else if (ele.value.split('').every((ele) => { ele == '' })) {
-          this.showErrorMessage(ele, msg_span, "*Title Can't be Null!");
-        }
+        } else
+          if (actionType == 'update-project') {
+            const currentProj = JSON.parse(allProjects[taskOrProjId])[`p${taskOrProjId}`];
+            if (actionType == 'update-project' && currentProj.title != ele.value && loopProj.title == ele.value) {
+              this.showErrorMessage(ele, msgSpan, '*Title already exists!');
+              return false;
+            }
+          }
+          else
+            if (ele.value.split('').every((ele) => { ele == '' })) {
+              this.showErrorMessage(ele, msgSpan, "*Title Can't be Null!");
+            }
       }
     } else if (ele.id == 'task-title') {
       const projId = addBtnId.split('-')[0];
+      if (projId == '') { this.showErrorMessage(allInputs[0], projMsgSpan, 'Null Project Not Allowed!'); }
+
+      // checking whether specified title already exists or not:
       const allTasksObj = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
+      currentTask = allTasksObj[`t${taskOrProjId}`];
+      // if there is at least 1 task present, Checking if title already exists in same project:
+      if (Object.keys(allTasksObj).length > 0) {
+        for (const idx in Object.entries(allTasksObj)) {
+          const loopTaskTitle = Object.entries(allTasksObj)[idx][1].title;
+
+          if (actionType == 'new-task' && loopTaskTitle == ele.value) {
+            this.showErrorMessage(ele, msgSpan, '*Title Already Exists!');
+            return false;
+          } else
+            if (actionType == 'update-task' && currentTask.title != ele.value && loopTaskTitle == ele.value) {
+              this.showErrorMessage(ele, msgSpan, '*Title Already Exists!');
+              return false;
+            }
+        }
+      }
 
       // for task update modal:
-      if (document.getElementById('task-proj-input-div').style.display == 'block') {
+      if (actionType == 'update-task') {
         const updatedProjTitle = allInputs[0].value;
         // .....................Snippet Start................................
         // to check if specified project exists already or not:
@@ -139,6 +178,14 @@ export class Validation {
         // Specified project must either exist or field should be left blank: 
         if (projectAlreadyExists == false && updatedProjTitle != '') {
           this.showErrorMessage(allInputs[0], projMsgSpan, 'Project Does Not Exist!');
+          if (msgSpan.textContent == 'Task Is Duplicated For Above Project!') { 
+            msgSpan.textContent = '';
+            document.getElementById('task-title').style.borderColor = '#E5E7EB';
+          };
+          // #E5E7EB
+          // allInputs[1].style.borderColor = '#E5E7EB';
+          // messageSpan.style.color = 'red';
+          // messageSpan.innerHTML = messageText;
           return false;
         }
         // ......................Snippet End...............................
@@ -149,58 +196,56 @@ export class Validation {
         // check if same task exists in other project:
         const isTaskDuplicated = this.checkTaskDuplication(checkTaskDupArgs);
         if (isTaskDuplicated == false) {
-          this.showErrorMessage(allInputs[1], msg_span, 'Task Is Duplicated For Above Project!');
+          this.showErrorMessage(allInputs[1], msgSpan, 'Task Is Duplicated For Above Project!');
           return false;
         }
         // .......................Snippet End................................
 
-        // if there is at least 1 task present:
-      } else if (Object.keys(allTasksObj).length > 0) {
-        for (const idx in Object.entries(allTasksObj)) {
-          const taskTitle = Object.entries(allTasksObj)[idx][1].title;
-
-          if (taskTitle == ele.value) {
-            this.showErrorMessage(ele, msg_span, '*Title Already Exists!');
-            return false;
-          }
-        }
       }
+
 
     }
     // checking html pattern validation:
     if (ele.value != '' && ele.checkValidity() === true) {
-      msg_span.innerHTML = '';
+      msgSpan.innerHTML = '';
       return true;
     } else if (ele.value == '') {
-      this.showErrorMessage(ele, msg_span, '*Field Required!');
-      return false;
-    } else {
-      this.showErrorMessage(ele, msg_span, '*Title Already Exists !');
+      this.showErrorMessage(ele, msgSpan, '*Field Required!');
       return false;
     }
+    // else {
+    //   this.showErrorMessage(ele, msgSpan, '*Title Already Exists !');
+    //   return false;
+    // }
   }
 
 
-  validateOptAfterSubmit(ele, msg_span, actionType) {
+  validateOptAfterSubmit(ele, msgSpan, actionType) {
 
     if (ele.type == 'text' && ele.checkValidity()) {
-      msg_span.innerHTML = '';
-      return true;
+      // task project in update task modal is already being checked
+      //  in << validateReqAfterSubmit >>:
+      if (ele.id == 'task-project') {
+        return true;
+      } else {
+        msgSpan.innerHTML = '';
+        return true;
+      }
     }
     // As HTML pattern attribute is not supported by textarea:
     else if (ele.type == 'textarea' && this.checkTextAreaValidity(ele)) {
-      msg_span.innerHTML = '';
+      msgSpan.innerHTML = '';
       return true;
     }
     else if (ele.type == 'date' && this.checkDateValidity(ele, actionType)) {
-      msg_span.innerHTML = '';
+      msgSpan.innerHTML = '';
       return true;
     }
     else {
       if (ele.type == 'date') {
-        this.showErrorMessage(ele, msg_span, 'Previous Date Not Allowed!');
+        this.showErrorMessage(ele, msgSpan, 'Previous Date Not Allowed!');
       } else {
-        this.showErrorMessage(ele, msg_span, 'Some Error Occurred!');
+        this.showErrorMessage(ele, msgSpan, 'Some Error Occurred!');
         return false;
       }
     }
@@ -234,7 +279,10 @@ export class Validation {
   }
 
   CheckProjectExistence(allProjects, updatedProjTitle) {
+    if (updatedProjTitle == '') { return false; }
     for (const idx in Object.entries((allProjects))) {
+      // If a specific project was deleted, Its key may not exist. So:
+      if (Object.keys(allProjects).includes(idx.toString()) == false) { continue; }
       const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
       if (loopProj.title == updatedProjTitle) {
         return true;

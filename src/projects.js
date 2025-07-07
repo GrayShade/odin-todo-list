@@ -17,6 +17,13 @@ export class Projects {
       // instead of from where << eventBus.emit >> was called:
       document.getElementById('new-proj-title').value = proj[`p${projId}`].title;
     });
+
+    // Subscriber
+    this.eventBus.on('requestAllProjects', () => {
+        // Process request and get data
+        const allProjects = this.getAllProjects();
+        this.eventBus.emit('returnAllProjects', allProjects);
+    });
   }
 
 
@@ -38,9 +45,11 @@ export class Projects {
   }
 
   getProjectIdByTitle(title) {
+    if (title.trim() == '') { return null }
     const allProjects = this.getAllProjects();
     for (const idx in Object.entries((allProjects))) {
-
+      // If a specific project was deleted, Its key may not exist. So:
+      if (Object.keys(allProjects).includes(idx.toString()) == false) { continue; }
       const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
       if (loopProj.title == title) {
         return loopProj.projId;

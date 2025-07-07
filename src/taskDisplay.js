@@ -6,7 +6,28 @@ export class TasksDisplay {
     this.eventBus = eventBus;
     // for feather icons loading:
     replace();
+    this.setListeners();    
   }
+
+  setListeners() {
+    const modal = document.getElementById('new-task-modal');
+     const span = document.getElementById('new-task-close');
+
+    span.addEventListener('click', () => {
+      this.resetNewTaskModalUI('new-task-form');
+      modal.style.display = 'none';
+    });
+
+    // for closing modal if clicked anywhere on screen while model is 
+    // opened:
+    window.addEventListener('click', e => {
+      if (e.target == modal) {
+        this.resetNewTaskModalUI('new-task-form');
+        modal.style.display = 'none';
+      }
+    });
+  }
+
 
   getAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
@@ -110,22 +131,24 @@ export class TasksDisplay {
         modal.style.display = 'block';
       });
     }
-    const span = document.getElementById('new-task-close');
+    // const span = document.getElementById('new-task-close');
 
-    span.addEventListener('click', () => {
-      this.resetNewTaskModalUI('new-task-form');
-      modal.style.display = 'none';
-    });
+    // span.addEventListener('click', () => {
+    //   this.resetNewTaskModalUI('new-task-form');
+    //   modal.style.display = 'none';
+    // });
 
-    // for closing modal if clicked anywhere on screen while model is 
-    // opened:
-    window.addEventListener('click', e => {
-      if (e.target == modal) {
-        this.resetNewTaskModalUI('new-task-form');
-        modal.style.display = 'none';
-      }
-    });
+    // // for closing modal if clicked anywhere on screen while model is 
+    // // opened:
+    // window.addEventListener('click', e => {
+    //   if (e.target == modal) {
+    //     this.resetNewTaskModalUI('new-task-form');
+    //     modal.style.display = 'none';
+    //   }
+    // });
   }
+
+
   closeDetailDeleteModals() {
     const taskDetailModal = document.getElementById('task-details-modal');
     const taskDeleteModal = document.getElementById('new-task-modal');
@@ -150,7 +173,7 @@ export class TasksDisplay {
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
     window.addEventListener('click', e => {
-      if (e.target == taskDetailModal || e.target == taskDeleteModal) {
+      if (e.target == taskDetailModal) {
         this.resetNewTaskModalUI('new-task-form');
         taskDetailModal.style.display = 'none';
         taskDeleteModal.style.display = 'none';
@@ -167,9 +190,12 @@ export class TasksDisplay {
     let message = document.querySelectorAll('#new-task-form .message')
     for (let i = 0; i < allInputs.length; i++) {
       // to prevent priority dropdown from being empty:
-      if (i == 4) { continue; };
+      if (i == 4) {
+        allInputs[i].value = 'high';
+        continue;
+      };
       allInputs[i].style.borderColor = '#E5E7EB';
-      if (actionType == 'new-task') { allInputs[i].value = ''; }
+      if (actionType == 'new-task' || actionType == 'update-task') { allInputs[i].value = ''; }
       message[i].style.color = '';
       message[i].innerHTML = ''
     }
