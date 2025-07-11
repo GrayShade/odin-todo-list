@@ -67,13 +67,13 @@ class Main {
     Main.#taskUI.closeDetailDeleteModals();
     Main.#taskUI.setTaskUpdateDeleteModalUI();
 
-        // to reset project modal:
+    // to reset project modal:
     document.getElementById('new-proj-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
       Main.#ui.removeToast(modalFooterId, 'project');
       Main.#projUI.resetNewProjModalUI('new-proj-form');
     });
-        // to reset task modal:
+    // to reset task modal:
     document.getElementById('new-task-reset').addEventListener('click', (e) => {
       const modalFooterId = `${e.target.id.split('reset')[0]}footer`;
       Main.#ui.removeToast(modalFooterId, 'task');
@@ -139,7 +139,7 @@ class Main {
         // Hide task input for project if its a new task form & not for updating: 
         document.getElementById('task-proj-input-div').style.display = 'none';
         Main.#ui.removeToast('new-task-footer', 'task');
-        Main.#taskUI.resetNewTaskModalUI('new-task-form', 'new-task');
+        Main.#taskUI.resetNewTaskModalUI('new-task-form');
         const newTaskForm = document.getElementById('new-task-form');
         this.#handleModal(newTaskForm, e.target.id, 'new-task');
       });
@@ -222,12 +222,10 @@ class Main {
       }
       this.rerun = true;
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
-
         if (Main.#ui.showHideDivs(e) == 'hidden') {
           Main.#projUI.showAllProjectsSummary(allProjects);
           Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
         };
-
       });
     }
 
@@ -294,20 +292,12 @@ class Main {
         switch (actionType) {
           case 'new-project':
             Main.#proj.createProject(reqInputs[0].value);
-            this.#updateLBarProjectsAndTasks();
-            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
-            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
+            // this.#updateLBarProjectsAndTasks();
+            // Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            // Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Added Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
-            break;
-          case 'new-task':
-            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
-            Main.#task.createTask(allInputs, projIdOfTask);
-            this.#updateLBarProjectsAndTasks();
-            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
-            toastMessage = 'Task Added Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'update-project':
             if (taskOrProjId == 0) {
@@ -317,11 +307,12 @@ class Main {
             }
             const newTitle = document.getElementById('new-proj-title').value;
             Main.#proj.updateProject(taskOrProjId, newTitle);
-            this.#updateLBarProjectsAndTasks();
-            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
-            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
+            // this.#updateLBarProjectsAndTasks();
+            // Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            // Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Updated Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'delete-project':
             if (taskOrProjId == 0) {
@@ -330,11 +321,23 @@ class Main {
               break;
             }
             Main.#proj.deleteProject(taskOrProjId);
-            this.#updateLBarProjectsAndTasks();
-            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
-            Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
+            // this.#updateLBarProjectsAndTasks();
+            // Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+            // Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Deleted Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
+            break;
+          case 'new-task':
+            projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
+            Main.#task.createTask(allInputs, projIdOfTask);
+            // this.#updateLBarProjectsAndTasks();
+            // this.expandProjectOnLBar(projIdOfTask);
+            // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+            toastMessage = 'Task Added Successfully';
+            this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'update-task':
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
@@ -363,43 +366,52 @@ class Main {
               Main.#task.createTask(allInputs, updatedTask.projId);
               // delete task from previous project:
               Main.#task.deleteTask(projIdOfTask, taskOrProjId);
-              this.#updateLBarProjectsAndTasks();
-              Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-              Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+              // this.#updateLBarProjectsAndTasks();
+              // this.expandProjectOnLBar(projIdOfTask);
+              // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+              // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
               toastMessage = 'Task Moved Successfully';
-              this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+              this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+              // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
               // break;
               const modal = document.getElementById('new-task-modal');
               Main.#taskUI.resetNewTaskModalUI('new-task-form');
               modal.style.display = 'none';
             }
 
-            this.#updateLBarProjectsAndTasks();
-            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+            // this.#finalizeProcessingActionType(projIdOfTask, formId, modalFooterId, actionType, toastMessage);
+            // this.#updateLBarProjectsAndTasks();
+            // this.expandProjectOnLBar(projIdOfTask);
+            // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Updated Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
 
           case 'delete-task':
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             Main.#task.deleteTask(projIdOfTask, taskOrProjId);
-            this.#updateLBarProjectsAndTasks();
-            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+            // this.#updateLBarProjectsAndTasks();
+            // this.expandProjectOnLBar(projIdOfTask);
+            // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Deleted Successfully';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'complete-task':
             projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];
             let task = Main.#task.getTask(projIdOfTask, taskOrProjId);
             task.completed = 1;
             Main.#task.updateTask(projIdOfTask, taskOrProjId, task);
-            this.#updateLBarProjectsAndTasks();
-            Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
-            Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+            // this.#updateLBarProjectsAndTasks();
+            // this.expandProjectOnLBar(projIdOfTask);
+            // Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+            // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Mark As Completed!';
-            this.handleSuccessToast(formId, modalFooterId, actionType, toastMessage);
+            this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
         }
       }
@@ -439,9 +451,36 @@ class Main {
     return optFieldsStatus;
   }
 
-  handleSuccessToast(formId, modalFooterId, actionType, toastMessage) {
+  #postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask = '') {
+    this.#updateLBarProjectsAndTasks();
+    
+    // if its a project modal:
+    if (projIdOfTask == '') {
+            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+      Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
+    }
+    // if its a task modal:
+    else {
+      this.expandProjectOnLBar(projIdOfTask);
+      Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
+      Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+
+    }
+    this.handleSuccessToast(modalFooterId, actionType, toastMessage);
+  }
+
+  expandProjectOnLBar(projIdOfTask) {
+    const allReqEle = document.querySelectorAll('.sub-showHide');
+    for (let idx = 0; idx <= allReqEle.length; idx++) {
+      if (projIdOfTask == idx) {
+        Main.#ui.showHideDivs(allReqEle[projIdOfTask]);
+        return;
+      }
+    }
+  }
+
+  handleSuccessToast(modalFooterId, actionType, toastMessage) {
     const targetType = actionType.split('-')[1];
-    // if (actionType != 'update-task') { Main.#taskUI.resetNewTaskModalUI(formId, actionType); }
     Main.#ui.removeToast(modalFooterId, targetType);
     Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
   }

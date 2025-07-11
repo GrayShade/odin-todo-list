@@ -25,14 +25,20 @@ export class UI {
 
 
 
-  showHideDivs(e) {
+  showHideDivs(ele) {
     let showHideDiv;
     let showHideDivParent;
-    if (e.target.parentElement.classList.contains('showHide')) {
-      showHideDiv = e.target.parentElement;
+    // if ele was not from a listener & was from an argument:
+    if (ele.target == undefined) {
+      ele = ele;
+    } else {
+      ele = ele.target;
+    }
+    if (ele.parentElement.classList.contains('showHide')) {
+      showHideDiv = ele.parentElement;
       showHideDivParent = showHideDiv.parentElement;
-    } else if (e.target.parentElement.parentElement.classList.contains('showHide')) {
-      showHideDiv = e.target.parentElement.parentElement;
+    } else if (ele.parentElement.parentElement.classList.contains('showHide')) {
+      showHideDiv = ele.parentElement.parentElement;
       showHideDivParent = showHideDiv.parentElement;
     }
 

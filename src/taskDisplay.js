@@ -185,7 +185,7 @@ export class TasksDisplay {
 
   }
 
-  resetNewTaskModalUI(formId, actionType = '') {
+  resetNewTaskModalUI(formId) {
     let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
     let message = document.querySelectorAll('#new-task-form .message')
     for (let i = 0; i < allInputs.length; i++) {
@@ -195,7 +195,8 @@ export class TasksDisplay {
         continue;
       };
       allInputs[i].style.borderColor = '#E5E7EB';
-      if (actionType == 'new-task' || actionType == 'update-task') { allInputs[i].value = ''; }
+      // if (actionType == 'new-task' || actionType == 'update-task') { allInputs[i].value = ''; }
+      allInputs[i].value = '';
       message[i].style.color = '';
       message[i].innerHTML = ''
     }

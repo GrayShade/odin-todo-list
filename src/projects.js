@@ -47,10 +47,10 @@ export class Projects {
   getProjectIdByTitle(title) {
     if (title.trim() == '') { return null }
     const allProjects = this.getAllProjects();
-    for (const idx in Object.entries((allProjects))) {
+    for (let idx=0; idx <= Object.entries((allProjects)).length; idx++) {
       // If a specific project was deleted, Its key may not exist. So:
       if (Object.keys(allProjects).includes(idx.toString()) == false) { continue; }
-      const loopProj = JSON.parse(allProjects[idx])[`p${idx}`];
+      const loopProj = JSON.parse(allProjects[Object.keys(allProjects)[idx]])[`p${Object.keys(allProjects)[idx]}`];
       if (loopProj.title == title) {
         return loopProj.projId;
       }
