@@ -326,6 +326,7 @@ class Main {
             // Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
             toastMessage = 'Project Deleted Successfully';
             this.#postProcessModal(modalFooterId, actionType, toastMessage);
+            Main.#ui.hideBtnsAfterShowingToast('del-proj-btn', 'del-proj-cancel');
             // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'new-task':
@@ -337,6 +338,7 @@ class Main {
             // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Added Successfully';
             this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+
             // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'update-task':
@@ -374,8 +376,8 @@ class Main {
               this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
               // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
               // break;
-              const modal = document.getElementById('new-task-modal');
               Main.#taskUI.resetNewTaskModalUI('new-task-form');
+              const modal = document.getElementById('new-task-modal');
               modal.style.display = 'none';
             }
 
@@ -398,6 +400,7 @@ class Main {
             // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Deleted Successfully';
             this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            Main.#ui.hideBtnsAfterShowingToast('del-task-btn', 'del-task-cancel');
             // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
           case 'complete-task':
@@ -411,6 +414,8 @@ class Main {
             // Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
             toastMessage = 'Task Mark As Completed!';
             this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
+            // document.getElementById('del-task-btn').style.display = 'none';
+            Main.#ui.hideBtnsAfterShowingToast('complete-task-btn', 'del-task-cancel');
             // this.handleSuccessToast( modalFooterId, actionType, toastMessage);
             break;
         }
@@ -453,10 +458,10 @@ class Main {
 
   #postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask = '') {
     this.#updateLBarProjectsAndTasks();
-    
+
     // if its a project modal:
     if (projIdOfTask == '') {
-            Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
+      Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
       Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     }
     // if its a task modal:

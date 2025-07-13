@@ -159,7 +159,7 @@ export class TasksDisplay {
     [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
       ele.addEventListener('click', () => {
         if (ele == detailsSpan || ele == detailsCloseBtn) {
-          this.resetNewTaskModalUI('new-task-form');
+          // this.resetNewTaskModalUI('new-task-form');
           taskDetailModal.style.display = 'none';
         } else
           if (ele == deleteCancelBtn) {

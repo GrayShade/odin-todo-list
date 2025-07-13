@@ -193,9 +193,6 @@ export class ProjectsDisplay {
         }
         addProjModalBtn.textContent = btnTitle;
         document.getElementById('new-proj-modal').style.display = 'block';
-
-
-
         this.eventBus.emit('populateProjTitle', projId); // notify projects.js to get project
         this.eventBus.emit('removeProjToast'); // Notify UI to remove toast
         this.eventBus.emit('handleModalProj', actionType, projId); // Notify index.js to handle Modal

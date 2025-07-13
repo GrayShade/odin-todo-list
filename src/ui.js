@@ -205,4 +205,9 @@ export class UI {
       }
     });
   }
+
+  hideBtnsAfterShowingToast(btn1, btn2) {
+    document.getElementById(btn1).style.display = 'none';
+    document.getElementById(btn2).style.display = 'none';
+  }
 }
