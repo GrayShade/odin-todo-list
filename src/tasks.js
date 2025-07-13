@@ -43,7 +43,6 @@ export class Tasks {
         return null;
       }
     }
-
   }
 
   createTask(allInputs, reqProjId) {
@@ -54,7 +53,6 @@ export class Tasks {
         const newObj = JSON.parse(obj[1]);
         let newId = 0;
         const lastTaskID = Number(this.getLastTaskID(reqProjId));
-        // const lastTaskID = this.getLastTaskID(reqProjId);
         if (lastTaskID != null) { newId = lastTaskID + 1; }
         newObj[`p${reqProjId}`].tasks[`t${newId}`] =
         {
@@ -68,7 +66,6 @@ export class Tasks {
         };
 
         localStorage.setItem(reqProjId, JSON.stringify(newObj));
-        // return newId;
         return;
       }
     }

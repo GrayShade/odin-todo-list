@@ -131,21 +131,6 @@ export class TasksDisplay {
         modal.style.display = 'block';
       });
     }
-    // const span = document.getElementById('new-task-close');
-
-    // span.addEventListener('click', () => {
-    //   this.resetNewTaskModalUI('new-task-form');
-    //   modal.style.display = 'none';
-    // });
-
-    // // for closing modal if clicked anywhere on screen while model is 
-    // // opened:
-    // window.addEventListener('click', e => {
-    //   if (e.target == modal) {
-    //     this.resetNewTaskModalUI('new-task-form');
-    //     modal.style.display = 'none';
-    //   }
-    // });
   }
 
 
@@ -159,7 +144,6 @@ export class TasksDisplay {
     [detailsSpan, detailsCloseBtn, deleteCancelBtn].forEach((ele) => {
       ele.addEventListener('click', () => {
         if (ele == detailsSpan || ele == detailsCloseBtn) {
-          // this.resetNewTaskModalUI('new-task-form');
           taskDetailModal.style.display = 'none';
         } else
           if (ele == deleteCancelBtn) {
@@ -167,8 +151,6 @@ export class TasksDisplay {
           }
       });
     });
-
-
 
     // for closing modal if clicked anywhere on screen while model is 
     // opened:
@@ -181,10 +163,6 @@ export class TasksDisplay {
     });
   }
 
-  setTaskUpdateDeleteModalUI() {
-
-  }
-
   resetNewTaskModalUI(formId) {
     let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
     let message = document.querySelectorAll('#new-task-form .message')
@@ -195,7 +173,6 @@ export class TasksDisplay {
         continue;
       };
       allInputs[i].style.borderColor = '#E5E7EB';
-      // if (actionType == 'new-task' || actionType == 'update-task') { allInputs[i].value = ''; }
       allInputs[i].value = '';
       message[i].style.color = '';
       message[i].innerHTML = ''
@@ -281,7 +258,6 @@ export class TasksDisplay {
           document.getElementById('del-task-cancel').style.display = 'none';
 
           document.getElementById('new-task-reset').textContent = 'Reset Form';
-
 
           const currProjTitle = JSON.parse(allProjects[projId])[`p${projId}`].title;
           const dataListEle = document.getElementById('task-list-projects');

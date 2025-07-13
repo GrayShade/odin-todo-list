@@ -112,8 +112,6 @@
               <span class="tooltip"
                 data-tooltip="Minimum 1 & maximum 400 characters, no space at start/end & only single space between words">?</span>
             </div>
-            <!-- <input type="text" class="optional form-inputs" id="task-desc" name="task-desc" minlength="1"
-              maxlength="400" pattern="^\S+(?: \S+)* ?$"> -->
             <textarea height="200px" width="400px" class="optional form-inputs" id="task-desc" name="task-desc"
               minlength="1" maxlength="400" pattern="^\S+(?: \S+)* ?$"></textarea>
             <span class="optional message" id="task-desc-message"></span>
@@ -193,7 +191,8 @@
           </div>
         </form>
         <div class="btn-div">
-          <button class="form-button" id="task-details-btn" form="new-task-form" type="submit">Go Back</button>
+          <!-- Remember to keep below button type << button >> & not << submit >>, otherwise form will be submitted unnecessarily -->
+          <button class="form-button" id="task-details-btn" form="new-task-form" type="button">Go Back</button>
         </div>
       </div>
       <div id="task-details-footer" class="modal-footer">

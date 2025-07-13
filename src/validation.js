@@ -35,7 +35,6 @@ export class Validation {
     // listener on focusout event, tooltip should be shown again:
     document.addEventListener('focusin', (e) => {
 
-      // this.removeToast(`${e.target.id.split('title')[0]}footer`);
       // <<focusin is firing on every element of document, so returning if
       // focused in element is not input:
       if ((!e.target.classList.contains('form-inputs')) || (e.target.classList.contains('read-checkbox'))) {
@@ -116,15 +115,7 @@ export class Validation {
     // same as arguments passed:
     const { allProjects, allInputs, ele, msgSpan, addBtnId } = parameterObject;
     for (let i = 0; i < allInputs.length; i++) { allInputs[i].value = allInputs[i].value.trim(); }
-    // let currentProj;
     let currentTask;
-    if (actionType == 'update-project') {
-      // currentProj = JSON.parse(allProjects[taskOrProjId])[`p${taskOrProjId}`];
-    }
-    else if (actionType == 'update-task') {
-      // currentTask = addBtnId.split('-')[0].split('p')[1];
-    }
-
     const projMsgSpan = document.getElementById('task-project-message');
     // checking if same title exists for project:
     if (ele.id === 'new-proj-title') {
@@ -182,10 +173,6 @@ export class Validation {
             msgSpan.textContent = '';
             document.getElementById('task-title').style.borderColor = '#E5E7EB';
           };
-          // #E5E7EB
-          // allInputs[1].style.borderColor = '#E5E7EB';
-          // messageSpan.style.color = 'red';
-          // messageSpan.innerHTML = messageText;
           return false;
         }
         // ......................Snippet End...............................
@@ -202,8 +189,6 @@ export class Validation {
         // .......................Snippet End................................
 
       }
-
-
     }
     // checking html pattern validation:
     if (ele.value != '' && ele.checkValidity() === true) {
@@ -213,12 +198,7 @@ export class Validation {
       this.showErrorMessage(ele, msgSpan, '*Field Required!');
       return false;
     }
-    // else {
-    //   this.showErrorMessage(ele, msgSpan, '*Title Already Exists !');
-    //   return false;
-    // }
   }
-
 
   validateOptAfterSubmit(ele, msgSpan, actionType) {
 
@@ -280,11 +260,7 @@ export class Validation {
 
   CheckProjectExistence(allProjects, updatedProjTitle) {
     if (updatedProjTitle == '') { return false; }
-    // for (const idx in Object.entries((allProjects))) {
     for (let idx=0; idx <= Object.entries((allProjects)).length; idx++) {
-      // If a specific project was deleted, Its key may not exist. So:
-      // if (Object.keys(allProjects).includes(idx.toString()) == false) { continue; }
-      // if (JSON.parse(allProjects[idx])[`p${idx}`] == 'undefined') {continue;}
       const loopProj = JSON.parse(allProjects[Object.keys(allProjects)[idx]])[`p${Object.keys(allProjects)[idx]}`];
       if (loopProj.title == updatedProjTitle) {
         return true;
