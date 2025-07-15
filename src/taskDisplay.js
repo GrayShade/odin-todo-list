@@ -6,12 +6,12 @@ export class TasksDisplay {
     this.eventBus = eventBus;
     // for feather icons loading:
     replace();
-    this.setListeners();    
+    this.setListeners();
   }
 
   setListeners() {
     const modal = document.getElementById('new-task-modal');
-     const span = document.getElementById('new-task-close');
+    const span = document.getElementById('new-task-close');
 
     span.addEventListener('click', () => {
       this.resetNewTaskModalUI('new-task-form');
@@ -88,20 +88,22 @@ export class TasksDisplay {
       taskMDTaskComSpan.setAttribute('class', 'left-bar-span at-check-file');
       taskMDTaskComP.prepend(taskMDTaskComSpan);
 
-      for (const key in nonCompletedTasks) {
+      const reverseKeys = Object.keys(nonCompletedTasks).reverse();
+      for (let i = 0; i <= reverseKeys.length - 1; i++) {
+
         if (key === 'entries') { break };
         const taskMDTaskP = document.createElement('p');
-        taskMDTaskP.setAttribute('id', `${projId}-${key}-p`);
+        taskMDTaskP.setAttribute('id', `${projId}-${reverseKeys[i]}-p`);
         taskMDTaskP.setAttribute('class', 'left-bar-p-task');
         taskMD.appendChild(taskMDTaskP);
 
         const taskMDTaskPSpan1 = document.createElement('span');
-        taskMDTaskPSpan1.setAttribute('id', `${projId}-${key}`);
+        taskMDTaskPSpan1.setAttribute('id', `${projId}-${reverseKeys[i]}`);
         taskMDTaskPSpan1.setAttribute('class', 'left-bar-span-task at-pin');
 
         const taskMDTaskPSpan2 = document.createElement('span');
         taskMDTaskPSpan2.setAttribute('class', 'left-bar-span-task task-title');
-        taskMDTaskPSpan2.innerText = nonCompletedTasks[key].title;
+        taskMDTaskPSpan2.innerText = nonCompletedTasks[reverseKeys[i]].title;
         taskMDTaskP.prepend(taskMDTaskPSpan2);
         taskMDTaskP.prepend(taskMDTaskPSpan1);
 
@@ -379,9 +381,9 @@ export class TasksDisplay {
       requiredTasks = nonCompletedTasks;
     }
 
-    for (const obj of Object.entries(requiredTasks)) {
-
-      const taskId = obj[1].taskId;
+    let reverseKeys = Object.keys(requiredTasks).reverse();
+    for (let i = 0; i <= reverseKeys.length - 1; i++) {
+      const taskId = requiredTasks[reverseKeys[i]].taskId;
 
       const taskTr = document.createElement('tr');
       const taskTd1 = document.createElement('td');
@@ -393,11 +395,11 @@ export class TasksDisplay {
       taskTd8.setAttribute('id', 'task-td8');
 
       const taskTd1Text = document.createTextNode(num);
-      const taskTd2Text = document.createTextNode(obj[1].title);
-      const taskTd6Text = document.createTextNode(obj[1].dueDate);
+      const taskTd2Text = document.createTextNode(requiredTasks[reverseKeys[i]].title);
+      const taskTd6Text = document.createTextNode(requiredTasks[reverseKeys[i]].dueDate);
       const taskTd7Btn = document.createElement('button');
       taskTd7Btn.setAttribute('class', 'priority-btn');
-      taskTd7Btn.textContent = obj[1].priority;
+      taskTd7Btn.textContent = requiredTasks[reverseKeys[i]].priority;
 
       const taskTd8DetailsSpan = document.createElement('span');
       const taskTd8EditSpan = document.createElement('span');
@@ -443,6 +445,7 @@ export class TasksDisplay {
       table.appendChild(taskTr);
       replace();
       num++;
+      // }
     }
   }
   setPriorityTextColor(taskTd7Btn) {

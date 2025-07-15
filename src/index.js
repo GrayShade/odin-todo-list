@@ -76,7 +76,6 @@ class Main {
       Main.#ui.removeToast(modalFooterId, 'task');
       Main.#taskUI.resetNewTaskModalUI('new-task-form');
     });
-
   }
 
   #updateLBarProjectsAndTasks() {
@@ -146,7 +145,7 @@ class Main {
       Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
       Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
     });
-    // to show all tasks summary gainst a project:
+    // to show all tasks summary against a project:
     const allShowTasksSumArr = document.querySelectorAll('.tasks-sumry');
     for (let taskIdx = 0; taskIdx <= allShowTasksSumArr.length - 1; taskIdx++) {
       allShowTasksSumArr[taskIdx].addEventListener('click', (e) => {
