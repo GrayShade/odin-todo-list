@@ -260,7 +260,7 @@ export class Validation {
 
   CheckProjectExistence(allProjects, updatedProjTitle) {
     if (updatedProjTitle == '') { return false; }
-    for (let idx=0; idx <= Object.entries((allProjects)).length; idx++) {
+    for (let idx=0; idx < Object.entries((allProjects)).length; idx++) {
       const loopProj = JSON.parse(allProjects[Object.keys(allProjects)[idx]])[`p${Object.keys(allProjects)[idx]}`];
       if (loopProj.title == updatedProjTitle) {
         return true;
