@@ -428,11 +428,17 @@ class Main {
 
   expandProjectOnLBar(projIdOfTask) {
     const allReqEle = document.querySelectorAll('.sub-showHide');
-    for (let idx = 0; idx <= allReqEle.length; idx++) {
+    debugger;
+    // Project Ids are in descending order & << allReqEle >> has
+    //  elements in ascending order. So using below counter to
+    //  get position of elements:
+    let eleNumberAmongOtherEle = 0;
+    for (let idx = allReqEle.length; idx >= 0; idx--) {
       if (projIdOfTask == idx) {
-        Main.#ui.showHideDivs(allReqEle[projIdOfTask]);
+        Main.#ui.showHideDivs(allReqEle[eleNumberAmongOtherEle]);
         return;
       }
+      eleNumberAmongOtherEle++;
     }
   }
 

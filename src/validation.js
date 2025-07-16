@@ -286,17 +286,4 @@ export class Validation {
     }
     return true;
   }
-
-  addToast(modalFooterId, toastType, toastText) {
-    const toastContainer = document.createElement('div');
-    con
-    toastContainer.classList.add('toast', toastType, 'show');
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body');
-    toastBody.innerText = toastText;
-    toastContainer.appendChild(toastBody);
-    const modalFooterEle = document.getElementById(modalFooterId);
-    modalFooterEle.appendChild(toastContainer);
-  }
-
 }

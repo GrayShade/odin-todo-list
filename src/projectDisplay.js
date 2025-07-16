@@ -10,7 +10,7 @@ export class ProjectsDisplay {
     const modal = document.getElementById('new-proj-modal');
     const span = document.getElementById('new-proj-close');
     const deleteCancelBtn = document.getElementById('del-proj-cancel');
-    
+
     let allProjects;
     // Set up the listener(Subscriber) once, outside the click handler so it does not
     // get duplicated. Emitter can be used inside handler though: 
@@ -85,12 +85,20 @@ export class ProjectsDisplay {
   }
 
   #createIndividualProjectNodes(prjContainer, allProjects) {
-    for (const obj of Object.entries(allProjects)) {
-      const prjObKey = `p${obj[0]}`;
-      const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
+
+        const revKeys = Object.keys(allProjects).reverse();
+    // Show Default project on top & rest in descending order. So:
+    revKeys.pop();
+    revKeys.unshift('0');
+    for (let i = 0; i <= revKeys.length - 1; i++) {
+      const projObVal = JSON.parse(allProjects[revKeys[i]])[`p${revKeys[i]}`];
+      const projObKey = `p${projObVal.projId}`;
+    // for (const obj of Object.entries(allProjects)) {
+    //   const prjObKey = `p${obj[0]}`;
+    //   const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
 
       const prjMainD = document.createElement('div');
-      prjMainD.setAttribute('id', prjObKey);
+      prjMainD.setAttribute('id', projObKey);
       prjMainD.setAttribute('class', 'project');
       prjContainer.appendChild(prjMainD);
 
@@ -100,7 +108,7 @@ export class ProjectsDisplay {
 
       const prjShowHideSubDP1 = document.createElement('p');
       prjShowHideSubDP1.setAttribute('class', 'sub-showHide showHide-left-p');
-      const prjTitle = prjObVal.title;
+      const prjTitle = projObVal.title;
       prjShowHideSubD.appendChild(prjShowHideSubDP1);
       prjShowHideSubDP1.innerText = prjTitle;
 
@@ -113,7 +121,7 @@ export class ProjectsDisplay {
       prjShowHideSubD.appendChild(prjShowHideSubDP2);
 
       const prjShowHideSubDP2Span = document.createElement('span');
-      prjShowHideSubDP2Span.setAttribute('id', `arrow-${prjObKey}`);
+      prjShowHideSubDP2Span.setAttribute('id', `arrow-${projObKey}`);
       prjShowHideSubDP2Span.setAttribute('class', 'arrow arrow-collapse');
       prjShowHideSubDP2.appendChild(prjShowHideSubDP2Span);
     }
@@ -235,10 +243,13 @@ export class ProjectsDisplay {
   createTableRows(table, allProjects) {
     let num = 1;
 
-    for (const obj of Object.entries(allProjects)) {
-
-      const projObKey = `p${obj[0]}`;
-      const projObVal = JSON.parse(obj[1])[`p${obj[0]}`];
+    const revKeys = Object.keys(allProjects).reverse();
+    // Show Default project on top & rest in descending order. So:
+    revKeys.pop();
+    revKeys.unshift('0');
+    for (let i = 0; i <= revKeys.length - 1; i++) {
+      const projObVal = JSON.parse(allProjects[revKeys[i]])[`p${revKeys[i]}`];
+      const projObKey = `p${projObVal.projId}`;
 
       const projTr = document.createElement('tr');
 

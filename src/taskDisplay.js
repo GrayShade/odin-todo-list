@@ -381,7 +381,7 @@ export class TasksDisplay {
       requiredTasks = nonCompletedTasks;
     }
 
-    let reverseKeys = Object.keys(requiredTasks).reverse();
+    const reverseKeys = Object.keys(requiredTasks).reverse();
     for (let i = 0; i <= reverseKeys.length - 1; i++) {
       const taskId = requiredTasks[reverseKeys[i]].taskId;
 
