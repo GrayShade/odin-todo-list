@@ -2,10 +2,10 @@ export class ProjectsDisplay {
 
   constructor(eventBus) {
     this.eventBus = eventBus;
-    this.setEventListeners();
+    this.#setEventListeners();
   }
 
-  setEventListeners() {
+  #setEventListeners() {
 
     const modal = document.getElementById('new-proj-modal');
     const span = document.getElementById('new-proj-close');
@@ -50,13 +50,13 @@ export class ProjectsDisplay {
   }
 
   showLBarProjects(allProjects) {
-    this.removeAllLeftBarProjects();
+    this.#removeAllLeftBarProjects();
     const prjContainer = document.getElementById('projects-container');
     this.#createNewProjAndSumNodes(prjContainer);
     this.#createIndividualProjectNodes(prjContainer, allProjects);
   }
 
-  removeAllLeftBarProjects() {
+  #removeAllLeftBarProjects() {
     const prjContainer = document.getElementById('projects-container');
     prjContainer.textContent = '';
   }
@@ -152,16 +152,16 @@ export class ProjectsDisplay {
     const table = document.createElement('table');
     table.setAttribute('id', 'proj-sum-table');
 
-    this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, allProjects);
+    this.#createTableHeaders(table, rightDiv);
+    this.#createTableRows(table, allProjects);
 
     // to update project:
-    this.modifyProjectModal('Update Project', 'Update Title', '.proj-edit-icon', 'update-project');
+    this.#modifyProjectModal('Update Project', 'Update Title', '.proj-edit-icon', 'update-project');
     // to delete project:
-    this.modifyProjectModal('Delete Project', 'Remove It', '.proj-remove-icon', 'delete-project');
+    this.#modifyProjectModal('Delete Project', 'Remove It', '.proj-remove-icon', 'delete-project');
   }
 
-  modifyProjectModal(h3Title, btnTitle, allProjControlElsClass, actionType) {
+  #modifyProjectModal(h3Title, btnTitle, allProjControlElsClass, actionType) {
     const allProjControlEls = document.querySelectorAll(allProjControlElsClass);
     for (const idx in allProjControlEls) {
       if (idx === 'entries') { break; };
@@ -197,7 +197,7 @@ export class ProjectsDisplay {
     }
   }
 
-  createTableHeaders(table, rightDiv) {
+  #createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
     const headerTd2 = document.createElement('th');
@@ -228,7 +228,7 @@ export class ProjectsDisplay {
     rightDiv.appendChild(table);
   }
 
-  createTableRows(table, allProjects) {
+  #createTableRows(table, allProjects) {
     let num = 1;
 
     const revKeys = Object.keys(allProjects).reverse();

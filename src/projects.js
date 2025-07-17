@@ -60,13 +60,13 @@ export class Projects {
   createProject(projName) {
     let newID = 0;
     let newProj = {};
-    const lastProjId = this.getLastProjectID();
+    const lastProjId = this.#getLastProjectID();
     if (lastProjId != null) { newID = lastProjId + 1; }
     newProj[`p${newID}`] = { projId: newID, title: projName, tasks: {} };
     localStorage.setItem(newID, JSON.stringify(newProj));
   }
 
-  getLastProjectID() {
+  #getLastProjectID() {
     const allProjects = this.getAllProjects();
     if (allProjects == null) return null;
     let lastID = 0;

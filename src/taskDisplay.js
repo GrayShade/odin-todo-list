@@ -6,10 +6,10 @@ export class TasksDisplay {
     this.eventBus = eventBus;
     // for feather icons loading:
     replace();
-    this.setListeners();
+    this.#setListeners();
   }
 
-  setListeners() {
+  #setListeners() {
     const modal = document.getElementById('new-task-modal');
     const span = document.getElementById('new-task-close');
 
@@ -28,7 +28,7 @@ export class TasksDisplay {
     });
   }
 
-  getAllTasks(projID) {
+  #getAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
       if (projID != obj[0]) { continue; }
       if (JSON.parse(obj[1])[`p${projID}`].projId == projID) {
@@ -46,7 +46,7 @@ export class TasksDisplay {
       const projTasks = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
 
       // Showing Only Non Completed Tasks In Left Bar Tasks:
-      let nonCompletedTasks = this.getRequiredTasks(projTasks, 0);
+      let nonCompletedTasks = this.#getRequiredTasks(projTasks, 0);
       for (const taskKey in projTasks) {
         if (projTasks[taskKey].completed == 0) {
           nonCompletedTasks[taskKey] = projTasks[taskKey];
@@ -110,7 +110,7 @@ export class TasksDisplay {
     }
   }
 
-  getRequiredTasks(projTasks, taskCompleted) {
+  #getRequiredTasks(projTasks, taskCompleted) {
     let requiredTasks = {};
     for (const taskKey in projTasks) {
       if (projTasks[taskKey].completed == taskCompleted) {
@@ -190,17 +190,17 @@ export class TasksDisplay {
     const table = document.createElement('table');
     table.setAttribute('id', 'task-sum-table');
 
-    this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projId);
+    this.#createTableHeaders(table, rightDiv);
+    this.#createTableRows(table, projId);
 
     // to show task details:
     this.handleShowDetails(projTitle, projId, '.task-details-icon');
     // to update task:
-    this.handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
+    this.#handleModifyAndDelete(projId, '.task-edit-icon', 'update-task', allProjects);
     // to delete task:
-    this.handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
+    this.#handleModifyAndDelete(projId, '.task-remove-icon', 'delete-task');
     // to show completed tasks:
-    this.handleModifyAndDelete(projId, '.task-complete-icon', 'complete-task');
+    this.#handleModifyAndDelete(projId, '.task-complete-icon', 'complete-task');
   }
 
   handleShowDetails(projTitle, projId, allTaskControlElsClass) {
@@ -229,7 +229,7 @@ export class TasksDisplay {
     }
   }
 
-  handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
+  #handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
       if (idx === 'entries') { break; };
@@ -328,12 +328,12 @@ export class TasksDisplay {
     const table = document.createElement('table');
     table.setAttribute('id', 'task-com-table');
 
-    this.createTableHeaders(table, rightDiv);
-    this.createTableRows(table, projId);
+    this.#createTableHeaders(table, rightDiv);
+    this.#createTableRows(table, projId);
     this.handleShowDetails(projTitle, projId, '.task-details-icon');
   }
 
-  createTableHeaders(table, rightDiv) {
+  #createTableHeaders(table, rightDiv) {
     const headerTr = document.createElement('tr');
     const headerTd1 = document.createElement('th');
     const headerTd2 = document.createElement('th');
@@ -364,14 +364,14 @@ export class TasksDisplay {
 
   }
 
-  createTableRows(table, projId) {
+  #createTableRows(table, projId) {
     let num = 1;
 
-    const allTasks = this.getAllTasks(projId);
+    const allTasks = this.#getAllTasks(projId);
     // Showing Only Non Completed Tasks For Tasks Summary Option:
-    const nonCompletedTasks = this.getRequiredTasks(allTasks, 0);
+    const nonCompletedTasks = this.#getRequiredTasks(allTasks, 0);
     // Showing Only Completed Tasks For Completed Tasks Option:
-    const completedTasks = this.getRequiredTasks(allTasks, 1);
+    const completedTasks = this.#getRequiredTasks(allTasks, 1);
 
     let requiredTasks;
     if (table.id == 'task-com-table') {
@@ -417,7 +417,7 @@ export class TasksDisplay {
       taskTd6.appendChild(taskTd6Text);
       taskTd7.appendChild(taskTd7Btn);
 
-      this.setPriorityTextColor(taskTd7Btn);
+      this.#setPriorityTextColor(taskTd7Btn);
 
       taskTd8.appendChild(taskTd8DetailsSpan);
 
@@ -446,7 +446,7 @@ export class TasksDisplay {
       // }
     }
   }
-  setPriorityTextColor(taskTd7Btn) {
+  #setPriorityTextColor(taskTd7Btn) {
     switch (taskTd7Btn.textContent) {
       case 'high':
         taskTd7Btn.style.color = '#f08080';

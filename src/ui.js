@@ -40,14 +40,14 @@ export class UI {
       showHideDivParent = showHideDiv.parentElement;
     }
 
-    const shownOrHidden = this.showHideClicked(showHideDivParent);
+    const shownOrHidden = this.#showHideClicked(showHideDivParent);
     //  Uncomment below line if other expanded project siblings need to be collapsed
     //   on expanding current project.
-    this.hideSiblings(showHideDivParent);
+    this.#hideSiblings(showHideDivParent);
     return shownOrHidden;
   }
 
-  showHideClicked(showHideDivParent) {
+  #showHideClicked(showHideDivParent) {
     for (let ele of showHideDivParent.children) {
       const leftP = document.querySelector(`#${showHideDivParent.id} .showHide-left-p`);
       if (ele.classList.contains('showHide')) {
@@ -55,13 +55,13 @@ export class UI {
       } else {
         if (ele.classList.contains('hidden')) {
           ele.classList.remove('hidden');
-          this.changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
+          this.#changeArrowDirection(showHideDivParent, 'arrow-expand', 'arrow-collapse');
           leftP.style.color = '#ffa500';
           leftP.style['font-weight'] = '600';
           return 'shown';
         } else {
           ele.classList.add('hidden');
-          this.changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
+          this.#changeArrowDirection(showHideDivParent, 'arrow-collapse', 'arrow-expand');
           leftP.style.color = '';
           leftP.style['font-weight'] = 'normal';
           return 'hidden';
@@ -70,7 +70,7 @@ export class UI {
     }
   }
 
-  changeArrowDirection(showHideDivParent, requiredDirection, removeDirection) {
+  #changeArrowDirection(showHideDivParent, requiredDirection, removeDirection) {
     const arrowsArr = document.querySelectorAll('.arrow');
     for (const idx in arrowsArr) {
       if (idx === 'entries') { break; };
@@ -90,7 +90,7 @@ export class UI {
     }
   }
 
-  hideSiblings(showHideDivParent) {
+  #hideSiblings(showHideDivParent) {
     // Don't collapse expanded sub elements if project container is collapsed:
     if (showHideDivParent.id == 'left-bar') { return };
     const showHideDivArr = document.querySelectorAll('.showHide');
@@ -106,30 +106,11 @@ export class UI {
         leftP.style['font-weight'] = 'normal';
         // Hide non active element color:
         showHideDivArr[showHideIdx].firstChild.style.color = '';
-        this.changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
+        this.#changeArrowDirection(currentEle, 'arrow-collapse', 'arrow-expand');
       }
     }
   }
   // .................divs expand collapse related code ending here........................... 
-
-  setUpShowHideTableControls() {
-    const projSumTable = document.getElementById('proj-sum-table');
-    // The childNodes property returns a live NodeList:
-    const projSumTableRows = projSumTable.childNodes;
-    for (let tr = 0; tr < projSumTableRows.length; tr++) {
-      projSumTableRows[tr].addEventListener('mouseenter', (e) => {
-        const rowTds = e.target.childNodes;
-        for (let td = 0; td < rowTds.length; td++) {
-          if (td == 4 && rowTds[td].id == 'proj-td5') {
-            const tdSpans = rowTds[td].childNodes;
-            for (let span = 0; span < tdSpans.length; span++) {
-              tdSpans[span].style.visibility = 'visible';
-            }
-          }
-        }
-      });
-    }
-  }
 
   showHideTaskTableControls(tableId, controlTdIndex, controlTdId) {
     const table = document.getElementById(tableId);
@@ -184,24 +165,6 @@ export class UI {
   }
 
   // ........................................................................................
-  setNewModalUI() {
-    btn.addEventListener('click', e => {
-      modal.style.display = 'block';
-    });
-
-    span.addEventListener('click', e => {
-      modal.style.display = 'none';
-    });
-
-    // for closing modal if clicked anywhere on screen while model is 
-    // opened:
-    window.addEventListener('click', e => {
-      if (e.target == modal) {
-        this.resetNewModalUI();
-        modal.style.display = 'none';
-      }
-    });
-  }
 
   hideBtnsAfterShowingToast(btn1, btn2) {
     document.getElementById(btn1).style.display = 'none';

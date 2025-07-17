@@ -19,7 +19,7 @@ class Main {
   }
 
   // .........................EventBus AKA pub/sub pattern.........................................
-  setupEventBusListeners() {
+  #setupEventBusListeners() {
     const newProjForm = document.getElementById('new-proj-form');
     // We need to call << handleModal() >> from << projDisplay.js >>, but want to at least maintain loose
     //  coupling, we use EventBus. EventBus uses pub/sub pattern. Also, we are setting up eventBus listeners
@@ -61,7 +61,7 @@ class Main {
     this.#updateLBarProjectsAndTasks();
     Main.#projUI.showAllProjectsSummary(Main.#proj.getAllProjects());
     Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
-    this.setupEventBusListeners();
+    this.#setupEventBusListeners();
     Main.#taskUI.closeDetailDeleteModals();
 
     // to reset project modal:
@@ -286,8 +286,8 @@ class Main {
         reqFieldsStatus = true;
       } else {
         const elementsParameter = { allInputs, reqInputs, reqMsgSpans };
-        reqFieldsStatus = this.getRequiredFieldsStatus(taskOrProjId, elementsParameter, LBarBtnId, actionType);
-        optFieldsStatus = this.getOptionalFieldsStatus(optInputs, optMsgSpans, actionType);
+        reqFieldsStatus = this.#getRequiredFieldsStatus(taskOrProjId, elementsParameter, LBarBtnId, actionType);
+        optFieldsStatus = this.#getOptionalFieldsStatus(optInputs, optMsgSpans, actionType);
       }
       const modalFooterId = `${e.target.id.split('form')[0]}footer`;
       if ((reqFieldsStatus == true && optFieldsStatus == true) || statusCheckSkipped.includes(actionType)) {
@@ -302,7 +302,7 @@ class Main {
           case 'update-project':
             if (taskOrProjId == 0) {
               toastMessage = 'Cannot Update Default Project'
-              this.handleErrorToast(modalFooterId, targetType, toastMessage);
+              this.#handleErrorToast(modalFooterId, targetType, toastMessage);
               break;
             }
             const newTitle = document.getElementById('new-proj-title').value;
@@ -313,7 +313,7 @@ class Main {
           case 'delete-project':
             if (taskOrProjId == 0) {
               toastMessage = 'Cannot Delete Default Project'
-              this.handleErrorToast(modalFooterId, targetType, toastMessage);
+              this.#handleErrorToast(modalFooterId, targetType, toastMessage);
               break;
             }
             Main.#proj.deleteProject(taskOrProjId);
@@ -383,12 +383,12 @@ class Main {
         }
       }
       else {
-        this.handleErrorToast(modalFooterId, targetType, toastMessage);
+        this.#handleErrorToast(modalFooterId, targetType, toastMessage);
       }
     }, { signal });
   }
 
-  getRequiredFieldsStatus(taskOrProjId, elementsParameter, addBtnId, actionType) {
+  #getRequiredFieldsStatus(taskOrProjId, elementsParameter, addBtnId, actionType) {
     const { allInputs, reqInputs, reqMsgSpans } = elementsParameter;
     let reqFieldsStatus = false;
     const allProjects = Main.#proj.getAllProjects();
@@ -406,7 +406,7 @@ class Main {
     return reqFieldsStatus;
   }
 
-  getOptionalFieldsStatus(optionalInputs, optionalSpans, actionType) {
+  #getOptionalFieldsStatus(optionalInputs, optionalSpans, actionType) {
     if (optionalInputs.length == 0) { return true };
     let optFieldsStatus = false;
     for (let i = 0; i < optionalInputs.length; i++) {
@@ -428,15 +428,15 @@ class Main {
     }
     // if its a task modal:
     else {
-      this.expandProjectOnLBar(projIdOfTask);
+      this.#expandProjectOnLBar(projIdOfTask);
       Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projIdOfTask);
       Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
 
     }
-    this.handleSuccessToast(modalFooterId, actionType, toastMessage);
+    this.#handleSuccessToast(modalFooterId, actionType, toastMessage);
   }
 
-  expandProjectOnLBar(projIdOfTask) {
+  #expandProjectOnLBar(projIdOfTask) {
     const allReqEle = document.querySelectorAll('.sub-showHide');
     // if its default project:
     if (projIdOfTask == 0) {
@@ -452,13 +452,13 @@ class Main {
     }
   }
 
-  handleSuccessToast(modalFooterId, actionType, toastMessage) {
+  #handleSuccessToast(modalFooterId, actionType, toastMessage) {
     const targetType = actionType.split('-')[1];
     Main.#ui.removeToast(modalFooterId, targetType);
     Main.#ui.addToast(modalFooterId, 'success-toast', toastMessage, targetType);
   }
 
-  handleErrorToast(modalFooterId, targetType, toastMessage = 'Some Error Occurred!') {
+  #handleErrorToast(modalFooterId, targetType, toastMessage = 'Some Error Occurred!') {
     Main.#ui.removeToast(modalFooterId, targetType);
     Main.#ui.addToast(modalFooterId, 'error-toast', toastMessage, targetType);
   }
