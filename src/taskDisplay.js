@@ -40,7 +40,7 @@ export class TasksDisplay {
   showLBarTasks(allProjects) {
     const allProjEls = document.querySelectorAll('.project');
     for (const key in allProjEls) {
-      if (key === 'entries') { break };
+      if (allProjEls.hasOwnProperty(key) == false) { break };
       const projEle = allProjEls[key];
       const projId = allProjEls[key].id;
       const projTasks = JSON.parse(allProjects[projId.split('p')[1]])[projId].tasks;
@@ -90,7 +90,6 @@ export class TasksDisplay {
       const reverseKeys = Object.keys(nonCompletedTasks).reverse();
       for (let i = 0; i <= reverseKeys.length - 1; i++) {
 
-        if (key === 'entries') { break };
         const taskMDTaskP = document.createElement('p');
         taskMDTaskP.setAttribute('id', `${projId}-${reverseKeys[i]}-p`);
         taskMDTaskP.setAttribute('class', 'left-bar-p-task');
@@ -126,7 +125,7 @@ export class TasksDisplay {
     for (let key in newTaskBtns) {
       // last index of this array is entries. Maybe a side effect
       //  of using for...in loop. So:
-      if (key === 'entries') { break };
+      if (newTaskBtns.hasOwnProperty(key) == false) { break };
       const btnEle = newTaskBtns[key]
       btnEle.addEventListener('click', () => {
         modal.style.display = 'block';
@@ -206,7 +205,7 @@ export class TasksDisplay {
   handleShowDetails(projTitle, projId, allTaskControlElsClass) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
-      if (idx === 'entries') { break; };
+      if (allTaskControlEls.hasOwnProperty(idx) == false) { break; };
       allTaskControlEls[idx].addEventListener('click', (e) => {
         let taskId = '';
         // eye icon SVG is composed of multiple elements & user can click on any of them. So 
@@ -232,7 +231,7 @@ export class TasksDisplay {
   #handleModifyAndDelete(projId, allTaskControlElsClass, actionType, allProjects = undefined) {
     const allTaskControlEls = document.querySelectorAll(allTaskControlElsClass);
     for (const idx in allTaskControlEls) {
-      if (idx === 'entries') { break; };
+      if (allTaskControlEls.hasOwnProperty(idx) == false) { break; };
       allTaskControlEls[idx].addEventListener('click', (e) => {
         let modalHeader = document.querySelector('#task-modal-header h3');
         const addTaskModalBtn = document.getElementById('add-task-btn');

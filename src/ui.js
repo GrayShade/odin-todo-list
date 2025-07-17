@@ -73,7 +73,7 @@ export class UI {
   #changeArrowDirection(showHideDivParent, requiredDirection, removeDirection) {
     const arrowsArr = document.querySelectorAll('.arrow');
     for (const idx in arrowsArr) {
-      if (idx === 'entries') { break; };
+      if (arrowsArr.hasOwnProperty(idx) == false) { break; };
       const arrowId = arrowsArr[idx].id.split('arrow-p')[1];
       const projectId = showHideDivParent.id.split('p')[1];
       // to expand or collapse project tasks arrow:

@@ -164,7 +164,7 @@ export class ProjectsDisplay {
   #modifyProjectModal(h3Title, btnTitle, allProjControlElsClass, actionType) {
     const allProjControlEls = document.querySelectorAll(allProjControlElsClass);
     for (const idx in allProjControlEls) {
-      if (idx === 'entries') { break; };
+      if (allProjControlEls.hasOwnProperty(idx) == false) { break; };
       allProjControlEls[idx].addEventListener('click', (e) => {
         let modalHeader = document.querySelector('#proj-modal-header h3');
         modalHeader.textContent = h3Title;
