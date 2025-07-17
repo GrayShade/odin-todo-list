@@ -216,13 +216,23 @@ class Main {
       }
       this.rerun = true;
       showHideDivArr[showHideIdx].addEventListener('click', (e) => {
-        if (Main.#ui.showHideDivs(e) == 'hidden') {
+        const showHideDivsStatus = Main.#ui.showHideDivs(e);
+        let projDiv = '';
+        if (e.target.parentElement.parentElement.classList.contains('project')) {
+          projDiv = e.target.parentElement.parentElement;
+        } else if (e.target.parentElement.parentElement.parentElement.classList.contains('project')) {
+          projDiv = e.target.parentElement.parentElement.parentElement;
+        }
+        if (showHideDivsStatus == 'hidden') {
           Main.#projUI.showAllProjectsSummary(allProjects);
           Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
-        };
+        } else if (showHideDivsStatus == 'shown' && projDiv !== '') {
+          const projId = e.target.parentElement.parentElement.id.split('-')[0].split('p')[1];
+          Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
+          Main.#ui.showHideTaskTableControls('task-sum-table', 4, 'task-td8');
+        }
       });
     }
-
   }
 
   // Below default parameter << taskOrProjId >> is for updating tasks or projects: 

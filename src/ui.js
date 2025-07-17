@@ -120,7 +120,6 @@ export class UI {
     const projSumTableRows = projSumTable.childNodes;
     for (let tr = 0; tr < projSumTableRows.length; tr++) {
       projSumTableRows[tr].addEventListener('mouseenter', (e) => {
-        console.log('here');
         const rowTds = e.target.childNodes;
         for (let td = 0; td < rowTds.length; td++) {
           if (td == 4 && rowTds[td].id == 'proj-td5') {

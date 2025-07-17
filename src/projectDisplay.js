@@ -61,7 +61,6 @@ export class ProjectsDisplay {
   removeAllLeftBarProjects() {
     const prjContainer = document.getElementById('projects-container');
     prjContainer.textContent = '';
-    console.log('here');
   }
 
   #createNewProjAndSumNodes(prjContainer) {
