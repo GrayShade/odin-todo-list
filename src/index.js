@@ -357,8 +357,8 @@ class Main {
               toastMessage = 'Task Moved Successfully';
               this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
               Main.#taskUI.resetNewTaskModalUI('new-task-form');
-              const modal = document.getElementById('new-task-modal');
-              modal.style.display = 'none';
+              Main.#ui.hideBtnsAfterShowingToast('add-task-btn', 'new-task-reset');
+              break;
             }
             toastMessage = 'Task Updated Successfully';
             this.#postProcessModal(modalFooterId, actionType, toastMessage, projIdOfTask);
