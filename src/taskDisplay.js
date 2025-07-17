@@ -265,8 +265,9 @@ export class TasksDisplay {
           const dataListEle = document.getElementById('task-list-projects');
           // to prevent duplication of datalist options in form:
           dataListEle.textContent = '';
-          for (const key in allProjects) {
-            const projTitle = JSON.parse(allProjects[key])[`p${key}`].title;
+          const allProjRevKeys = Object.keys(allProjects).reverse();
+          for(let i=0; i <= allProjRevKeys.length - 1; i++) {
+            const projTitle = JSON.parse(allProjects[allProjRevKeys[i]])[`p${allProjRevKeys[i]}`].title;
             // Don't show current project:
             if (projTitle == currProjTitle) { continue };
             const optionEle = document.createElement('option');
