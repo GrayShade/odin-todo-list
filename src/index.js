@@ -226,6 +226,7 @@ class Main {
         if (showHideDivsStatus == 'hidden') {
           Main.#projUI.showAllProjectsSummary(allProjects);
           Main.#ui.showHideTaskTableControls('proj-sum-table', 4, 'proj-td5');
+          // To show tasks summary on expanding a project:
         } else if (showHideDivsStatus == 'shown' && projDiv !== '') {
           const projId = e.target.parentElement.parentElement.id.split('-')[0].split('p')[1];
           Main.#taskUI.showAllTasksSummary(Main.#proj.getAllProjects(), projId);
@@ -273,7 +274,6 @@ class Main {
       const optInputs = document.querySelectorAll(`#${formId} input.optional, #${formId} textarea.optional`);
       const optMsgSpans = document.querySelectorAll(`#${formId} span.optional`);
       let allInputs = document.querySelectorAll(`#${formId} input,#${formId} select, #${formId} textarea`);
-
 
       let projIdOfTask;
       projIdOfTask = LBarBtnId.split('-')[0].split('p')[1];

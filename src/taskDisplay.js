@@ -28,7 +28,6 @@ export class TasksDisplay {
     });
   }
 
-
   getAllTasks(projID) {
     for (const obj of Object.entries({ ...localStorage })) {
       if (projID != obj[0]) { continue; }
@@ -134,7 +133,6 @@ export class TasksDisplay {
       });
     }
   }
-
 
   closeDetailDeleteModals() {
     const taskDetailModal = document.getElementById('task-details-modal');
@@ -266,7 +264,7 @@ export class TasksDisplay {
           // to prevent duplication of datalist options in form:
           dataListEle.textContent = '';
           const allProjRevKeys = Object.keys(allProjects).reverse();
-          for(let i=0; i <= allProjRevKeys.length - 1; i++) {
+          for (let i = 0; i <= allProjRevKeys.length - 1; i++) {
             const projTitle = JSON.parse(allProjects[allProjRevKeys[i]])[`p${allProjRevKeys[i]}`].title;
             // Don't show current project:
             if (projTitle == currProjTitle) { continue };
@@ -442,7 +440,6 @@ export class TasksDisplay {
       taskTr.appendChild(taskTd7);
       taskTr.appendChild(taskTd8);
 
-
       table.appendChild(taskTr);
       replace();
       num++;
@@ -450,7 +447,6 @@ export class TasksDisplay {
     }
   }
   setPriorityTextColor(taskTd7Btn) {
-
     switch (taskTd7Btn.textContent) {
       case 'high':
         taskTd7Btn.style.color = '#f08080';

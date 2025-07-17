@@ -26,7 +26,6 @@ export class Projects {
     });
   }
 
-
   createDefaultProject(projName) {
     const defProject = this.getProject(0);
     if (defProject === null) {

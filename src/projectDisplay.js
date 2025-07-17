@@ -37,7 +37,6 @@ export class ProjectsDisplay {
       if (e.target == modal) {
         // Emitter
         this.eventBus.emit('requestAllProjects');
-
         this.resetNewProjModalUI('new-proj-form');
         modal.style.display = 'none';
         this.showAllProjectsSummary(allProjects);
@@ -55,7 +54,6 @@ export class ProjectsDisplay {
     const prjContainer = document.getElementById('projects-container');
     this.#createNewProjAndSumNodes(prjContainer);
     this.#createIndividualProjectNodes(prjContainer, allProjects);
-
   }
 
   removeAllLeftBarProjects() {
@@ -85,16 +83,13 @@ export class ProjectsDisplay {
 
   #createIndividualProjectNodes(prjContainer, allProjects) {
 
-        const revKeys = Object.keys(allProjects).reverse();
+    const revKeys = Object.keys(allProjects).reverse();
     // Show Default project on top & rest in descending order. So:
     revKeys.pop();
     revKeys.unshift('0');
     for (let i = 0; i <= revKeys.length - 1; i++) {
       const projObVal = JSON.parse(allProjects[revKeys[i]])[`p${revKeys[i]}`];
       const projObKey = `p${projObVal.projId}`;
-    // for (const obj of Object.entries(allProjects)) {
-    //   const prjObKey = `p${obj[0]}`;
-    //   const prjObVal = JSON.parse(obj[1])[`p${obj[0]}`];
 
       const prjMainD = document.createElement('div');
       prjMainD.setAttribute('id', projObKey);
@@ -130,14 +125,10 @@ export class ProjectsDisplay {
     const modal = document.getElementById('new-proj-modal');
     const btn = document.getElementById(buttonId);
 
-
     btn.addEventListener('click', () => {
       modal.style.display = 'block';
-
     });
-
   }
-
 
   resetNewProjModalUI(formId) {
     const newProjTitle = document.getElementById('new-proj-title');
@@ -168,7 +159,6 @@ export class ProjectsDisplay {
     this.modifyProjectModal('Update Project', 'Update Title', '.proj-edit-icon', 'update-project');
     // to delete project:
     this.modifyProjectModal('Delete Project', 'Remove It', '.proj-remove-icon', 'delete-project');
-
   }
 
   modifyProjectModal(h3Title, btnTitle, allProjControlElsClass, actionType) {
@@ -214,7 +204,6 @@ export class ProjectsDisplay {
     const headerTd3 = document.createElement('th');
     const headerTd4 = document.createElement('th');
     const headerTd5 = document.createElement('th');
-
 
     const headerNumText = document.createTextNode('#');
     const headerTitleText = document.createTextNode('Title');
@@ -293,9 +282,4 @@ export class ProjectsDisplay {
       num++;
     }
   }
-
-  updateProjectInSummary() {
-
-  }
-
 }

@@ -61,7 +61,6 @@ export class Validation {
     });
   }
 
-
   validateBeforeSubmit(e, ele_name, ele_message, actionType) {
     const ele_val = document.getElementById(ele_name).value;
     const message = document.getElementById(ele_message);
@@ -169,7 +168,7 @@ export class Validation {
         // Specified project must either exist or field should be left blank: 
         if (projectAlreadyExists == false && updatedProjTitle != '') {
           this.showErrorMessage(allInputs[0], projMsgSpan, 'Project Does Not Exist!');
-          if (msgSpan.textContent == 'Task Is Duplicated For Above Project!') { 
+          if (msgSpan.textContent == 'Task Is Duplicated For Above Project!') {
             msgSpan.textContent = '';
             document.getElementById('task-title').style.borderColor = '#E5E7EB';
           };
@@ -260,7 +259,7 @@ export class Validation {
 
   CheckProjectExistence(allProjects, updatedProjTitle) {
     if (updatedProjTitle == '') { return false; }
-    for (let idx=0; idx < Object.entries((allProjects)).length; idx++) {
+    for (let idx = 0; idx < Object.entries((allProjects)).length; idx++) {
       const loopProj = JSON.parse(allProjects[Object.keys(allProjects)[idx]])[`p${Object.keys(allProjects)[idx]}`];
       if (loopProj.title == updatedProjTitle) {
         return true;

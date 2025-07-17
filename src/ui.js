@@ -23,8 +23,6 @@ export class UI {
 
   // .................divs expand collapse related code starting here........................... 
 
-
-
   showHideDivs(ele) {
     let showHideDiv;
     let showHideDivParent;
